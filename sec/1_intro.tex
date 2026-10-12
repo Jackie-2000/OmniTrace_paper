@@ -1,36 +1,42 @@
 \section{Introduction}
 \label{sec:intro}
 
-Omni-modal large language models take text, images, audio, and video in one prompt and answer in free text~\cite{gpt-5.2, gemini3, Xu2025Qwen3OmniTR, yu2025minicpm, xu2025qwen2, ye2026omnivinci}.
-When such a model answers a question about a forty-second clip or a fifteen-quote document pool, a user who wants to check the answer has to go through the whole input again. A useful system would point to the evidence: these three seconds of audio, this chart, this passage.
-We study this problem as \emph{source attribution}: for each generated sentence, find the parts of the input that the model relied on when it produced that sentence.
+Omni-modal large language models read text, images, audio, and video in one prompt and answer in free text~\cite{gpt-5.2, gemini3, Xu2025Qwen3OmniTR, yu2025minicpm, xu2025qwen2, ye2026omnivinci}.
+The more a model can take in, the harder its answers are to check. A claim about a forty-second clip or a pool of fifteen document quotes can only be verified by going through the input again, unless the model can show where the claim came from.
 
-Three kinds of methods exist, and none of them covers this setting.
-\emph{Perturbation methods} such as leave-one-out and ContextCite~\cite{cohen-wang2024contextcite} hide parts of the context and measure how the output changes. They are faithful by construction but need tens of extra forward passes per query, and a video or a long audio clip makes each pass expensive.
-\emph{Learned methods} such as AT2~\cite{cohenwang2025at2} and vStream~\cite{kang2026vstream} fit an attribution model on perturbation data, which has to be collected again for every model.
-Both families were built for text contexts or for single images, and they have not been tested on continuous audio and video.
-\emph{Self-citation} asks the model to state its own evidence. Recent work shows that stated audio and video citations are often hallucinated~\cite{wan2026murgat}, and a citation says what the model claims, not what it used.
+There are two ways to obtain this evidence, and they answer different questions.
+One can \emph{ask} the model: prompt it to cite a time span or a passage with each sentence. This is cheap, but a citation is itself generated text. It tells us what the model says it used, and stated citations for audio and video are often missing or hallucinated~\cite{wan2026murgat}.
+Or one can \emph{measure}: remove parts of the input and see how the output changes~\cite{cohen-wang2024contextcite}. This tells us what the model used, at the price of tens of extra forward passes per query, each of them over the full clip.
+Learned shortcuts~\cite{cohenwang2025at2, kang2026vstream} lower the price at inference but need perturbation data for every new model, and both lines of work were developed for text contexts or single images.
+For audio and video there is at present no way to know what a model relied on without paying for perturbation, and no agreed way to test a cheaper answer.
 
-Reading attention during generation is the natural cheap alternative: it needs no extra pass and no training. Attention has been used this way for text contexts~\cite{ding2025attention, wang2026attntrace}, and a natural design for mixed inputs traces every generated token to the single input position with the highest attention and then votes over tokens.
-We find that this design does not hold up once the input is not text. With hard per-token assignment, the ranking of video seconds agrees with human evidence no better than chance, the question text wins almost every assignment when it competes with video tokens, and a rule tuned on one model loses most of its effect on another (\Cref{sec:design}).
-There is also an evaluation gap. Attribution on audio and video has been scored by agreement with reference labels, which shows what a person would point to, not what the model depended on. A causal test needs a way to hide a time interval without leaving a trace of it, and a control for how much was hidden.
+Our starting point is that the model already leaves a record of where it looked.
+Every generated token is computed by attending over the input, so the generation pass contains, for free, a distribution over the input for every token.
+The open question is whether this record can be read faithfully once the sources are not sentences but images and seconds of sound and video.
+We find that it can, with one change of view.
+The usual way to trace with attention follows \emph{peaks}: it links each generated token to its most attended input position.
+That works when a source is a handful of text tokens. It fails for continuous sources, where one second of video is spread over hundreds of positions that each receive little weight: the second as a whole may dominate while no single position does.
+Evidence in continuous modalities is diffuse, and it has to be read as \emph{mass}.
 
-We introduce \textbf{OmniTrace}, a training-free attribution method that runs inside the generation pass, together with a causal protocol to test it on every modality.
-OmniTrace splits the input into \emph{source units} by structure the input already has: one-second units for audio and video, and one unit per text passage or image.
-For each generated token it sums the attention of the late decoder layers over the positions of each unit. Summing these \emph{attention masses} over the tokens of a sentence gives one score per unit, and a unit is labelled as evidence when its score stands out from the other units of its modality.
-There is no per-token argmax, no token weighting, no learned component, and no per-modality tuning: the layer band is a fixed fraction of the model's depth and one threshold is used throughout.
-The same pass that generates the response returns its attribution, as source ids for text and images and as time intervals for audio and video.
+This view leads to \textbf{OmniTrace}, a training-free attribution method that runs inside the generation pass (\Cref{fig:teaser}).
+The input is split into source units by structure it already has: one-second units for audio and video and one unit per passage or image.
+A unit's score for a sentence is the late-layer attention mass that the sentence's tokens place on it, and a unit is labelled as evidence when its score stands out among the units of its own modality.
+The score is additive over tokens and over positions, so the same pass yields attributions for sentences and whole responses, as source ids for text and images and as time intervals for audio and video.
+There is no argmax, no token weighting, no learned component, and no per-modality tuning.
 
-To test whether these units are the ones the model used, we replay the model's own response with units hidden and measure the loss in log-probability.
-Hidden units are replaced at the input by placeholders of the same length that carry no content (black frames, silence, a black image, blank tokens), and every result is compared with hiding the same number of random units.
-Leave-one-out and ContextCite are run on the same units with the same placeholders, so no baseline is ``not applicable'' on audio or video.
+A reading of attention is a hypothesis, and attention is known to be an unreliable explanation when taken on trust. We therefore make the test part of the contribution.
+We replay the model's own response while source units are hidden behind content-free placeholders of the same length (black frames, silence, blank tokens), and compare the loss in probability with the loss from hiding the same number of random units.
+The same operation lets leave-one-out and ContextCite run on audio and video, which gives, to our knowledge, the first direct comparison of single-pass and perturbation-based attribution on continuous inputs.
 
-On Qwen2.5-Omni~\cite{xu2025qwen2} and MiniCPM-o~4.5~\cite{yu2025minicpm}, with video (NExT-GQA), audio (MMAU), and image--text documents (MMDocRAG), we find:
+Experiments on two omni-modal models and three modalities support four findings.
+The units OmniTrace selects are causally important for whole responses and for single sentences, in every setting we test.
+One pass recovers most of the faithfulness of perturbation methods, between 77\% and 96\% of leave-one-out's effect, without any of its 16 to 41 extra passes.
+What the model cites is not what it uses: citations are missing from most audio and video responses, and where they exist, the cited parts of audio clips and documents matter less than the parts OmniTrace finds.
+And one fixed setting transfers to a second model family unchanged, where a more elaborate tracing rule does not.
+
+Our contributions are:
 \begin{itemize}
-    \item \textbf{One pass is enough for most of the faithfulness.} The units OmniTrace selects matter more than random units in all settings, for whole responses and for single sentences. OmniTrace has about twice the effect of embedding similarity and 77--98\% of the effect of leave-one-out and ContextCite, at none of their 16 to 41 extra forward passes.
-    \item \textbf{What the model cites is not what it uses.} When asked to cite, the model cites nothing in 18--69\% of responses. On audio and image--text inputs, the cited units matter 1.7 to 3.1 times less than the units OmniTrace selects on the same responses.
-    \item \textbf{The simple rule transfers; hard tracing does not.} The same setting works on a second model family without retuning, while per-token argmax tracing loses almost all of its effect on audio there.
-    \item \textbf{Attention has measurable limits.} Summed attention favors large units, effects on video are small, and on one model human-marked evidence matters more than the units OmniTrace picks. We quantify each of these.
+    \item \textbf{OmniTrace}, a single-pass, training-free method that attributes each generated sentence to text, image, audio, and video sources by reading attention as mass over source units.
+    \item \textbf{A causal evaluation protocol for continuous inputs}, with content-free placeholders and size-matched controls, under which perturbation baselines apply to every modality.
+    \item \textbf{Evidence on stated versus used sources} and on the limits of attention: its bias toward large units, its coarse localization in video, and the gap between what models depend on and what people mark.
 \end{itemize}
-
-In short, we contribute a single-pass, training-free attribution method for text, image, audio, and video sources, a causal evaluation protocol for continuous inputs, and an analysis of stated versus used evidence, unit-size bias, and modality reliance.

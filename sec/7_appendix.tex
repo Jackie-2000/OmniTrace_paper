@@ -115,18 +115,6 @@ Both perturbation baselines use the placeholders and the teacher-forced target o
 The share of leave-one-out's lift that OmniTrace reaches grows with the budget in every modality.
 On video at the 10\% budget, the keep gain against embedding similarity is dominated by one question, in which keeping the baseline's units costs 11 nats per token.
 
-\subsection{Faithfulness versus Cost}
-\label{appendix:cost}
-
-\begin{figure*}[t]
-\centering
-\input{media/table/gen_cost}
-\caption{Lift at the middle budget against the number of extra forward passes per question (Qwen2.5-Omni-7B). Bars: 95\% bootstrap intervals. Self-citation is shown for the responses that cite.}
-\label{fig:cost}
-\end{figure*}
-
-\Cref{fig:cost} plots the lift of each method against its cost. Among the methods that need no extra pass of the model, OmniTrace has the highest lift in every modality.
-
 \subsection{Predicted Labels}
 \label{appendix:labels}
 
@@ -150,6 +138,78 @@ For image--text input, $\tau=1.5$ gives the highest mean F1 against the gold quo
 Audio and video have no usable labels for this, so we compared thresholds by the causal effect of the labelled sets on a random fifth of the questions (54 video, 53 audio), which is excluded from all results.
 No threshold was reliably better than 1.5 there; lower values scored slightly higher, so this check supports 1.5 as a safe choice and does not show that it is optimal.
 MiniCPM-o~4.5 uses the same value without any check.
+
+\subsection{Variants and Human-Evidence Units}
+\label{appendix:variants}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.2pt}
+\resizebox{\textwidth}{!}{\input{media/table/gen_models}}
+\caption{OmniTrace on two models, variants that change one design choice, and human-marked evidence.
+Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quotes); S-lift and S-spec: sentence lift and specificity, in nats per token.
+\mdn / \mup: reliably lower / higher than OmniTrace on the same questions or sentences.
+\emph{Argmax tracing + curation} traces each token to its highest-attention position and filters the votes; \emph{last layer only} and \emph{per-token mean} change one choice in \Cref{eq:mass}.
+\emph{Human-evidence units} hides the units annotators marked (not available for audio); their number differs from the budget, so their lift is against random sets of their own size.}
+\label{tab:models}
+\end{table*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{media/figure/fig_transfer.pdf}
+\caption{Lift of argmax tracing with curation as a share of OmniTrace's lift. In each panel the left group of bars is Qwen2.5-Omni-7B, on which the variant was developed, and the right group is MiniCPM-o~4.5.}
+\label{fig:transfer}
+\end{figure}
+
+\Cref{tab:models} compares OmniTrace with variants that change one design choice, and \Cref{fig:transfer} shows the comparison with hard tracing.
+On Qwen2.5-Omni, argmax tracing with curation is level with OmniTrace on audio and image--text input and behind on video.
+On MiniCPM-o~4.5 it loses most of its effect on audio, is behind on image--text input, and on video its top units are worse to keep than random ones.
+Using the last layer alone is reliably worse on audio for both models.
+
+The last rows hide the units that annotators marked.
+On Qwen2.5-Omni, the units OmniTrace selects have a larger lift than the human-marked ones.
+On MiniCPM-o~4.5 the order is reversed, most clearly on image--text input: there OmniTrace finds units that matter, but not the ones that matter most.
+
+\subsection{Unit Size}
+\label{appendix:size}
+
+\begin{table}[t]
+\centering
+\tablesize
+\setlength{\tabcolsep}{3.5pt}
+% source: analysis/out/qwen2.5-omni-7b/unit_size.md (A)
+\begin{tabular}{lccc}
+\toprule
+\textbf{Ranking} & $\rho$(score, size) & Top-1 size & Image share\\
+\midrule
+OmniTrace (sum) & $+$0.51 & 1.94 & 0.59\\
+Per-token mean & $-$0.60 & 0.44 & 0.11\\
+Leave-one-out & $+$0.09 & 1.62 & 0.48\\
+ContextCite & $+$0.14 & 1.65 & 0.52\\
+Human evidence & $+$0.25 & 1.85 & 0.67\\
+\bottomrule
+\end{tabular}
+\caption{Unit size on image--text input (Qwen2.5-Omni-7B). $\rho$: rank correlation between a quote's score and its token count, per question. Top-1 size: tokens of the top quote over the mean quote size. Image share: share of images among the top-ranked quotes.}
+\label{tab:size}
+\end{table}
+
+\Cref{tab:size} gives the numbers behind \Cref{sec:size}. The per-token mean ranks short passages first and rarely an image. On MiniCPM-o~4.5 the mean is better than the sum at sentence level (\Cref{tab:models}), so the best correction for size depends on the model.
+
+\subsection{Unit Granularity}
+\label{appendix:granularity}
+
+The score of a merged unit is the sum of its parts, but a selected set can still change with the unit length.
+We merge one-second units into two- and four-second units and select the top 20\% of the duration again.
+On video the selected time overlaps the one-second selection with IoU 0.60 and 0.50, where random rankings give 0.15; on audio the values are 0.53 and 0.42.
+The selection is far from arbitrary but not invariant, so the unit length should be fixed and reported.
+
+\subsection{Attribution Strength}
+\label{appendix:flagging}
+
+At sentence level, the attention mass a sentence places on the sources correlates with how much the sentence depends on them (rank correlation 0.60 on audio and image--text input, 0.26 on video, Qwen2.5-Omni).
+At response level, a low share of mass on the audio flags wrong answers on Qwen2.5-Omni (AUROC 0.74), but not in the other modalities and not on MiniCPM-o~4.5.
+Attribution strength thus indicates whether a sentence draws on the sources; it is not a general detector of wrong answers.
 
 \section{Answer Accuracy of Long Answers}
 \label{appendix:judge}

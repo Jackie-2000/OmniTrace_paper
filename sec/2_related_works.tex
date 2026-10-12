@@ -1,11 +1,36 @@
 \section{Related Work}
 
+\begin{table}[t]
+\centering
+\tablesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
+\toprule
+ & No & No extra & & Audio,\\
+\textbf{Method} & training & pass & Image & video\\
+\midrule
+Self-citation (prompted) & \checkmark & -- & \checkmark & \checkmark\\
+ContextCite & \checkmark & -- & -- & --\\
+MIRAGE & \checkmark & -- & -- & --\\
+AT2 & -- & \checkmark & -- & --\\
+MultAttnAttrib & \checkmark & \checkmark & \checkmark & --\\
+vStream & -- & \checkmark & \checkmark & --\\
+VTrace & \checkmark & -- & \checkmark & --\\
+\midrule
+\textbf{OmniTrace} & \checkmark & \checkmark & \checkmark & \checkmark\\
+\bottomrule
+\end{tabular}
+\caption{Attribution methods for generated text, as published. Image and audio, video: source types the method is defined and evaluated on, beyond text. Self-citation states evidence instead of measuring it.}
+\label{tab:position}
+\skiptableend
+\end{table}
+
 \paragraph{Context attribution for text LLMs.}
 A recent line of work attributes a generated statement to the context passages that support it.
 ContextCite~\cite{cohen-wang2024contextcite} hides random subsets of the context and fits a sparse linear model of the response probability; ARC-JSD~\cite{li2026arcjsd} and AttriBoT~\cite{liu2025attribot} make such perturbation estimates more accurate or cheaper.
 MIRAGE~\cite{qi-etal-2024-model} uses gradient saliency to link answer tokens to retrieved documents.
 Closer to our signal, AT2~\cite{cohenwang2025at2} learns one weight per attention head from perturbation data, and AttnTrace~\cite{wang2026attntrace} and \citet{ding2025attention} read attention directly for text contexts.
-All of these define sources as discrete text units and are evaluated on text.
+All of these define sources as discrete text units and are evaluated on text (\Cref{tab:position}).
 OmniTrace uses the same kind of signal as the attention-based methods, needs no training, and is defined over units of any modality, including time intervals.
 The term \emph{generation-time} is also used for prompted citation~\cite{saxena2025generation, gao2023alce}; we use it for attribution that is read from the model's internals while it decodes.
 

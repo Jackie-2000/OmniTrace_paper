@@ -76,13 +76,19 @@ First line of institution2 address\\
 \maketitle
 
 \begin{figure*}[ht]
-\setlength{\abovecaptionskip}{0.5cm}
+\setlength{\abovecaptionskip}{0.3cm}
     \centering
     % \vspace{-5pt}
-    \includegraphics[width=2\columnwidth]{media/figure/Teaser.pdf}
-    % \vspace{-15pt}
-    \caption{\textbf{OmniTrace attributes each generated sentence to the input it relies on, in the same forward pass that generates it.}
-    Inputs of any modality share one token sequence. OmniTrace reads the decoder's attention while the response is generated, sums it over the positions of each source unit (a text passage, an image, a second of audio or video), and labels the units that stand out. Text and image evidence is reported as source ids, audio and video evidence as time intervals.
+    % v1 figure, kept for reference: \includegraphics[width=2\columnwidth]{media/figure/Teaser.pdf}
+    % PLACEHOLDER: to be drawn by the author; design brief in PAPER_WORKFLOW.md
+    \fbox{\parbox[c][5.0cm][c]{0.97\textwidth}{\centering\small
+    \textbf{[Figure 1 placeholder]}\\[4pt]
+    \emph{Left: input.} A video strip and an audio waveform cut into one-second cells, and a document pool (text passages, a chart, a table), with a question.\\[2pt]
+    \emph{Middle: one generation pass.} For the sentence being written, attention fans out over the input; a bar over each source unit shows its summed mass, and the units that stand out within their modality are outlined.\\[2pt]
+    \emph{Right: output.} Each sentence with its evidence: ``video 14--16\,s'', ``image 2, text 3'', ``audio 3--5\,s'', and one sentence with no source.\\[2pt]
+    \emph{Bottom: tested, not assumed.} The outlined seconds are blacked out and the response loses probability; hiding random seconds changes little. Inset: the model's own citation points elsewhere.}}
+    \caption{\textbf{OmniTrace reads what a model used from the pass that generates the answer.}
+    Text, images, audio, and video share one input sequence, cut into source units (a passage, an image, a second of audio or video). While a sentence is generated, OmniTrace sums the late-layer attention mass that falls on each unit and labels the units that stand out among those of the same modality: source ids for text and images, time intervals for audio and video. The attribution is then tested by intervention: hiding the labelled units behind content-free placeholders lowers the probability of the response far more than hiding random units, and more than hiding the sources the model itself cites.
     }
     \vspace{-10pt}
     \label{fig:teaser}

@@ -17,26 +17,42 @@ The model generates $\mathbf{y}=(y_1,\dots,y_T)$ with greedy decoding. We split 
 For every sentence $C_k$, and for the response as a whole, we want (i) a score for every unit that ranks the units by how much the model relied on them, and (ii) a small labelled set $\hat{\mathcal{S}}_k\subseteq\mathcal{S}$, reported as source ids for text and images and as time intervals for audio and video.
 A sentence may get an empty set.
 
-\subsection{Scoring Units by Attention Mass}
+\subsection{Reading Attention as Mass over Units}
 \label{sec:scoring}
 
-Let $A^{(\ell,h)}_t(i)$ be the attention weight from the position that predicts $y_t$ to input position $i$, in head $h$ of decoder layer $\ell$.
-OmniTrace averages these weights over all heads and over the last third of the layers, $\mathcal{L}_{\text{late}}$:
+\paragraph{Principle.}
+When the model predicts $y_t$, each attention head distributes one unit of weight over the positions it reads from.
+Let $A^{(\ell,h)}_t(i)$ be the weight on input position $i$ in head $h$ of decoder layer $\ell$.
+We average over all heads and over the last third of the layers, $\mathcal{L}_{\text{late}}$:
 \begin{equation}
-a_t(i)=\frac{1}{|\mathcal{L}_{\text{late}}|\,H}\sum_{\ell\in\mathcal{L}_{\text{late}}}\sum_{h=1}^{H}A^{(\ell,h)}_t(i).
+a_t(i)=\frac{1}{|\mathcal{L}_{\text{late}}|\,H}\sum_{\ell\in\mathcal{L}_{\text{late}}}\sum_{h=1}^{H}A^{(\ell,h)}_t(i),
 \end{equation}
-The score of a unit for one generated token is the attention mass on its positions, and the score for a sentence is the sum over the sentence's tokens:
+so $a_t$ is a distribution over where the token $y_t$ reads from.
+A source unit is a set of positions, and the natural question is how much of this distribution falls on the set.
+OmniTrace scores a unit by this \emph{attention mass}, summed over the tokens of a sentence:
 \begin{equation}
 s_k(S_j)=\sum_{t\in C_k}\;\sum_{i\in S_j} a_t(i).
 \label{eq:mass}
 \end{equation}
-The response-level score sums \Cref{eq:mass} over all sentences.
-Nothing else enters the score. There is no weighting of tokens by part of speech or confidence, no normalization over sources, and no parameter fitted to data.
-The layer band is a fraction of the depth, so it is defined for any model (layers 18--27 of 28 in Qwen2.5-Omni-7B, 24--35 of 36 in MiniCPM-o~4.5).
+The score can be read as the expected number of the sentence's tokens that read from $S_j$.
+It is additive in two ways. Over tokens, the response-level score is the sum of the sentence scores, so one pass gives attributions at both levels. Over positions, the score of two merged units is the sum of their scores, so the scores do not depend on how a stream is cut.
+Nothing else enters: no token weights, no normalization over sources, and no fitted parameter.
+
+\paragraph{Mass, not peaks.}
+\label{sec:design}
+A common way to read attention is to trace each generated token to its single highest-weight position and to count these traces as votes.
+For text sources the peak and the mass tell the same story, because a source is a few tokens.
+For continuous sources they do not. One second of video is spread over about 300 positions, each of which receives little weight; the second as a whole can hold much of the mass while no position in it wins the argmax, which goes to a sharply attended text token.
+We measured this on 1{,}000 development questions of NExT-GQA that share no video with our test set.
+Ranking video seconds by argmax votes agrees with human-marked evidence at chance level in every layer (AUROC 0.50--0.52), where mass reaches 0.60; and when the argmax ranges over the whole prompt, the question text wins about 98\% of the tokens.
+
+\paragraph{Late layers.}
+On the same data, the first twelve layers of Qwen2.5-Omni carry no source signal (AUROC 0.50--0.53) and averaging all layers dilutes the late ones (0.57 against 0.60).
+We therefore fix the band as the last third of the depth, which is defined for any model (layers 18--27 of 28 in Qwen2.5-Omni-7B, 24--35 of 36 in MiniCPM-o~4.5), and do not tune it further.
 
 \paragraph{Cost.}
-The scores are read during generation. At each step we keep only the attention row of the token being generated in the late layers, which costs $O(|\mathcal{L}_{\text{late}}|\,N)$ memory per step, where returning full attention maps would cost $O(N^2)$ per layer.
-OmniTrace therefore adds no forward pass, no backward pass, and no training to the generation it explains.
+Scores are read during generation. At each step we keep only the attention row of the token being generated in the late layers, $O(|\mathcal{L}_{\text{late}}|\,N)$ memory per step.
+OmniTrace adds no forward pass, no backward pass, and no training to the generation it explains.
 
 \subsection{From Scores to Evidence Labels}
 \label{sec:labels}
@@ -54,19 +70,4 @@ Second, the number of labelled units adapts to the sentence: flat scores give an
 Third, the rule is relative, so it does not depend on the absolute scale of attention, which changes with input length and model.
 Adjacent labelled time units are merged into intervals $[b,e]$; text and image units are listed by id.
 We use $\tau=1.5$ for every modality and both models (\Cref{appendix:threshold}).
-
-\subsection{Why Mass, Not Hard Tracing}
-\label{sec:design}
-
-A common way to use attention is to trace each generated token to the one position with the highest weight, collect these traces as votes, and filter the votes with heuristics.
-We started from this design and measured where it fails on a development set of 1{,}000 NExT-GQA questions that share no video with our test set. Three observations led to \Cref{eq:mass}.
-
-\emph{Hard assignment discards the signal.} Ranking video seconds by argmax votes agrees with human-marked evidence at chance level in every layer (AUROC 0.50--0.52), while ranking by attention mass reaches 0.60. One position per token keeps too little of the attention row.
-
-\emph{Only late layers carry source information.} The first twelve layers of Qwen2.5-Omni are at chance (AUROC 0.50--0.53) and the signal grows from there, so an average over all layers is diluted (0.57 against 0.60 for the late band).
-
-\emph{Modalities must not compete directly.} When the argmax ranges over all positions, the question and option text wins almost every token, and about 98\% of the traces never reach the video.
-
-Token weights, confidence exponents, and vote filtering changed these numbers by one point or less, so we removed them.
-The causal tests in \Cref{sec:variants} confirm the choice on held-out data and on a second model.
-The sum in \Cref{eq:mass}, in place of a per-token mean, favors large units; we measure this bias in \Cref{sec:size}.
+The sum in \Cref{eq:mass} favors large units when units differ much in size; we measure this in \Cref{sec:size}.
