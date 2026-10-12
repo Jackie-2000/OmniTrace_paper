@@ -25,7 +25,7 @@ Read this file first in every session that touches the paper. Update "Progress" 
 | RQ | Question | Main-text evidence |
 |---|---|---|
 | RQ1 | Do the units read from one generation pass matter causally, in every modality? | Fig. `fig_curves` (both models), sentence columns of Table `tab:baselines` |
-| RQ2 | How much of the faithfulness of perturbation methods does one pass recover, and at what cost? | Table `tab:baselines`, Fig. `fig_cost` |
+| RQ2 | How much of the faithfulness of perturbation methods does one pass recover, and at what cost? Does training on perturbation data (AT2) add much? | Table `tab:baselines`, Fig. `fig_cost` |
 | RQ3 | Does the model cite what it uses? | Fig. `fig_stated`, self-citation rows of Table `tab:baselines` |
 | RQ4 | Does one fixed setting transfer to another model? | MiniCPM row of Table `tab:baselines`, Fig. `fig_curves`; variants in the appendix |
 | Analysis | What does attention capture and miss? | Fig. `fig_example`, Table `tab:agreement`; size bias, granularity, flagging in the appendix |
@@ -63,6 +63,7 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 
 - 2026-10-12 (c), pushed: main-table rows renamed OmniTrace$_{Qwen2.5-Omni}$ / OmniTrace$_{MiniCPM-o}$; legend and caption of `fig_curves` reworded ("hide OmniTrace's top units" / "hide random units", per model).
 - 2026-10-12 (d), pushed: main table marks the best (bold) and second best (underline) per column among the comparable rows; switch `UNDERLINE` in `analysis/paper_models.py` (`"second"` or `"free"` = best method without an extra pass). The author set the table font to `\scriptsize` on Overleaf; keep it.
+- 2026-10-12 (e), pushed: AT2 added (Qwen2.5-Omni-7B): row in the main table with a training-cost footnote ($^\P$), point in `fig_cost`, paragraph "Against a trained reader of attention" in RQ2, rows in `tab:agreement` and `tab:size`, appendix paragraph, limitations sentence. Numbers: OmniTrace = 111% / 95% / 94% of AT2's lift (video / audio / image--text). The abstract was not changed.
 
 ## Open items
 
@@ -70,8 +71,8 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 
 - Title: the author's title ("A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs") is in place; the abstract and introduction say "single-pass" and "training-free" more than "unified framework" or "generation-time". Align the wording if the author wants the title's terms to lead.
 
-- AT2 results (running on Qwen2.5-Omni-7B): the row and the point in `fig_cost` appear by themselves; then add the AT2 sentence in `sec/4_exp.tex` (marked by a comment) and remove "AT2 is not yet included" from the limitations.
-- Larger Qwen (on hold): add it to `MODELS` in `analysis/paper_models.py`; it becomes one more row in the main table and one more line style in `fig_curves`.
+- Running remotely (author, 2026-10-12): baselines on MiniCPM-o 4.5 and Qwen3-Omni-30B-A3B. A model appears in tables and figures by itself once its causal rows are synced (one more row in the main table, one more line style in `fig_curves`); `gen_baselines_<model>.tex` is written for each model with baseline runs.
+- Abstract: could mention the trained baseline in a few words ("close to an attention method trained on perturbation data"); left to the author.
 - Figure 1 to be drawn by the author (brief above).
 - Check the 2026 arXiv entries in `related.bib` before submission.
 - Results that would strengthen the story if available (ask the author): baselines on MiniCPM-o 4.5; audio evidence spans for MMAU (human agreement on audio); a video run with the audio track on (audio vs visual reliance).

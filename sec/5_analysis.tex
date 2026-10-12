@@ -26,6 +26,7 @@ Random & 0.500 & 0.215 & 0.500 & 0.194\\
 Embedding similarity & 0.604 & 0.288 & 0.763 & 0.527\\
 Leave-one-out & 0.549 & 0.309 & 0.721 & 0.657\\
 ContextCite & 0.566 & \textbf{0.342} & 0.743 & 0.642\\
+AT2 (trained) & 0.626 & 0.321 & 0.815 & 0.695\\
 \textbf{OmniTrace} & \textbf{0.637} & 0.230 & \textbf{0.829} & \textbf{0.698}\\
 \bottomrule
 \end{tabular}
@@ -36,7 +37,7 @@ ContextCite & 0.566 & \textbf{0.342} & 0.743 & 0.642\\
 
 The causal tests ask what the model used. A user also cares whether the evidence shown is evidence a person would accept, so we compare each method's ranking with the human-marked evidence (\Cref{tab:agreement}); \Cref{fig:example} shows one response.
 
-On documents, OmniTrace agrees with the gold quotes better than every baseline, including the perturbation methods that are causally stronger. On correctly answered questions its top quote is gold in 90\% of the cases.
+On documents, OmniTrace agrees with the gold quotes better than every untrained baseline, including the perturbation methods that are causally stronger, and is level with the trained AT2. On correctly answered questions its top quote is gold in 90\% of the cases.
 On video it has the best AUROC, but its single top second is evidence no more often than chance: attention finds the right region of the clip without pinning down the exact second, which matches its weaker sentence-level results there.
 
 The table also explains why agreement cannot be the main test.
@@ -49,9 +50,10 @@ Mixed inputs make units unequal: an image quote takes hundreds of tokens and a p
 Because mass is additive over positions, a larger unit can collect more of it.
 On documents the scores of OmniTrace correlate with quote size at $\rho=0.51$, while the measured effects of leave-one-out and ContextCite correlate at 0.09 and 0.14 (\Cref{appendix:size}).
 Dividing by the token count over-corrects ($\rho=-0.60$) and lowers the lift on Qwen2.5-Omni, so we keep the sum and report the bias.
+AT2's trained head weights do not show the bias ($\rho=0.08$), which suggests that a choice of heads, not a division by size, is the way to correct it.
 
 Across modalities the reading is accurate.
-Images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out and ContextCite place the same 47\% of the measured effect on images.
+Images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out, ContextCite, and AT2 place 47--48\% of the measured effect on images.
 In aggregate, OmniTrace reflects how much the model relies on images and on text.
 
 Two further checks are in the appendix: the selected time is stable but not invariant when one-second units are merged into longer ones (\Cref{appendix:granularity}), and the attention mass a sentence places on the sources indicates how much the sentence depends on them (\Cref{appendix:flagging}).

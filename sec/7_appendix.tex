@@ -88,6 +88,15 @@ We draw 32 random ablations in which each unit is kept with probability 0.5, and
 
 Both perturbation baselines use the placeholders and the teacher-forced target of the causal test itself.
 
+\paragraph{AT2.}
+AT2~\cite{cohenwang2025at2} scores a source by a weighted sum of attention over all heads, with one learned weight per head. We adapt it to our units: the feature of a head is the attention mass it places on a unit, summed over the generated tokens of the sentence or the response, for all $28\times28$ heads of Qwen2.5-Omni-7B. With equal weights on the last third of the layers and zero elsewhere, this score is OmniTrace, and we start training from these weights.
+The training signal is the 32 ContextCite ablations of each question. The loss is one minus the Pearson correlation between the predicted and the measured log-probability over the ablations, for responses and their sentences, minimized with Adam and early stopping on 15\% of the training questions.
+We cross-fit in five folds, so each question is scored with weights trained on the other four folds.
+At test time AT2 needs no extra pass; training needs 32 ablation passes for every training question, once per model.
+Two choices differ from the original and both favor AT2 here: it is trained on the distribution it is tested on, and with the placeholders and the target of the test itself.
+On held-out questions the trained score predicts the ablation outcomes about as well as OmniTrace on video (correlation 0.33 against 0.34), and better on audio (0.61 against 0.58) and image--text input (0.85 against 0.78).
+After training, about a third of the absolute weight lies on the late layers and about half of the weights are negative.
+
 \section{Additional Results}
 \label{appendix:additional}
 
@@ -107,7 +116,7 @@ Both perturbation baselines use the placeholders and the teacher-forced target o
 \small
 \setlength{\tabcolsep}{4pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_budget_base}}
-\caption{Lift of every method at every budget on Qwen2.5-Omni-7B, and the paired difference between OmniTrace and each baseline with its 95\% bootstrap interval.}
+\caption{Lift of every method at every budget on Qwen2.5-Omni-7B, and the paired difference between OmniTrace and each baseline with its 95\% bootstrap interval. AT2 is trained (\Cref{appendix:baselines}); the other methods are not.}
 \label{tab:budget_base}
 \end{table*}
 
@@ -187,6 +196,7 @@ OmniTrace (sum) & $+$0.51 & 1.94 & 0.59\\
 Per-token mean & $-$0.60 & 0.44 & 0.11\\
 Leave-one-out & $+$0.09 & 1.62 & 0.48\\
 ContextCite & $+$0.14 & 1.65 & 0.52\\
+AT2 (trained) & $+$0.08 & 1.71 & 0.52\\
 Human evidence & $+$0.25 & 1.85 & 0.67\\
 \bottomrule
 \end{tabular}

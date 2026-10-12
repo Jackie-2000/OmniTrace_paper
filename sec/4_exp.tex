@@ -43,9 +43,10 @@ Fwd: extra forward passes per question beyond the one generation.
 Lift: extra drop in the response's log-probability (nats per token) when the method's top units are hidden, over hiding the same number of random units (20\% of the duration; 2 quotes).
 S-lift and S-spec: sentence lift and sentence specificity.
 \mdn / \mup: reliably lower / higher than OmniTrace$_{\text{Qwen2.5-Omni}}$ on the same questions (paired 95\% bootstrap interval).
-\textbf{Bold} / \underline{underline}: best / second best per column among the rows evaluated on the same questions and budget (embedding similarity, leave-one-out, ContextCite, OmniTrace$_{\text{Qwen2.5-Omni}}$); ties share the mark.
+\textbf{Bold} / \underline{underline}: best / second best per column among the rows evaluated on the same questions and budget (embedding similarity, leave-one-out, ContextCite, AT2, OmniTrace$_{\text{Qwen2.5-Omni}}$); ties share the mark.
 $^\dagger$Self-citation is a separate generation, scored only where the model cites (62, 72, and 328 responses); it hides the cited units, and the row below it is OmniTrace on the same responses with the same number of units.
 $^\ddagger$One extra generation.
+$^\P$No extra pass at test time, but its head weights are trained on 32 ablation passes for every training question.
 $^\S$The same setting on MiniCPM-o~4.5, nothing retuned ($n$ = 233, 187, 400); its numbers are not comparable with the baseline rows, which come from the other model.}
 \label{tab:baselines}
 \skiptableend
@@ -63,7 +64,7 @@ All baselines rank the same units and pass through the same test.
 Two cost about as little as OmniTrace: \emph{embedding similarity} between a sentence and each unit (SigLIP, CLAP, and a text encoder), and \emph{self-citation}, a second generation that asks the model to cite time spans or quote ids.
 Two are perturbation methods: \emph{leave-one-out} hides each unit in turn, and \emph{ContextCite}~\cite{cohen-wang2024contextcite} fits a sparse linear model on 32 random ablations.
 The perturbation baselines are fitted with the same hiding operation and the same target that the test measures, which favors them; we treat them as a practical upper bound.
-% AT2: add one sentence here once its rows are in Table 2 (learned head weights, cross-fitted on the ContextCite ablations).
+One is trained: \emph{AT2}~\cite{cohenwang2025at2} reads the same attention as OmniTrace but learns one weight per head from the ContextCite ablations; we cross-fit it so that no question is scored by weights that saw its ablations.
 Details are in \Cref{appendix:baselines}.
 
 \subsection{RQ1: The Selected Units Matter}
@@ -93,7 +94,7 @@ Effects are large for documents, moderate for audio, and small for video, where 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{media/figure/fig_cost.pdf}
-\caption{\textbf{Faithfulness against cost} on Qwen2.5-Omni-7B. Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs. OmniTrace sits in the shaded column: it reads its scores from the generation pass.}
+\caption{\textbf{Faithfulness against cost} on Qwen2.5-Omni-7B. Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs per question. OmniTrace sits in the shaded column: it reads its scores from the generation pass. AT2 sits there too at test time, after training on perturbation data from the same model.}
 \label{fig:cost}
 \end{figure}
 
@@ -108,6 +109,11 @@ Leave-one-out and ContextCite spend 16 to 41 extra forward passes per question t
 From a single pass, OmniTrace reaches 96\% of leave-one-out's lift on video, 77\% on audio, and 95\% on image--text input, and the share grows with the budget (\Cref{appendix:budgets}).
 At sentence level it keeps 83\% and 93\% of leave-one-out's lift on audio and image--text; video is the weak case, at about 60\%.
 The perturbation methods remain the more faithful choice when their cost is acceptable. OmniTrace offers most of that faithfulness when it is not, which is the usual case for long audio and video.
+
+\paragraph{Against a trained reader of attention.}
+AT2 is the closest method to ours. With equal weights on the heads of the late layers it \emph{is} OmniTrace, so the comparison isolates what training on perturbation data adds.
+It adds little: OmniTrace is level with AT2 on video at every budget and reaches 95\% and 94\% of its lift on audio and image--text input.
+The gap is reliable on documents and at some audio budgets (\Cref{appendix:budgets}) but small everywhere, and it is bought with 32 ablation passes for each training question and a new fit for every model.
 
 \subsection{RQ3: Stated Evidence Is Not Used Evidence}
 \label{sec:stated}
