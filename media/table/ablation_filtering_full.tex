@@ -1,0 +1,105 @@
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{
+Ablation study of the source curation framework. 
+We report Precision, Recall, and F1 for text, image, audio, and video attribution.}
+\label{tab:ablation_filtering_all}
+\skiptablebegin
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l|ccc|ccc|ccc|ccc}
+\toprule
+\multirow{2}{*}{\textbf{Method}} 
+& \multicolumn{3}{c|}{\textbf{Text}} 
+& \multicolumn{3}{c|}{\textbf{Image}} 
+& \multicolumn{3}{c|}{\textbf{Audio}} 
+& \multicolumn{3}{c}{\textbf{Video}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
+& P & R & F1 
+& P & R & F1 
+& P & R & F1 
+& P & R & F1 \\
+\midrule
+Full Model (Default) 
+& \heatcell{83.06}{68.13}{83.09}{textcol}
+& \heatcell{75.10}{75.10}{80.96}{textcol}
+& \heatcell{75.66}{70.85}{76.69}{textcol}
+& \heatcell{84.19}{22.84}{84.19}{imagecol}
+& \heatcell{75.12}{18.85}{75.12}{imagecol}
+& \heatcell{76.59}{19.88}{76.59}{imagecol}
+& \heatcell{65.96}{65.96}{74.66}{audiocol}
+& \heatcell{47.27}{42.23}{47.27}{audiocol}
+& \heatcell{49.90}{48.69}{50.83}{audiocol}
+& \heatcell{56.57}{55.57}{56.85}{videocol}
+& \heatcell{47.08}{38.20}{47.08}{videocol}
+& \heatcell{40.16}{35.79}{40.16}{videocol} \\
+\midrule
+w/o POS Weighting 
+& \heatcell{82.80}{68.13}{83.09}{textcol}
+& \heatcell{77.13}{75.10}{80.96}{textcol}
+& \heatcell{76.69}{70.85}{76.69}{textcol}
+& \heatcell{23.70}{22.84}{84.19}{imagecol}
+& \heatcell{19.94}{18.85}{75.12}{imagecol}
+& \heatcell{20.79}{19.88}{76.59}{imagecol}
+& \heatcell{74.66}{65.96}{74.66}{audiocol}
+& \heatcell{43.94}{42.23}{47.27}{audiocol}
+& \heatcell{50.07}{48.69}{50.83}{audiocol}
+& \heatcell{56.85}{55.57}{56.85}{videocol}
+& \heatcell{41.30}{38.20}{47.08}{videocol}
+& \heatcell{37.46}{35.79}{40.16}{videocol} \\
+w/o Confidence Weight 
+& \heatcell{76.82}{68.13}{83.09}{textcol}
+& \heatcell{78.82}{75.10}{80.96}{textcol}
+& \heatcell{74.59}{70.85}{76.69}{textcol}
+& \heatcell{22.88}{22.84}{84.19}{imagecol}
+& \heatcell{18.85}{18.85}{75.12}{imagecol}
+& \heatcell{19.88}{19.88}{76.59}{imagecol}
+& \heatcell{70.95}{65.96}{74.66}{audiocol}
+& \heatcell{46.26}{42.23}{47.27}{audiocol}
+& \heatcell{50.83}{48.69}{50.83}{audiocol}
+& \heatcell{56.36}{55.57}{56.85}{videocol}
+& \heatcell{43.50}{38.20}{47.08}{videocol}
+& \heatcell{38.82}{35.79}{40.16}{videocol} \\
+w/o Confidence 
+& \heatcell{68.13}{68.13}{83.09}{textcol}
+& \heatcell{80.96}{75.10}{80.96}{textcol}
+& \heatcell{70.85}{70.85}{76.69}{textcol}
+& \heatcell{22.84}{22.84}{84.19}{imagecol}
+& \heatcell{18.94}{18.85}{75.12}{imagecol}
+& \heatcell{19.91}{19.88}{76.59}{imagecol}
+& \heatcell{74.26}{65.96}{74.66}{audiocol}
+& \heatcell{42.33}{42.23}{47.27}{audiocol}
+& \heatcell{48.69}{48.69}{50.83}{audiocol}
+& \heatcell{56.48}{55.57}{56.85}{videocol}
+& \heatcell{38.21}{38.20}{47.08}{videocol}
+& \heatcell{35.80}{35.79}{40.16}{videocol} \\
+w/o Run Coherence 
+& \heatcell{83.09}{68.13}{83.09}{textcol}
+& \heatcell{75.52}{75.10}{80.96}{textcol}
+& \heatcell{75.93}{70.85}{76.69}{textcol}
+& \heatcell{22.88}{22.84}{84.19}{imagecol}
+& \heatcell{18.85}{18.85}{75.12}{imagecol}
+& \heatcell{19.88}{19.88}{76.59}{imagecol}
+& \heatcell{74.26}{65.96}{74.66}{audiocol}
+& \heatcell{42.23}{42.23}{47.27}{audiocol}
+& \heatcell{48.69}{48.69}{50.83}{audiocol}
+& \heatcell{56.48}{55.57}{56.85}{videocol}
+& \heatcell{38.20}{38.20}{47.08}{videocol}
+& \heatcell{35.79}{35.79}{40.16}{videocol} \\
+w/o $p_{\min}$ Filtering 
+& \heatcell{82.92}{68.13}{83.09}{textcol}
+& \heatcell{75.70}{75.10}{80.96}{textcol}
+& \heatcell{76.00}{70.85}{76.69}{textcol}
+& \heatcell{22.88}{22.84}{84.19}{imagecol}
+& \heatcell{18.85}{18.85}{75.12}{imagecol}
+& \heatcell{19.88}{19.88}{76.59}{imagecol}
+& \heatcell{74.21}{65.96}{74.66}{audiocol}
+& \heatcell{42.49}{42.23}{47.27}{audiocol}
+& \heatcell{48.85}{48.69}{50.83}{audiocol}
+& \heatcell{56.62}{55.57}{56.85}{videocol}
+& \heatcell{38.77}{38.20}{47.08}{videocol}
+& \heatcell{36.22}{35.79}{40.16}{videocol} \\
+\bottomrule
+\end{tabular}
+\skiptableend
+\end{table}

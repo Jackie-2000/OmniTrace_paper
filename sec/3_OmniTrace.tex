@@ -1,0 +1,72 @@
+\section{OmniTrace}
+\label{sec:method}
+
+\subsection{Problem Setting}
+\label{sec:problem}
+
+\paragraph{Input and source units.}
+A decoder-only omni-modal LLM receives an input sequence $\mathbf{x}=(x_1,\dots,x_N)$ in which text tokens and the encoder outputs for images, audio, and video share one sequence.
+We split the attributable part of $\mathbf{x}$ into \emph{source units} $\mathcal{S}=\{S_1,\dots,S_m\}$, each a set of input positions, using structure the input already has.
+A text passage is one unit and an image is one unit.
+Audio and video are cut into units of about one second, following the time grid of the model's own encoder, so each unit $S_j$ has a time interval $[b_j,e_j]$.
+The system prompt, the question, the answer options, and template tokens are part of the prompt and are never candidates.
+Each unit belongs to one modality, and we write $\mathcal{M}(S_j)$ for the set of units that share the modality of $S_j$.
+
+\paragraph{Output.}
+The model generates $\mathbf{y}=(y_1,\dots,y_T)$ with greedy decoding. We split $\mathbf{y}$ into sentences $C_1,\dots,C_K$, each a set of generated-token indices.
+For every sentence $C_k$, and for the response as a whole, we want (i) a score for every unit that ranks the units by how much the model relied on them, and (ii) a small labelled set $\hat{\mathcal{S}}_k\subseteq\mathcal{S}$, reported as source ids for text and images and as time intervals for audio and video.
+A sentence may get an empty set.
+
+\subsection{Scoring Units by Attention Mass}
+\label{sec:scoring}
+
+Let $A^{(\ell,h)}_t(i)$ be the attention weight from the position that predicts $y_t$ to input position $i$, in head $h$ of decoder layer $\ell$.
+OmniTrace averages these weights over all heads and over the last third of the layers, $\mathcal{L}_{\text{late}}$:
+\begin{equation}
+a_t(i)=\frac{1}{|\mathcal{L}_{\text{late}}|\,H}\sum_{\ell\in\mathcal{L}_{\text{late}}}\sum_{h=1}^{H}A^{(\ell,h)}_t(i).
+\end{equation}
+The score of a unit for one generated token is the attention mass on its positions, and the score for a sentence is the sum over the sentence's tokens:
+\begin{equation}
+s_k(S_j)=\sum_{t\in C_k}\;\sum_{i\in S_j} a_t(i).
+\label{eq:mass}
+\end{equation}
+The response-level score sums \Cref{eq:mass} over all sentences.
+Nothing else enters the score. There is no weighting of tokens by part of speech or confidence, no normalization over sources, and no parameter fitted to data.
+The layer band is a fraction of the depth, so it is defined for any model (layers 18--27 of 28 in Qwen2.5-Omni-7B, 24--35 of 36 in MiniCPM-o~4.5).
+
+\paragraph{Cost.}
+The scores are read during generation. At each step we keep only the attention row of the token being generated in the late layers, which costs $O(|\mathcal{L}_{\text{late}}|\,N)$ memory per step, where returning full attention maps would cost $O(N^2)$ per layer.
+OmniTrace therefore adds no forward pass, no backward pass, and no training to the generation it explains.
+
+\subsection{From Scores to Evidence Labels}
+\label{sec:labels}
+
+Scores rank the units. To give the user a short answer, we label the units that stand out from their competitors.
+Let $\bar{s}_k^{\,\setminus j}$ be the mean score of the other units of the same modality as $S_j$, that is, the mean of $s_k(S')$ over $S'\in\mathcal{M}(S_j)\setminus\{S_j\}$.
+A unit is labelled for sentence $C_k$ when its score is at least $\tau$ times this mean:
+\begin{equation}
+S_j\in\hat{\mathcal{S}}_k \iff s_k(S_j)\;\ge\;\tau\,\bar{s}_k^{\,\setminus j}.
+\label{eq:label}
+\end{equation}
+Three properties follow from this rule.
+First, units compete only within their modality, so text passages cannot crowd out images, whose scores are on a different scale.
+Second, the number of labelled units adapts to the sentence: flat scores give an empty label, so a sentence that draws on nothing in particular abstains.
+Third, the rule is relative, so it does not depend on the absolute scale of attention, which changes with input length and model.
+Adjacent labelled time units are merged into intervals $[b,e]$; text and image units are listed by id.
+We use $\tau=1.5$ for every modality and both models (\Cref{appendix:threshold}).
+
+\subsection{Why Mass, Not Hard Tracing}
+\label{sec:design}
+
+A common way to use attention is to trace each generated token to the one position with the highest weight, collect these traces as votes, and filter the votes with heuristics.
+We started from this design and measured where it fails on a development set of 1{,}000 NExT-GQA questions that share no video with our test set. Three observations led to \Cref{eq:mass}.
+
+\emph{Hard assignment discards the signal.} Ranking video seconds by argmax votes agrees with human-marked evidence at chance level in every layer (AUROC 0.50--0.52), while ranking by attention mass reaches 0.60. One position per token keeps too little of the attention row.
+
+\emph{Only late layers carry source information.} The first twelve layers of Qwen2.5-Omni are at chance (AUROC 0.50--0.53) and the signal grows from there, so an average over all layers is diluted (0.57 against 0.60 for the late band).
+
+\emph{Modalities must not compete directly.} When the argmax ranges over all positions, the question and option text wins almost every token, and about 98\% of the traces never reach the video.
+
+Token weights, confidence exponents, and vote filtering changed these numbers by one point or less, so we removed them.
+The causal tests in \Cref{sec:variants} confirm the choice on held-out data and on a second model.
+The sum in \Cref{eq:mass}, in place of a per-token mean, favors large units; we measure this bias in \Cref{sec:size}.

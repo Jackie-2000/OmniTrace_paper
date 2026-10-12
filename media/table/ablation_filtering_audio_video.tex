@@ -1,0 +1,31 @@
+\begin{table}[h]
+\centering
+\tablesize
+\caption{
+Ablation study of the source curation framework. 
+We report Precision, Recall, and F1 for audio and video attribution on the 134 audio and 102 video QA tasks.
+The full model integrates POS-aware weighting and run-level coherence..
+}
+\label{tab:ablation_filtering_audio_video}
+\skiptablebegin
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l|ccc|ccc}
+\toprule
+\multirow{2}{*}{\textbf{Method}} 
+& \multicolumn{3}{c|}{\textbf{Audio Attribution}} 
+& \multicolumn{3}{c}{\textbf{Video Attribution}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+& Precision & Recall & F1 
+& Precision & Recall & F1 \\
+\midrule
+Full Model (Default) & 65.96 & 47.27 & 49.90 & 55.57 & 47.08 & 40.16 \\
+\midrule
+w/o POS Weighting & 74.66 & 43.94 & 50.07 & 56.85 & 41.30 & 37.46 \\
+w/o Confidence Weight & 70.95 & 46.26 & 50.83 & 56.36 & 43.50 & 38.82 \\
+w/o Confidence      & 74.26 & 42.33 & 48.69 & 56.48 & 38.21 & 35.80 \\
+w/o Run Coherence & 74.26 & 42.23 & 48.69 & 56.48 & 38.20 & 35.79 \\
+w/o $p_{\min}$ Filtering & 74.21 & 42.49 & 48.85 & 56.62 & 38.77 & 36.22 \\
+\bottomrule
+\end{tabular}
+\skiptableend
+\end{table}

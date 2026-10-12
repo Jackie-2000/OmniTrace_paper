@@ -1,0 +1,143 @@
+\section{Evaluation}
+
+\subsection{LLM-as-judge prompts}
+\label{appendix:llm_judge_prompt}
+\subsubsection{Visual Tasks}
+We used GPT5.2~\cite{gpt-5.2} for visual tasks labeling. We give the LLM judge the chunked source as well as chunked model generation and ask it to treat it as a multi-label prediction problem.
+
+\begin{lstlisting}
+prompt = '''You are an annotation assistant for SOURCE ATTRIBUTION.
+
+You will be given:
+1) An image that contains the source conversation with image IDs shown on the images.
+2) A model-generated summary (split into sentences, each sentence has a sentence index).
+3) The source text chunks listed below, each with a numeric text ID.
+
+Task:
+For EACH generated summary sentence, decide which source evidence supports it.
+- "text_source": a list of TEXT IDs from the provided text chunks that directly support that sentence.
+- "image_source": a list of IMAGE IDs visible in the provided image that directly support that sentence.
+Return ONLY IDs that are explicitly supported by the source. Do NOT invent IDs.
+
+Attribution rules:
+- Include an ID only if it is necessary to justify the sentence content.
+- If the sentence is supported by multiple text or image chunks, include all relevant IDs.
+- If the sentence refers to visual content (objects, actions, clothing, scene, etc.), include the relevant image IDs.
+- If a sentence is NOT directly supported by any source evidence, output an empty list for that field.
+- Do NOT use the instruction chunk (e.g., "Summarize the conversation") as evidence unless the sentence is literally about the instruction.
+- Do NOT merge evidence across sentences: each sentence gets its own dict.
+- IDs must be integers (no quotes), in ascending order, with no duplicates.
+
+Output format (STRICT):
+Return a JSON array with length == number of generated summary sentences.
+Each element corresponds to the sentence index order (0..N-1) and must be exactly:
+{{"image_source": [...], "text_source": [...]}}
+
+Do not output any extra keys, explanations, markdown, or trailing text.
+
+Model generated response (sentences indexed):
+{model_generation}
+
+Text source chunks (format: [text_id] text):
+{text_source_chunks}
+'''
+\end{lstlisting}
+
+\subsubsection{Audio and Video Tasks}
+Since Audio and Video tasks has continuous labels in timeline, we are not able to provide chunked source as in the visual-text setting. We give the judge the raw audio/video source and ask it output relevant timespans for each generated chunk.
+
+\begin{lstlisting}
+prompt = '''You are an annotation assistant for SOURCE ATTRIBUTION.
+
+You will be given:
+1) One AUDIO/VIDEO file that contains the source content.
+2) A model-generated summary (split into sentences, each sentence has a sentence index).
+
+Task:
+For EACH generated summary sentence, decide which source evidence supports it.
+- "audio/video_source": a list of timestamp spans [start_sec, end_sec] in the AUDIO/VIDEO that directly support that sentence.
+
+Timestamp labeling requirements:
+- Timestamps are continuous spans in SECONDS.
+- Use a list of spans to allow multiple supporting regions, e.g. [[0,2], [6,8]].
+- Each span must satisfy: start_sec < end_sec.
+- Use minimal coverage: include ONLY the smallest time ranges that contain the relevant evidence.
+  - Do NOT label the entire audio (e.g., [0,100]) unless the sentence truly requires the entire audio.
+- Prefer a small number of short spans rather than one very long span.
+- Round timestamps to 1s precision and keep them consistent.
+
+Attribution rules:
+- Include a timestamp span only if it is necessary to justify the sentence content.
+- If the sentence is supported by multiple audio/video regions, include all relevant evidence.
+- If a sentence is NOT directly supported by any source evidence in a modality, output an empty list for that field.
+- Do NOT use the instruction chunk (e.g., "Summarize the conversation") as evidence unless the sentence is literally about the instruction.
+- Do NOT merge evidence across sentences: each sentence gets its own dict.
+- audio/video_source spans must be sorted by start time, non-overlapping when possible (merge overlaps if they touch or overlap).
+
+Output format (STRICT):
+Return a JSON array with length == number of generated summary sentences.
+Each element corresponds to the sentence index order (0..N-1) and must be exactly:
+{{"audio/video_source": [[start,end], ...]}}
+
+Do not output any extra keys, explanations, markdown, or trailing text.
+
+Model generated response (sentences indexed):
+{model_generation}
+
+STRICT OUTPUT CONTRACT:
+- Output MUST be valid JSON only (no markdown, no code fences).
+- Do not include ```json or ``` anywhere.
+- Output must start with '[' and end with ']'.
+- No extra text before or after the JSON.
+- Keep it compact on one line.
+'''
+\end{lstlisting}
+
+\subsection{Human study}
+\label{appendix:human_study}
+To verify the quality of LLM judge labels, we hired four human experts to manually go through around 26.6\% of the data using Qwen2.5-Omni responses, and report the agreement using the same metric: span-level F1 for visual and time F1 for audio and video. Results are reported in \Cref{tab:human_llm_agreement}.
+
+\input{media/table/human_agreement}
+
+\subsection{Faithfulness Verification}
+\label{appendix:faithfulness_verification}
+Beyond attribution accuracy with respect to external labels, we evaluate whether OmniTrace reflects the model’s own decision process.
+Specifically, for multiple-choice QA tasks, we test whether the attribution assigned to the model’s final answer is consistent with the option it selects.
+
+\paragraph{Option-consistency evaluation.}
+All QA datasets are formulated as multiple-choice questions, where each option corresponds to a discrete source text chunk.
+For each sample, we extract the model’s predicted option $\hat{o}$ from the generated response using deterministic parsing. Importantly, this evaluation does not depend on whether the prediction is correct; it tests whether attribution reflects the model’s chosen answer, not whether the answer matches ground truth.
+
+Let $C_k$ denote the generation span containing the final answer statement. For each option $o$, let $S_o$ denote the source chunk corresponding to that option. Using the token-level mappings and confidence-weighted votes defined in \Cref{sec:problem}, we compute the option-restricted attribution mass:
+\[
+\text{Mass}(S_o)
+=
+\sum_{t \in T_k}
+w_t \cdot \mathbf{1}[\hat{s}(t)=S_o],
+\]
+where $T_k$ are tokens in the answer span, $\hat{s}(t)$ is the source traced for token $t$,
+and $w_t$ is the confidence- and POS-weighted vote. We then define the predicted attribution option as
+\[
+\tilde{o}
+=
+\arg\max_{o} \text{Mass}(S_o).
+\]
+
+\paragraph{Top-1 Option Consistency.}
+We report \emph{Top-1 consistency}, defined as
+\[
+\text{Consistency}
+=
+\mathbb{1}[\tilde{o} = \hat{o}],
+\]
+averaged over samples.
+This metric measures whether the option receiving the highest attribution mass matches the option explicitly selected by the model.
+
+\paragraph{Results.}
+On the 200 visual QA samples, OmniTrace (Qwen + OT$_\text{AttMean}$) achieves \textbf{93.84\%} Top-1 consistency. This indicates that in the vast majority of cases, the decision sentence’s attribution mass is concentrated on the source chunk corresponding to the option chosen by the model.
+In other words, the generation-time tracing mechanism recovers the model’s own selected option as the most supported source unit.
+
+\paragraph{Interpretation.}
+This result provides strong evidence that OmniTrace captures attribution signals aligned with the model’s internal decision pathway.
+If attribution were dominated by post-hoc noise or unrelated spans, the consistency rate would approach chance level (25\% for four-way multiple choice).
+Instead, the observed 93.84\% rate suggests that generation-time token tracing, combined with span-level aggregation and filtering, faithfully identifies the textual source corresponding to the model’s final answer statement.

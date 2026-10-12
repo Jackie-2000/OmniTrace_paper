@@ -1,0 +1,39 @@
+\section{Scoring functions and baselines}
+\subsection{Choice of Base Attribution Methods}
+\label{appendix:choice_scoring}
+OmniTrace is designed as a framework that converts arbitrary token-level attribution signals into generation-time, span-level source explanations. In principle, many attribution methods could serve as the underlying token-level signal. In this work, we adopt three representative methods: \textbf{AttMean}, \textbf{RawAtt~\cite{abnar-zuidema-2020-quantifying}}, and \textbf{AttGrad~\cite{10.1145/3459637.3482126}}. These methods were selected because they satisfy two practical requirements for generation-time attribution in decoder-only multimodal LLMs: (1) they operate directly on model-internal signals available during decoding (e.g., attention weights or gradients), and (2) they can be computed efficiently without requiring additional supervision or model modifications.
+
+\paragraph{Attention-based attribution.}
+We include two attention-based methods as lightweight and widely used attribution signals. 
+\textbf{RawAtt} uses the mean attention weights from the final Transformer layer as token attribution scores~\cite{abnar-zuidema-2020-quantifying}. 
+\textbf{AttMean} aggregates attention weights across all layers and heads, providing a more stable signal by averaging attention distributions throughout the network. These methods are particularly suitable for generation-time attribution because attention weights are readily available during decoding via standard model interfaces (e.g., \texttt{output\_attentions=True}) and can be computed without additional backward passes.
+
+\paragraph{Gradient-based attribution.}
+To complement attention-based signals, we also include \textbf{AttGrad}, which combines gradient information with attention maps to estimate token influence~\cite{10.1145/3459637.3482126}. Gradient-based methods provide a different attribution perspective by measuring how changes in input representations affect the generation probability of output tokens. Although gradient computation requires an additional backward pass, it remains feasible for decoder-only models when attribution is computed per decoding step.
+
+\paragraph{Methods not included.}
+Several other attribution methods have been proposed in the literature, including Layer-wise Relevance Propagation (LRP)~\cite{bach2015pixel}, attention rollout~\cite{abnar-zuidema-2020-quantifying} and AttCAT~\cite{attcat}. 
+However, these approaches are less directly compatible with generation-time attribution in decoder-only multimodal LLMs. Many were originally developed for classification settings with fixed prediction targets, whereas generation requires attribution to be computed online for each decoding step. Some methods also rely on full attention matrices over all token pairs or repeated forward passes over the entire sequence, which becomes computationally expensive for long-context generation and multimodal inputs given the scales of the state-of-the-art Omni-modal LLMs.
+
+Our goal is not to exhaustively benchmark all attribution techniques, but to demonstrate that OmniTrace functions as a \emph{plug-and-play framework}. By showing consistent performance improvements across diverse base signals—including attention-only and gradient-based variants—we illustrate that the framework generalizes across attribution mechanisms rather than relying on a specific scoring heuristic.
+
+\paragraph{Computational considerations.}
+Gradient-based attribution (OT$_\text{AttGrads}$) is memory-intensive for long audio and video inputs, and thus results are not reported for those settings ($\dagger$).
+Nevertheless, in visual tasks where gradients are tractable, OT$_\text{AttGrads}$ remains competitive, further supporting the signal-agnostic nature of the framework.
+
+\subsection{Baselines}
+\label{appendix:implementation}
+Here we discussed the implementaton of our baselines in \Cref{tab:main}.
+
+\subsubsection{Self-attribution} 
+After model generation is complete, the same base model is prompted using the prompts from Appendix~\ref{appendix:llm_judge_prompt} to attribute each of it's generation to the sources provided. For visual tasks we supply chunked visual and text elements from source. For audio and video tasks we supply the raw audio/video files.
+
+\subsubsection{Embedding-based heuristics}
+After model generation is complete, each of the chunk in model generation gets embedded either using the base model's processor (\texttt{Embed$_{\text{processor}}$}) or using openai/clip-vit-large-patch14 (\texttt{Embed$_{\text{CLIP}}$}). For visual tasks, each of the chunk from source is also embedded the same way, and we compute the cosine-similarity of the embeddings and keep those above a threshold. We did a hyperparameter sweep on the threshold and kept 0.25 which yield the highest performance.
+
+\subsubsection{Random}
+This is a post-hoc method. Implementation is similar to Embedding-based heuristics except that the matching is random instead of similarity-based.
+
+Embedding-based baselines are not applicable to audio and video attribution tasks (marked $\times$ in \Cref{tab:main}). These baselines rely on computing similarity between generated spans and discrete source embeddings. However, in temporal attribution settings, source labels correspond to continuous timestamp intervals rather than semantically self-contained discrete units.
+Embedding similarity cannot be meaningfully defined over arbitrary time bins without an external segmentation model, which would introduce additional supervision and confound comparison.
+Therefore, embedding-based matching is inherently unsuitable for continuous timestamp attribution, whereas OmniTrace operates directly over token-level causal signals and does not require discrete semantic chunk embeddings.

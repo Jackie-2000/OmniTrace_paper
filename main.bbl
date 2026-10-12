@@ -1,0 +1,255 @@
+\begin{thebibliography}{31}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{AlHamidi et~al.(2026)AlHamidi, Khanbayov, Serpedin, and
+  Kurban}]{alhamidi2026carve}
+Rama AlHamidi, Rasul Khanbayov, Erchin Serpedin, and Hasan Kurban. 2026.
+\newblock \href {https://arxiv.org/abs/2608.15685} {Counterfactual sensitivity
+  is not repairability: Auditing replay probes for video evidence}.
+\newblock \emph{arXiv preprint arXiv:2608.15685}.
+
+\bibitem[{Atanasova et~al.(2020)Atanasova, Simonsen, Lioma, and
+  Augenstein}]{atanasova-etal-2020-diagnostic}
+Pepa Atanasova, Jakob~Grue Simonsen, Christina Lioma, and Isabelle Augenstein.
+  2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.263} {A diagnostic
+  study of explainability techniques for text classification}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 3256--3274, Online. Association
+  for Computational Linguistics.
+
+\bibitem[{Chen et~al.(2026)Chen, yu~Huang, and yi~Lee}]{chen2026causalaudio}
+Wei-Chih Chen, Chien yu~Huang, and Hung yi~Lee. 2026.
+\newblock \href {https://arxiv.org/abs/2603.13768} {Causal tracing of
+  audio-text fusion in large audio language models}.
+\newblock In \emph{Interspeech}.
+
+\bibitem[{Cho et~al.(2026)Cho, Yoo, Jung, and Chung}]{cho2026tracingaudio}
+Hyebin Cho, Suho Yoo, Jihoo Jung, and Joon~Son Chung. 2026.
+\newblock \href {https://arxiv.org/abs/2609.04637} {Tracing audio grounding and
+  answer selection in audio llms}.
+\newblock \emph{arXiv preprint arXiv:2609.04637}.
+
+\bibitem[{Cohen-Wang et~al.(2025)Cohen-Wang, Chuang, and
+  Madry}]{cohenwang2025at2}
+Benjamin Cohen-Wang, Yung-Sung Chuang, and Aleksander Madry. 2025.
+\newblock \href {https://arxiv.org/abs/2504.13752} {Learning to attribute with
+  attention}.
+\newblock \emph{arXiv preprint arXiv:2504.13752}.
+
+\bibitem[{Cohen-Wang et~al.(2024)Cohen-Wang, Shah, Georgiev, and
+  Madry}]{cohen-wang2024contextcite}
+Benjamin Cohen-Wang, Harshay Shah, Kristian Georgiev, and Aleksander Madry.
+  2024.
+\newblock \href {https://openreview.net/forum?id=7CMNSqsZJt} {Contextcite:
+  Attributing model generation to context}.
+\newblock In \emph{The Thirty-eighth Annual Conference on Neural Information
+  Processing Systems}.
+
+\bibitem[{DeYoung et~al.(2020)DeYoung, Jain, Rajani, Lehman, Xiong, Socher, and
+  Wallace}]{deyoung2020eraser}
+Jay DeYoung, Sarthak Jain, Nazneen~Fatema Rajani, Eric Lehman, Caiming Xiong,
+  Richard Socher, and Byron~C. Wallace. 2020.
+\newblock \href {https://arxiv.org/abs/1911.03429} {Eraser: A benchmark to
+  evaluate rationalized nlp models}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics (ACL)}.
+
+\bibitem[{Ding et~al.(2025)Ding, Luo, Cao, and Luo}]{ding2025attention}
+Qiang Ding, Lvzhou Luo, Yixuan Cao, and Ping Luo. 2025.
+\newblock \href {https://arxiv.org/abs/2412.11404} {Attention with dependency
+  parsing augmentation for fine-grained attribution}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2025}.
+
+\bibitem[{Dong et~al.(2025)Dong, Chang, Huang, Wang, Tang, and
+  Liu}]{dong2025mmdocrag}
+Kuicai Dong, Yujing Chang, Shijie Huang, Yasheng Wang, Ruiming Tang, and Yong
+  Liu. 2025.
+\newblock \href {https://arxiv.org/abs/2505.16470} {Benchmarking
+  retrieval-augmented multimomal generation for document question answering}.
+\newblock In \emph{Advances in Neural Information Processing Systems (Datasets
+  and Benchmarks Track)}.
+
+\bibitem[{Gao et~al.(2023)Gao, Yen, Yu, and Chen}]{gao2023alce}
+Tianyu Gao, Howard Yen, Jiatong Yu, and Danqi Chen. 2023.
+\newblock \href {https://arxiv.org/abs/2305.14627} {Enabling large language
+  models to generate text with citations}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}.
+
+\bibitem[{{Google Gemini Team}(2025)}]{gemini3}
+{Google Gemini Team}. 2025.
+\newblock A new era of intelligence with gemini 3.
+\newblock
+  \url{https://blog.google/products-and-platforms/products/gemini/gemini-3}.
+\newblock Google AI Blog, Accessed Jan 16, 2026.
+
+\bibitem[{Kang et~al.(2026)Kang, Han, Kim, Kim, Kim, and
+  Hwang}]{kang2026vstream}
+Seil Kang, Woojung Han, Junhyeok Kim, Jinyeong Kim, Youngeun Kim, and Seong~Jae
+  Hwang. 2026.
+\newblock \href {https://arxiv.org/abs/2604.16587} {Real-time visual
+  attribution streaming in thinking model}.
+\newblock \emph{arXiv preprint arXiv:2604.16587}.
+
+\bibitem[{Li et~al.(2026)Li, Chen, Hu, Gao, Wang, and Yilmaz}]{li2026arcjsd}
+Ruizhe Li, Chen Chen, Yuchen Hu, Yanjun Gao, Xi~Wang, and Emine Yilmaz. 2026.
+\newblock \href {https://arxiv.org/abs/2505.16415} {Attributing response to
+  context: A jensen-shannon divergence driven mechanistic study of context
+  attribution in retrieval-augmented generation}.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Liang et~al.(2025)Liang, Huang, Jiao, Liang, Liu, and
+  Cao}]{liang2025ercr}
+Jiawei Liang, Jianjie Huang, Xianghao Jiao, Siyuan Liang, Shiming Liu, and
+  Xiaochun Cao. 2025.
+\newblock \href {https://arxiv.org/abs/2509.22415} {Evidence recomposition and
+  predictive context residualization for visual attribution in multimodal large
+  language models}.
+\newblock \emph{arXiv preprint arXiv:2509.22415}.
+
+\bibitem[{Liu et~al.(2025)Liu, Kandpal, and Raffel}]{liu2025attribot}
+Fengyuan Liu, Nikhil Kandpal, and Colin Raffel. 2025.
+\newblock \href {https://arxiv.org/abs/2411.15102} {Attribot: A bag of tricks
+  for efficiently approximating leave-one-out context attribution}.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Lu et~al.(2025)Lu, Song, Wang, Torresani, and
+  Nagarajan}]{lu2025vited}
+Yujie Lu, Yale Song, William Wang, Lorenzo Torresani, and Tushar Nagarajan.
+  2025.
+\newblock \href {https://arxiv.org/abs/2503.12855} {Vited: Video temporal
+  evidence distillation}.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}.
+
+\bibitem[{Qi et~al.(2024)Qi, Sarti, Fern{\'a}ndez, and
+  Bisazza}]{qi-etal-2024-model}
+Jirui Qi, Gabriele Sarti, Raquel Fern{\'a}ndez, and Arianna Bisazza. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.emnlp-main.347} {Model
+  internals-based answer attribution for trustworthy retrieval-augmented
+  generation}.
+\newblock In \emph{Proceedings of the 2024 Conference on Empirical Methods in
+  Natural Language Processing}, pages 6037--6053, Miami, Florida, USA.
+  Association for Computational Linguistics.
+
+\bibitem[{Sakshi et~al.(2025)Sakshi, Tyagi, Kumar, Seth, Selvakumar, Nieto,
+  Duraiswami, Ghosh, and Manocha}]{sakshi2025mmau}
+S~Sakshi, Utkarsh Tyagi, Sonal Kumar, Ashish Seth, Ramaneswaran Selvakumar,
+  Oriol Nieto, Ramani Duraiswami, Sreyan Ghosh, and Dinesh Manocha. 2025.
+\newblock \href {https://openreview.net/forum?id=TeVAZXr3yv} {{MMAU}: A massive
+  multi-task audio understanding and reasoning benchmark}.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations}.
+
+\bibitem[{Saxena et~al.(2025)Saxena, Bommireddy, Padia, and
+  Gaur}]{saxena2025generation}
+Yash Saxena, Raviteja Bommireddy, Ankur Padia, and Manas Gaur. 2025.
+\newblock \href {https://arxiv.org/abs/2509.21557} {Generation-time vs.
+  post-hoc citation: A holistic evaluation of llm attribution}.
+\newblock In \emph{NeurIPS 2025 Workshop on LLM Evaluation}.
+
+\bibitem[{Singh et~al.(2026)Singh, Fry, Perelman, Tart, Ganesh, El-Kishky,
+  McLaughlin, Low, Ostrow, Ananthram et~al.}]{gpt-5.2}
+Aaditya Singh, Adam Fry, Adam Perelman, Adam Tart, Adi Ganesh, Ahmed El-Kishky,
+  Aidan McLaughlin, Aiden Low, AJ~Ostrow, Akhila Ananthram, et~al. 2026.
+\newblock {OpenAI GPT-5 System Card}.
+\newblock \emph{arXiv preprint arXiv:2601.03267}.
+
+\bibitem[{Tran et~al.(2026)Tran, Dang, Tyagi, Veeravalli, Nguyen, Rossi,
+  Dernoncourt, Lipka, Goswami, and Basu}]{tran2026multattnattrib}
+Dang Quang~Thien Tran, Quang~V. Dang, Vinamra Tyagi, Sai Soorya~Rao Veeravalli,
+  Trang Nguyen, Ryan~A. Rossi, Franck Dernoncourt, Nedim Lipka, Koustava
+  Goswami, and Samyadeep Basu. 2026.
+\newblock \href {https://arxiv.org/abs/2607.01420} {Multattnattrib:
+  Training-free multimodal attribution in long document question answering}.
+\newblock \emph{arXiv preprint arXiv:2607.01420}.
+
+\bibitem[{Wan et~al.(2026)Wan, Wang, Wang, Stengel-Eskin, Lee, and
+  Bansal}]{wan2026murgat}
+David Wan, Han Wang, Ziyang Wang, Elias Stengel-Eskin, Hyunji Lee, and Mohit
+  Bansal. 2026.
+\newblock \href {https://arxiv.org/abs/2602.11509} {Multimodal fact-level
+  attribution for verifiable reasoning}.
+\newblock In \emph{International Conference on Machine Learning (ICML)}.
+
+\bibitem[{Wang et~al.(2025)Wang, Xu, Cheng, Diao, Zhou
+  et~al.}]{wang2025groundedvideollm}
+Haibo Wang, Zhiyang Xu, Yu~Cheng, Shizhe Diao, Yufan Zhou, et~al. 2025.
+\newblock \href {https://arxiv.org/abs/2410.03290} {Grounded-videollm:
+  Sharpening fine-grained temporal grounding in video large language models}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2025}.
+
+\bibitem[{Wang et~al.(2026)Wang, Geng, Chen, and Jia}]{wang2026attntrace}
+Yanting Wang, Runpeng Geng, Ying Chen, and Jinyuan Jia. 2026.
+\newblock \href {https://arxiv.org/abs/2508.03793} {Attntrace: Contextual
+  attribution of prompt injection and knowledge corruption}.
+\newblock In \emph{IEEE Symposium on Security and Privacy (S\&P)}.
+
+\bibitem[{Xiao et~al.(2024)Xiao, Yao, Li, and Chua}]{xiao2024nextgqa}
+Junbin Xiao, Angela Yao, Yicong Li, and Tat-Seng Chua. 2024.
+\newblock \href {https://arxiv.org/abs/2309.01327} {Can i trust your answer?
+  visually grounded video question answering}.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}.
+
+\bibitem[{Xu et~al.(2025{\natexlab{a}})Xu, Guo, He, Hu, He, Bai, Chen, Wang,
+  Fan, Dang et~al.}]{xu2025qwen2}
+Jin Xu, Zhifang Guo, Jinzheng He, Hangrui Hu, Ting He, Shuai Bai, Keqin Chen,
+  Jialin Wang, Yang Fan, Kai Dang, et~al. 2025{\natexlab{a}}.
+\newblock Qwen2. 5-omni technical report.
+\newblock \emph{arXiv preprint arXiv:2503.20215}.
+
+\bibitem[{Xu et~al.(2025{\natexlab{b}})Xu, Guo, Hu, Chu, Wang, He, Wang, Shi,
+  He, Zhu, Lv, Wang, Guo, Wang, Ma, Zhang, Zhang, Hao, Guo, Yang, Zhang, Ma,
+  Wei, Bai, Chen, Liu, Wang, Yang, Liu, Ren, Zheng, Men, Zhou, Yu, Yang, Yu,
+  Zhou, and Lin}]{Xu2025Qwen3OmniTR}
+Jin Xu, Zhifang Guo, Hangrui Hu, Yunfei Chu, Xiong Wang, Jinzheng He, Yuxuan
+  Wang, Xianzhong Shi, Ting He, Xinfa Zhu, Yuanjun Lv, Yongqi Wang, Dake Guo,
+  He~Wang, Linhan Ma, Pei Zhang, Xinyu Zhang, Hongkun Hao, Zishan Guo, and 19
+  others. 2025{\natexlab{b}}.
+\newblock \href {https://api.semanticscholar.org/CorpusID:281420796}
+  {Qwen3-omni technical report}.
+\newblock \emph{ArXiv}, abs/2509.17765.
+
+\bibitem[{Ye et~al.(2026)Ye, Yang, Goel, Huang, Wan, Tian, Cheng, Zhu, Su, Lou,
+  Lin, Yang, Ghosh, Liu, Chen, Jahangiri, Dantrey, Xu, Hosseini-Asl, Taheri,
+  Murali, Liu, Lu, Olabiyi, Wang, Valle, Catanzaro, Tao, Han, Kautz, Yin, and
+  Molchanov}]{ye2026omnivinci}
+Hanrong Ye, Chao-Han~Huck Yang, Arushi Goel, Wei Huang, Zhen Wan, Jinchuan
+  Tian, An-Chieh Cheng, Ligeng Zhu, Yuanhang Su, Yuming Lou, Yong-Xiang Lin,
+  Dong Yang, Sreyan Ghosh, Zhijian Liu, Yukang Chen, Ehsan Jahangiri, Ambrish
+  Dantrey, Daguang Xu, Ehsan Hosseini-Asl, and 13 others. 2026.
+\newblock \href {https://openreview.net/forum?id=DZeic3NpHy} {Omnivinci:
+  Enhancing architecture and data for omni-modal understanding {LLM}}.
+\newblock In \emph{The Fourteenth International Conference on Learning
+  Representations}.
+
+\bibitem[{Yu et~al.(2025)Yu, Wang, Wang, Huang, Ma, He, Cai, Chen, Huang, Zhao
+  et~al.}]{yu2025minicpm}
+Tianyu Yu, Zefan Wang, Chongyi Wang, Fuwei Huang, Wenshuo Ma, Zhihui He,
+  Tianchi Cai, Weize Chen, Yuxiang Huang, Yuanqian Zhao, et~al. 2025.
+\newblock Minicpm-v 4.5: Cooking efficient mllms via architecture, data, and
+  training recipe.
+\newblock \emph{arXiv preprint arXiv:2509.18154}.
+
+\bibitem[{Yuan et~al.(2026)Yuan, Wang, Qiu, Wang, and Huang}]{yuan2026vtrace}
+Bowen Yuan, Danny Wang, Ruihong Qiu, Zijian Wang, and Zi~Huang. 2026.
+\newblock \href {https://arxiv.org/abs/2609.37656} {Tracing the evidence:
+  Faithful token attribution through vision-language reasoning}.
+\newblock \emph{arXiv preprint arXiv:2609.37656}.
+
+\bibitem[{Zhu et~al.(2026)Zhu, Ma, Zeng, Li, Zhang, Li, Zhang, Jiang, Yang,
+  Yan, Wang, Chen, Chen, Zhang, and Wang}]{zhu2026timelens2}
+Yuhan Zhu, Changlian Ma, Xiangyu Zeng, Xinhao Li, Zhiqiu Zhang, Songze Li, Jun
+  Zhang, Tianxiang Jiang, Yuandong Yang, Ziang Yan, Zikang Wang, Xinyu Chen,
+  Haoran Chen, Shaowei Zhang, and Limin Wang. 2026.
+\newblock \href {https://arxiv.org/abs/2607.17423} {Timelens2: Generalist video
+  temporal grounding with multimodal llms}.
+\newblock \emph{arXiv preprint arXiv:2607.17423}.
+
+\end{thebibliography}

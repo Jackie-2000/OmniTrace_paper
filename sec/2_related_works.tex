@@ -1,0 +1,24 @@
+\section{Related Work}
+
+\paragraph{Context attribution for text LLMs.}
+A recent line of work attributes a generated statement to the context passages that support it.
+ContextCite~\cite{cohen-wang2024contextcite} hides random subsets of the context and fits a sparse linear model of the response probability; ARC-JSD~\cite{li2026arcjsd} and AttriBoT~\cite{liu2025attribot} make such perturbation estimates more accurate or cheaper.
+MIRAGE~\cite{qi-etal-2024-model} uses gradient saliency to link answer tokens to retrieved documents.
+Closer to our signal, AT2~\cite{cohenwang2025at2} learns one weight per attention head from perturbation data, and AttnTrace~\cite{wang2026attntrace} and \citet{ding2025attention} read attention directly for text contexts.
+All of these define sources as discrete text units and are evaluated on text.
+OmniTrace uses the same kind of signal as the attention-based methods, needs no training, and is defined over units of any modality, including time intervals.
+The term \emph{generation-time} is also used for prompted citation~\cite{saxena2025generation, gao2023alce}; we use it for attribution that is read from the model's internals while it decodes.
+
+\paragraph{Attribution for vision--language models.}
+vStream~\cite{kang2026vstream} streams attribution to image regions during reasoning but learns a map from attention to perturbation effects. VTrace~\cite{yuan2026vtrace} and ERCR~\cite{liang2025ercr} are post-hoc methods for image patches, and MultAttnAttrib~\cite{tran2026multattnattrib} applies selected attention heads to long documents.
+These methods cover images and text. None covers audio or video timelines, and none tests attribution causally on continuous inputs.
+
+\paragraph{Temporal evidence in audio and video.}
+Models can be trained or prompted to state the time intervals that support an answer~\cite{lu2025vited, wang2025groundedvideollm, zhu2026timelens2}.
+MuRGAt~\cite{wan2026murgat} shows that such stated citations are often hallucinated even when the reasoning is correct, and NExT-GQA~\cite{xiao2024nextgqa} shows that video models often answer correctly without looking at the relevant moment.
+Mechanistic studies trace where audio information enters the answer across layers~\cite{cho2026tracingaudio, chen2026causalaudio}, but they do not attribute individual generated claims.
+We measure which intervals a model relied on for each sentence and compare them with the intervals it states.
+
+\paragraph{Evaluating attribution.}
+Attribution can be scored by agreement with human evidence or by its causal effect on the output~\cite{deyoung2020eraser, atanasova-etal-2020-diagnostic}. The two can disagree: \citet{alhamidi2026carve} find that the sensitivity of video models to removed frames tracks annotated evidence only weakly.
+We therefore use causal tests as the main evaluation and report agreement with human evidence separately.

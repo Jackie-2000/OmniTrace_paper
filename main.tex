@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[review]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{colortbl}   
+\usepackage{xcolor}    
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{groupplots}
+\usepackage{cleveref}
+\definecolor{otblue}{HTML}{2456A6}
+\definecolor{otpurple}{HTML}{8A5AA8}
+\definecolor{otorange}{HTML}{C2571A}
+\definecolor{otgreen}{HTML}{3D8F6B}
+\definecolor{otred}{HTML}{B3261E}
+\definecolor{otgray}{HTML}{63666B}
+% marks in the result tables: the row is reliably lower / higher than OmniTrace (paired 95% bootstrap interval)
+\newcommand{\mdn}{{\tiny$\downarrow$}}
+\newcommand{\mup}{{\tiny$\uparrow$}}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}
+\newcommand{\tablesize}{\scriptsize}
+\newcommand{\skiptablebegin}{\vspace{-5pt}}
+\newcommand{\skiptableend}{\vspace{-10pt}}
+\newcommand{\skipimgbegin}{\vspace{0pt}}
+\newcommand{\skipimgend}{\vspace{0pt}}
+
+%%%%%%%%% TITLE
+\title{OmniTrace: Single-Pass Source Attribution for Omni-Modal LLMs,\\Tested Causally on Video, Audio, and Image--Text Inputs}
+
+%%%%%%%%% AUTHORS - PLEASE UPDATE
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+
+\begin{document}
+\maketitle
+
+\begin{figure*}[ht]
+\setlength{\abovecaptionskip}{0.5cm}
+    \centering
+    % \vspace{-5pt}
+    \includegraphics[width=2\columnwidth]{media/figure/Teaser.pdf}
+    % \vspace{-15pt}
+    \caption{\textbf{OmniTrace attributes each generated sentence to the input it relies on, in the same forward pass that generates it.}
+    Inputs of any modality share one token sequence. OmniTrace reads the decoder's attention while the response is generated, sums it over the positions of each source unit (a text passage, an image, a second of audio or video), and labels the units that stand out. Text and image evidence is reported as source ids, audio and video evidence as time intervals.
+    }
+    \vspace{-10pt}
+    \label{fig:teaser}
+\end{figure*}
+
+\input{sec/0_abstract}    
+\input{sec/1_intro}
+\input{sec/2_related_works}
+\input{sec/3_OmniTrace}
+\input{sec/4_exp}
+\input{sec/5_analysis}
+\input{sec/6_conclusion}
+\input{sec/limitation}
+% {
+%     \small
+%     \bibliographystyle{ieeenat_fullname}
+%     \bibliography{main}
+% }
+% \newpage
+\bibliography{main,related}
+
+\newpage
+\input{sec/7_appendix}
+\end{document}

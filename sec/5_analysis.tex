@@ -1,0 +1,101 @@
+\section{Analysis}
+\label{sec:analysis}
+
+\subsection{Stated versus Used Evidence}
+\label{sec:stated}
+
+Self-citation is the cheapest way to get evidence from a model, so we ask how far it can replace attribution.
+We repeat the generation with a prompt that asks for a citation after each sentence, a time span such as \texttt{[12.0-15.5s]} for audio and video and a quote id for documents, and run the causal test on the cited units (\Cref{tab:baselines}).
+
+\emph{Coverage is the first problem.} Qwen2.5-Omni cites at least one valid source in 82\% of its image--text responses, but in only 38\% of audio and 31\% of video responses.
+OmniTrace returns a score for every sentence of every response.
+
+\emph{Cited units matter less.} On the responses that do cite, hiding OmniTrace's top units of the same count costs 3.1 times as much as hiding the cited units on audio (0.123 against 0.040) and 1.7 times as much on image--text (0.305 against 0.184). On video the two are level.
+Citations also agree less with human evidence than OmniTrace's labels do (F1 of 0.22 against 0.48 on image--text, 0.10 against 0.20 on video).
+
+\emph{Citations follow the prompt.} Of the 120 audio responses that contain a time span, 32 contain exactly the example span from the instruction, and 25 of these cite nothing else.
+Asking for citations also changes the answer: video accuracy falls from 72.3\% to 55.3\%.
+A stated citation is thus a second generation task with its own errors, while attribution read from the generation pass leaves the response unchanged.
+
+\subsection{Agreement with Human Evidence}
+\label{sec:agreement}
+
+\begin{table}[t]
+\centering
+\tablesize
+\setlength{\tabcolsep}{4pt}
+% source: analysis/out/qwen2.5-omni-7b/human_agreement.md (all answers)
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{2}{c}{\textbf{Video}} & \multicolumn{2}{c}{\textbf{Image--text}}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Ranking} & AUROC & Hit@1 & AUROC & Hit@1\\
+\midrule
+Random & 0.500 & 0.215 & 0.500 & 0.194\\
+Embedding similarity & 0.604 & 0.288 & 0.763 & 0.527\\
+Leave-one-out & 0.549 & 0.309 & 0.721 & 0.657\\
+ContextCite & 0.566 & \textbf{0.342} & 0.743 & 0.642\\
+\textbf{OmniTrace} & \textbf{0.637} & 0.230 & \textbf{0.829} & \textbf{0.698}\\
+\bottomrule
+\end{tabular}
+\caption{Agreement of response-level rankings with human-marked evidence on Qwen2.5-Omni-7B. AUROC: probability that an evidence unit is ranked above another unit. Hit@1: the top unit is evidence.}
+\label{tab:agreement}
+\skiptableend
+\end{table}
+
+\Cref{tab:agreement} ranks the units of each question by each method's response-level score and compares the ranking with human-marked evidence.
+On image--text input OmniTrace agrees with the gold quotes better than every baseline, including the perturbation methods that are causally stronger. On correctly answered questions its top quote is gold in 90\% of the cases.
+On video OmniTrace has the best AUROC, but its single top second is evidence no more often than chance, while the perturbation methods do better there.
+This matches the causal results: on video, attention finds the right region of the clip but does not pin down the exact second.
+The table also shows why agreement cannot be the main test. The perturbation methods have the largest causal effects and the lowest AUROC, so the units a model depends on and the units a person marks overlap only in part.
+
+\subsection{Unit Size and Modality Share}
+\label{sec:size}
+
+\begin{table}[t]
+\centering
+\tablesize
+\setlength{\tabcolsep}{3.5pt}
+% source: analysis/out/qwen2.5-omni-7b/unit_size.md (A)
+\begin{tabular}{lccc}
+\toprule
+\textbf{Ranking} & $\rho$(score, size) & Top-1 size & Image share\\
+\midrule
+OmniTrace (sum) & $+$0.51 & 1.94 & 0.59\\
+Per-token mean & $-$0.60 & 0.44 & 0.11\\
+Leave-one-out & $+$0.09 & 1.62 & 0.48\\
+ContextCite & $+$0.14 & 1.65 & 0.52\\
+Human evidence & $+$0.25 & 1.85 & 0.67\\
+\bottomrule
+\end{tabular}
+\caption{Unit size on image--text input (Qwen2.5-Omni-7B). $\rho$: rank correlation between a quote's score and its token count, per question. Top-1 size: tokens of the top quote over the mean quote size. Image share: share of images among the top-ranked quotes.}
+\label{tab:size}
+\skiptableend
+\end{table}
+
+Units differ in size once modalities are mixed: an image quote takes several hundred tokens and a text passage a few dozen.
+\Cref{tab:size} asks whether OmniTrace prefers large units more than the model's measured dependence does.
+It does: the summed mass correlates with quote size at $\rho=0.51$, while the measured effects of leave-one-out and ContextCite correlate at 0.09 and 0.14.
+Dividing by the unit's token count over-corrects ($\rho=-0.60$): it ranks short passages first and rarely an image.
+The causal tests agree on Qwen2.5-Omni, where the per-token mean has a far lower lift (\Cref{tab:models}); on MiniCPM-o~4.5 the mean is better at sentence level, so the best correction depends on the model.
+We keep the sum because it needs no choice, and report the bias as a limitation.
+
+At the level of modalities the picture is better.
+Images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out and ContextCite also place 47\% of the measured effect on images.
+In aggregate, OmniTrace reflects how much the model relies on images versus text.
+
+\subsection{Sensitivity to Unit Granularity}
+\label{sec:granularity}
+
+Scores are sums over positions, so the score of a merged unit is the sum of its parts, but the labelled set can still change with the unit length.
+We merge one-second units into two- and four-second units and select the top 20\% of the duration again.
+On video the selected time overlaps the one-second selection with IoU 0.60 and 0.50; random rankings give 0.15. On audio the values are 0.53 and 0.42.
+The selection is far from arbitrary but not invariant, so unit length should be fixed and reported.
+
+\subsection{What Attribution Strength Tells}
+\label{sec:flagging}
+
+Can attribution strength flag unsupported output?
+At sentence level, the attention mass a sentence places on the sources correlates with how much the sentence depends on them (rank correlation 0.60 on audio and image--text, 0.26 on video, Qwen2.5-Omni).
+At response level, a low share of mass on the audio flags wrong answers on Qwen2.5-Omni (AUROC 0.74), but not in the other modalities and not on MiniCPM-o~4.5.
+Attribution strength thus indicates whether a sentence draws on the sources, but it is not a general detector of wrong answers.

@@ -1,0 +1,63 @@
+\begin{algorithm}[t]
+\tablesize
+\caption{OmniTrace: Generation-Time Span-Level Attribution for Omni-Modal LLMs}
+\label{alg:omnitrace}
+\begin{algorithmic}[1]
+\Require Prompt $p$, omni-modal inputs $\mathcal{M}$ (text/image/audio/video);
+model $M$ with processor $P$; scoring method $\phi$; structural positions
+$\mathcal{X}$; source curation config $\texttt{cfg}$
+\Ensure Generated text $\mathbf{y}$ and span-level attributions $\{(C_k,\hat{\mathcal{S}}_k)\}_{k=1}^K$
+\State $\mathbf{x} \leftarrow P(p,\mathcal{M})$
+\Comment{Convert prompt and inputs to token ids}
+\State $(\mathcal{S}, \tau) \leftarrow \texttt{BuildSources}(\mathbf{x}, \mathcal{M})$
+\Comment{Units $S_j$ from input structure; $\tau(i)$=time interval encoded by position $i$ (audio/video), undefined for text/image}
+\vspace{0.3em}
+\State Initialize $\mathbf{y} \leftarrow ()$ and token-to-source map $\hat{s}(\cdot)$
+\For{$t = 1$ to $T$}
+    \State $y_t \sim P_M(\cdot \mid \mathbf{x}, y_{<t})$
+    \Comment{Autoregressive decoding}
+
+    \State Obtain token-level attribution signal $a_t(i)$ using $\phi$
+
+    \State $i^\star \leftarrow
+    \arg\max_{i \,\notin\, \mathcal{X}} a_t(i)$
+    \Comment{Trace through the most responsive \emph{position}; scale-free, i.e.\ invariant to unit granularity}
+
+    \State $\hat{s}(t) \leftarrow \texttt{unit}(i^\star)$;\quad
+    $c_t \leftarrow a_t(i^\star)$
+    \Comment{Resolve unit membership \emph{after} tracing}
+
+    \State Append $y_t$ to $\mathbf{y}$
+\EndFor
+\vspace{0.3em}
+\State $\mathcal{C} \leftarrow \texttt{Chunk}(\mathbf{y})$
+\Comment{Segment generation into spans}
+\ForAll{$C_k \in \mathcal{C}$}
+    \State Let $T_k$ be token indices in $C_k$
+
+    \State $\texttt{src\_seq} \leftarrow [\hat{s}(t)]_{t\in T_k}$
+    \State $\texttt{pos\_seq} \leftarrow [\texttt{pos}_t]_{t\in T_k}$
+    \State $\texttt{conf\_seq} \leftarrow [c_t]_{t\in T_k}$
+
+    \State $\hat{\mathcal{S}}_k \leftarrow
+    \texttt{CurateSourcesWithConf}(
+    \texttt{src\_seq},
+    \texttt{pos\_seq},
+    \texttt{conf\_seq},
+    \texttt{cfg})$
+
+    \ForAll{$S \in \hat{\mathcal{S}}_k$}
+        \If{$\tau$ is defined on $S$}
+            \State report $\tau(S) = [\min_{i \in S} b_i,\ \max_{i \in S} e_i]$
+            \Comment{Continuous: interval-valued evidence}
+        \Else
+            \State report identifier $S$
+            \Comment{Discrete: set-valued evidence}
+        \EndIf
+    \EndFor
+\EndFor
+\vspace{0.3em}
+\State \Return $\mathbf{y}$ and $\{(C_k,\hat{\mathcal{S}}_k)\}_{k=1}^K$
+\Comment{Discrete units reported as identifiers, continuous units as time intervals $\tau(\cdot)$}
+\end{algorithmic}
+\end{algorithm}

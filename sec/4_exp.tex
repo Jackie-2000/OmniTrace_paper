@@ -1,0 +1,126 @@
+\section{A Causal Test for Every Modality}
+\label{sec:protocol}
+
+Agreement with human labels cannot show that an attribution is faithful, because a model may answer from parts of the input that a person would not mark.
+We therefore test attributions by intervention.
+
+\paragraph{Replay with hidden units.}
+We keep the model's own response $\mathbf{y}$ fixed and score it with teacher forcing, $\ell(\mathbf{y}\mid\mathbf{x})=\frac{1}{T}\sum_t\log P(y_t\mid\mathbf{x},y_{<t})$.
+For a set of units $\mathcal{H}$, the \emph{drop} is $\Delta(\mathcal{H})=\ell(\mathbf{y}\mid\mathbf{x})-\ell(\mathbf{y}\mid\mathbf{x}_{\setminus\mathcal{H}})$, in nats per token, where $\mathbf{x}_{\setminus\mathcal{H}}$ is the input with the units in $\mathcal{H}$ hidden.
+
+\paragraph{Hiding without a trace.}
+A hidden unit is replaced \emph{at the input of the encoder} by a placeholder of the same length that carries no content: black frames for video, silence for audio, a black image, and blank tokens for a text passage.
+The number of tokens, their positions, and the time stamps of all other units stay the same, and no content of the hidden unit reaches the model through the encoder.
+In \Cref{appendix:masking} we repeat the tests with the mean-embedding replacement used in earlier work and reach the same conclusions on audio and video.
+
+\paragraph{Metrics.}
+All metrics compare a method's units with random units of the same count, drawn three times per question.
+\emph{Lift} is the extra drop when the top-ranked units are hidden: $\Delta(\text{top})-\mathbb{E}\,\Delta(\text{random})$.
+\emph{Keep gain} is the reverse test: we hide everything except the selected units, and report how much less the response loses than when the same number of random units is kept.
+At sentence level we hide the top units of sentence $C_k$ and measure the drop of that sentence alone. \emph{Sentence lift} compares it with random units, and \emph{sentence specificity} compares it with the mean drop of the other sentences of the same response, so it is positive only if the units matter for this sentence in particular.
+The budget is a share of the duration for audio and video (10, 20, 30, and 50\%) and a number of quotes for documents (1, 2, or 3 of 15). The main tables use the middle budget, 20\% or 2 quotes; sentence-level tests use 20\% or 1 quote.
+We report means over questions with 95\% bootstrap intervals, and compare methods by paired differences over the same questions.
+
+\section{Experiments}
+\label{sec:exp}
+
+\input{media/table/stats}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.2pt}
+\input{media/table/gen_baselines}
+\caption{\textbf{Causal faithfulness and cost on Qwen2.5-Omni-7B.}
+Fwd: extra forward passes per question beyond the one generation.
+Lift: extra drop in the response's log-probability (nats per token) when the method's top units are hidden, over hiding the same number of random units (20\% of the duration; 2 quotes).
+S-lift and S-spec: sentence lift and sentence specificity.
+\mdn / \mup: reliably lower / higher than OmniTrace on the same questions (paired 95\% bootstrap interval).
+$^\dagger$Self-citation is scored on the responses of a separate generation and only where the model cites (62, 72, and 328 responses); it hides the cited units, and the row below it is OmniTrace on the same responses with the same number of units.
+$^\ddagger$One extra generation.}
+\label{tab:baselines}
+\skiptableend
+\end{table*}
+
+\begin{table*}[t]
+\vspace{4pt}
+\centering
+\small
+\setlength{\tabcolsep}{4.2pt}
+\resizebox{\textwidth}{!}{\input{media/table/gen_models}}
+\caption{\textbf{OmniTrace on two models, its variants, and human-marked evidence.}
+Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quotes); S-lift and S-spec: sentence lift and specificity. All in nats per token.
+\mdn / \mup: reliably lower / higher than OmniTrace on the same questions or sentences.
+\emph{Argmax tracing + curation} traces each token to its highest-attention position and filters the votes; \emph{last layer only} and \emph{per-token mean} change one choice in \Cref{eq:mass}.
+\emph{Human-evidence units} hides the units annotators marked (not available for audio); their number differs from the budget, so their lift is against random sets of their own size.
+Nothing was tuned for MiniCPM-o~4.5.}
+\label{tab:models}
+
+\end{table*}
+
+
+\subsection{Setup}
+
+\paragraph{Models and data.}
+We use Qwen2.5-Omni-7B~\cite{xu2025qwen2} and MiniCPM-o~4.5~\cite{yu2025minicpm} with greedy decoding and at most 512 new tokens.
+\Cref{tab:stats} lists the data.
+For video we use NExT-GQA~\cite{xiao2024nextgqa}, multiple-choice questions with human-marked evidence intervals; the model sees the frames only.
+For audio we use the questions of MMAU~\cite{sakshi2025mmau} whose answer depends on a part of the clip, not on the clip as a whole.
+For image--text input we use MMDocRAG~\cite{dong2025mmdocrag}: each question comes with 15 quotes from a long document, about ten text passages and five images (figures, tables, charts), of which about 19\% are marked as gold evidence.
+The models are asked to reason step by step, so responses have 6 to 10 sentences on average.
+A fifth of the video and audio questions was used to check the label threshold and is excluded from all results.
+
+\paragraph{Baselines.}
+Every baseline ranks the same units and goes through the same causal test.
+\emph{Embedding similarity} scores a unit by the cosine similarity between a sentence and the unit, using SigLIP for frames and images, CLAP for audio, and a text encoder for passages.
+\emph{Self-citation} repeats the generation with a prompt that asks the model to cite time spans or quote ids after each sentence.
+\emph{Leave-one-out} hides each unit in turn and scores it by the drop, which costs one forward pass per unit.
+\emph{ContextCite}~\cite{cohen-wang2024contextcite} fits a sparse linear model on 32 random ablations.
+The two perturbation baselines use our placeholders, so they run on audio and video as they do on text; they are fitted with the same hiding operation and the same target that the test measures, which favors them.
+% AT2: add one sentence here once its rows are in Table 2 (learned head weights, cross-fitted on the ContextCite ablations).
+Baselines are run on Qwen2.5-Omni-7B. Details are in \Cref{appendix:baselines}.
+
+\subsection{Comparison with Baselines}
+\label{sec:baselines}
+
+
+\Cref{tab:baselines} compares OmniTrace with the baselines.
+
+\paragraph{Same cost: embedding similarity and self-citation.}
+OmniTrace has about twice the lift of embedding similarity in all three modalities (0.016 against 0.008 on video, 0.077 against 0.034 on audio, 0.351 against 0.216 on image--text), and the gap is larger at sentence level.
+Embedding similarity finds units that look related to the sentence, which is not the same as the units the model used: its sentence specificity on audio is close to zero.
+Self-citation is discussed in \Cref{sec:stated}; where the model cites at all, the cited units are less effective than OmniTrace's on audio and image--text and equally effective on video.
+
+\paragraph{Higher cost: perturbation.}
+Leave-one-out and ContextCite need 16 to 41 extra forward passes per question.
+At response level OmniTrace reaches 77\% and 78\% of their lift on audio, 95\% and 90\% on image--text, and is level with both on video.
+Over all budgets (\Cref{appendix:budgets}), the share is 67--90\% on audio and 88--100\% on image--text; on video OmniTrace is behind at the 10\% budget and level from 20\% on.
+At sentence level the picture is the same on audio and image--text (79--95\%), and weaker on video, where OmniTrace reaches about 60\% of the perturbation baselines' sentence lift.
+Since these baselines measure the tested quantity directly, we read them as a practical upper bound: OmniTrace recovers most of it from a single pass.
+
+\subsection{A Second Model and Simpler Variants}
+\label{sec:variants}
+
+
+\Cref{tab:models} reports OmniTrace on both models next to variants that change one design choice.
+
+\paragraph{The selected units matter, on both models.}
+The lift of OmniTrace is above zero for both models, in every modality and at every budget (\Cref{appendix:budgets}). Keep gains are positive throughout, and reliably so except at some video budgets. All sentence lifts and specificities are above zero: hiding the units attributed to a sentence hurts that sentence more than it hurts the others.
+The effect grows from video to audio to image--text. On video it is small in absolute terms: hiding the top 20\% of the seconds costs Qwen2.5-Omni 0.020 nats per token, about 4\% of the response's log-probability, because neighboring frames carry much of the same content.
+The settings were chosen on Qwen2.5-Omni video data and applied to MiniCPM-o~4.5 unchanged; lifts there are larger on video and audio and smaller on image--text.
+
+\paragraph{Hard tracing does not transfer.}
+On Qwen2.5-Omni, argmax tracing with curation is level with OmniTrace on audio and image--text and behind on video.
+On MiniCPM-o~4.5 it loses most of its effect on audio (lift 0.02 against 0.14, sentence lift 0.02 against 0.12), is behind on image--text, and on video its top units are worse to keep than random ones.
+Its extra steps fit one model; the plain sum of attention mass does not need them.
+Using the last layer alone is reliably worse on audio for both models, and the per-token mean is worse at response level on Qwen2.5-Omni (\Cref{sec:size}).
+
+\paragraph{Labels.}
+The labels of \Cref{eq:label} select 10--21\% of the units of a response.
+Hiding the labelled units gives a positive lift in all six settings, and labelled units are specific to their sentence in all six (\Cref{appendix:labels}).
+On image--text input the labels agree with the gold quotes at precision 0.48 and recall 0.60, where random selection has precision 0.19.
+
+\paragraph{Human evidence is not always what the model uses.}
+On Qwen2.5-Omni, the units OmniTrace selects have a larger lift than the units annotators marked as evidence (0.348 against 0.211 on image--text).
+On MiniCPM-o~4.5 the order is reversed: hiding the human-marked quotes costs 0.334, three times OmniTrace's lift.
+On that model OmniTrace finds units that matter, but not the ones that matter most; we return to this in the limitations.

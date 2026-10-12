@@ -1,0 +1,19 @@
+\begin{table}[ht]
+\centering
+\tablesize
+\caption{Agreement between human annotations and LLM-judge labels on a subset of the evaluation data (26.6\%). Metrics follow the same definitions used in the main evaluation: span-level F1 for visual attribution and time-based F1 for audio/video attribution.}
+\label{tab:human_llm_agreement}
+\skiptablebegin
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Agreement} & \multicolumn{3}{c}{\textbf{Visual}} & \textbf{Audio} & \textbf{Video} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-5} \cmidrule(lr){6-6}
+\textbf{Task} & \multicolumn{2}{c}{Summarization} & QA & QA & QA \\
+\textbf{Metric} & Text F1 & Image F1 & Image F1 & Time F1 & Time F1 \\
+\midrule
+Score & 83.04 & 94.30 & 93.80 & 81.75 & 85.28 \\
+\# Samples & 61 & 61 & 40 & 40 & 40 \\
+\bottomrule
+\end{tabular}
+\skiptableend
+\end{table}

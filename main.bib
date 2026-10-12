@@ -1,0 +1,456 @@
+@inproceedings{qi-etal-2024-model,
+    title = "Model Internals-based Answer Attribution for Trustworthy Retrieval-Augmented Generation",
+    author = "Qi, Jirui  and
+      Sarti, Gabriele  and
+      Fern{\'a}ndez, Raquel  and
+      Bisazza, Arianna",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.347/",
+    doi = "10.18653/v1/2024.emnlp-main.347",
+    pages = "6037--6053",
+    abstract = "Ensuring the verifiability of model answers is a fundamental challenge for retrieval-augmented generation (RAG) in the question answering (QA) domain. Recently, self-citation prompting was proposed to make large language models (LLMs) generate citations to supporting documents along with their answers. However, self-citing LLMs often struggle to match the required format, refer to non-existent sources, and fail to faithfully reflect LLMs' context usage throughout the generation. In this work, we present MIRAGE {--} Model Internals-based RAG Explanations {--} a plug-and-play approach using model internals for faithful answer attribution in RAG applications. MIRAGE detects context-sensitive answer tokens and pairs them with retrieved documents contributing to their prediction via saliency methods. We evaluate our proposed approach on a multilingual extractive QA dataset, finding high agreement with human answer attribution. On open-ended QA, MIRAGE achieves citation quality and efficiency comparable to self-citation while also allowing for a finer-grained control of attribution parameters. Our qualitative evaluation highlights the faithfulness of MIRAGE{'}s attributions and underscores the promising application of model internals for RAG answer attribution. Code and data released at https://github.com/Betswish/MIRAGE."
+}
+
+@inproceedings{
+cohen-wang2024contextcite,
+title={ContextCite: Attributing Model Generation to Context},
+author={Benjamin Cohen-Wang and Harshay Shah and Kristian Georgiev and Aleksander Madry},
+booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems},
+year={2024},
+url={https://openreview.net/forum?id=7CMNSqsZJt}
+}
+
+@inproceedings{radford2023robust,
+  title={Robust speech recognition via large-scale weak supervision},
+  author={Radford, Alec and Kim, Jong Wook and Xu, Tao and Brockman, Greg and McLeavey, Christine and Sutskever, Ilya},
+  booktitle={International conference on machine learning},
+  pages={28492--28518},
+  year={2023},
+  organization={PMLR}
+}
+
+@article{gao2022paraformer,
+  title={Paraformer: Fast and accurate parallel transformer for non-autoregressive end-to-end speech recognition},
+  author={Gao, Zhifu and Zhang, Shiliang and McLoughlin, Ian and Yan, Zhijie},
+  journal={arXiv preprint arXiv:2206.08317},
+  year={2022}
+}
+
+@misc{gemini3,
+  title        = {A New Era of Intelligence with Gemini 3},
+  author       = {{Google Gemini Team}},
+  year         = {2025},
+  howpublished = {\url{https://blog.google/products-and-platforms/products/gemini/gemini-3}},
+  note         = {Google AI Blog, Accessed Jan 16, 2026}
+}
+
+@article{gpt-5.2,
+      title={{OpenAI GPT-5 System Card}}, 
+      author={Aaditya Singh and Adam Fry and Adam Perelman and Adam Tart and Adi Ganesh and Ahmed El-Kishky and Aidan McLaughlin and Aiden Low and AJ Ostrow and Akhila Ananthram and others},
+      year={2026},
+      journal = {arXiv preprint arXiv:2601.03267},
+}
+
+@inproceedings{
+luo2025openomni,
+title={OpenOmni: Advancing Open-Source Omnimodal Large Language Models with Progressive Multimodal Alignment and Real-time Emotional Speech Synthesis},
+author={Run Luo and Ting-En Lin and Haonan Zhang and Yuchuan Wu and Xiong Liu and Yongbin Li and Longze Chen and Jiaming Li and Lei Zhang and Xiaobo Xia and Hamid Alinejad-Rokny and Fei Huang and Min Yang},
+booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+year={2025},
+url={https://openreview.net/forum?id=4iehXI36QG}
+}
+
+@inproceedings{prabhakaran-etal-2019-perturbation,
+    title = "Perturbation Sensitivity Analysis to Detect Unintended Model Biases",
+    author = "Prabhakaran, Vinodkumar  and
+      Hutchinson, Ben  and
+      Mitchell, Margaret",
+    editor = "Inui, Kentaro  and
+      Jiang, Jing  and
+      Ng, Vincent  and
+      Wan, Xiaojun",
+    booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+    month = nov,
+    year = "2019",
+    address = "Hong Kong, China",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D19-1578/",
+    doi = "10.18653/v1/D19-1578",
+    pages = "5740--5745",
+    abstract = "Data-driven statistical Natural Language Processing (NLP) techniques leverage large amounts of language data to build models that can understand language. However, most language data reflect the public discourse at the time the data was produced, and hence NLP models are susceptible to learning incidental associations around named referents at a particular point in time, in addition to general linguistic meaning. An NLP system designed to model notions such as sentiment and toxicity should ideally produce scores that are independent of the identity of such entities mentioned in text and their social associations. For example, in a general purpose sentiment analysis system, a phrase such as I hate Katy Perry should be interpreted as having the same sentiment as I hate Taylor Swift. Based on this idea, we propose a generic evaluation framework, Perturbation Sensitivity Analysis, which detects unintended model biases related to named entities, and requires no new annotations or corpora. We demonstrate the utility of this analysis by employing it on two different NLP models {---} a sentiment model and a toxicity model {---} applied on online comments in English language from four different genres."
+}
+
+@inproceedings{feng-etal-2018-pathologies,
+    title = "Pathologies of Neural Models Make Interpretations Difficult",
+    author = "Feng, Shi  and
+      Wallace, Eric  and
+      Grissom II, Alvin  and
+      Iyyer, Mohit  and
+      Rodriguez, Pedro  and
+      Boyd-Graber, Jordan",
+    editor = "Riloff, Ellen  and
+      Chiang, David  and
+      Hockenmaier, Julia  and
+      Tsujii, Jun{'}ichi",
+    booktitle = "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing",
+    month = oct # "-" # nov,
+    year = "2018",
+    address = "Brussels, Belgium",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/D18-1407/",
+    doi = "10.18653/v1/D18-1407",
+    pages = "3719--3728",
+    abstract = "One way to interpret neural model predictions is to highlight the most important input features{---}for example, a heatmap visualization over the words in an input sentence. In existing interpretation methods for NLP, a word{'}s importance is determined by either input perturbation{---}measuring the decrease in model confidence when that word is removed{---}or by the gradient with respect to that word. To understand the limitations of these methods, we use input reduction, which iteratively removes the least important word from the input. This exposes pathological behaviors of neural models: the remaining words appear nonsensical to humans and are not the ones determined as important by interpretation methods. As we confirm with human experiments, the reduced examples lack information to support the prediction of any label, but models still make the same predictions with high confidence. To explain these counterintuitive results, we draw connections to adversarial examples and confidence calibration: pathological behaviors reveal difficulties in interpreting neural models trained with maximum likelihood. To mitigate their deficiencies, we fine-tune the models by encouraging high entropy outputs on reduced examples. Fine-tuned models become more interpretable under input reduction, without accuracy loss on regular examples."
+}
+
+@inproceedings{atanasova-etal-2020-diagnostic,
+    title = "A Diagnostic Study of Explainability Techniques for Text Classification",
+    author = "Atanasova, Pepa  and
+      Simonsen, Jakob Grue  and
+      Lioma, Christina  and
+      Augenstein, Isabelle",
+    editor = "Webber, Bonnie  and
+      Cohn, Trevor  and
+      He, Yulan  and
+      Liu, Yang",
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+    month = nov,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.emnlp-main.263/",
+    doi = "10.18653/v1/2020.emnlp-main.263",
+    pages = "3256--3274",
+    abstract = "Recent developments in machine learning have introduced models that approach human performance at the cost of increased architectural complexity. Efforts to make the rationales behind the models' predictions transparent have inspired an abundance of new explainability techniques. Provided with an already trained model, they compute saliency scores for the words of an input instance. However, there exists no definitive guide on (i) how to choose such a technique given a particular application task and model architecture, and (ii) the benefits and drawbacks of using each such technique. In this paper, we develop a comprehensive list of diagnostic properties for evaluating existing explainability techniques. We then employ the proposed list to compare a set of diverse explainability techniques on downstream text classification tasks and neural network architectures. We also compare the saliency scores assigned by the explainability techniques with human annotations of salient input regions to find relations between a model{'}s performance and the agreement of its rationales with human ones. Overall, we find that the gradient-based explanations perform best across tasks and model architectures, and we present further insights into the properties of the reviewed explainability techniques."
+}
+
+@inproceedings{10.5555/3295222.3295230,
+author = {Lundberg, Scott M. and Lee, Su-In},
+title = {A unified approach to interpreting model predictions},
+year = {2017},
+isbn = {9781510860964},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+abstract = {Understanding why a model makes a certain prediction can be as crucial as the prediction's accuracy in many applications. However, the highest accuracy for large modern datasets is often achieved by complex models that even experts struggle to interpret, such as ensemble or deep learning models, creating a tension between accuracy and interpretability. In response, various methods have recently been proposed to help users interpret the predictions of complex models, but it is often unclear how these methods are related and when one method is preferable over another. To address this problem, we present a unified framework for interpreting predictions, SHAP (SHapley Additive exPlanations). SHAP assigns each feature an importance value for a particular prediction. Its novel components include: (1) the identification of a new class of additive feature importance measures, and (2) theoretical results showing there is a unique solution in this class with a set of desirable properties. The new class unifies six existing methods, notable because several recent methods in the class lack the proposed desirable properties. Based on insights from this unification, we present new methods that show improved computational performance and/or better consistency with human intuition than previous approaches.},
+booktitle = {Proceedings of the 31st International Conference on Neural Information Processing Systems},
+pages = {4768–4777},
+numpages = {10},
+location = {Long Beach, California, USA},
+series = {NIPS'17}
+}
+
+@article{yu2025minicpm,
+  title={Minicpm-v 4.5: Cooking efficient mllms via architecture, data, and training recipe},
+  author={Yu, Tianyu and Wang, Zefan and Wang, Chongyi and Huang, Fuwei and Ma, Wenshuo and He, Zhihui and Cai, Tianchi and Chen, Weize and Huang, Yuxiang and Zhao, Yuanqian and others},
+  journal={arXiv preprint arXiv:2509.18154},
+  year={2025}
+}
+
+@inproceedings{chefer2021generic,
+  title={Generic attention-model explainability for interpreting bi-modal and encoder-decoder transformers},
+  author={Chefer, Hila and Gur, Shir and Wolf, Lior},
+  booktitle={Proceedings of the IEEE/CVF international conference on computer vision},
+  pages={397--406},
+  year={2021}
+}
+
+@inproceedings{voita-etal-2019-analyzing,
+    title = "Analyzing Multi-Head Self-Attention: Specialized Heads Do the Heavy Lifting, the Rest Can Be Pruned",
+    author = "Voita, Elena  and
+      Talbot, David  and
+      Moiseev, Fedor  and
+      Sennrich, Rico  and
+      Titov, Ivan",
+    editor = "Korhonen, Anna  and
+      Traum, David  and
+      M{\`a}rquez, Llu{\'i}s",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/P19-1580/",
+    doi = "10.18653/v1/P19-1580",
+    pages = "5797--5808",
+    abstract = "Multi-head self-attention is a key component of the Transformer, a state-of-the-art architecture for neural machine translation. In this work we evaluate the contribution made by individual attention heads to the overall performance of the model and analyze the roles played by them in the encoder. We find that the most important and confident heads play consistent and often linguistically-interpretable roles. When pruning heads using a method based on stochastic gates and a differentiable relaxation of the L0 penalty, we observe that specialized heads are last to be pruned. Our novel pruning method removes the vast majority of heads without seriously affecting performance. For example, on the English-Russian WMT dataset, pruning 38 out of 48 encoder heads results in a drop of only 0.15 BLEU."
+}
+
+@inproceedings{10.1145/3459637.3482126,
+author = {Barkan, Oren and Hauon, Edan and Caciularu, Avi and Katz, Ori and Malkiel, Itzik and Armstrong, Omri and Koenigstein, Noam},
+title = {Grad-SAM: Explaining Transformers via Gradient Self-Attention Maps},
+year = {2021},
+isbn = {9781450384469},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3459637.3482126},
+doi = {10.1145/3459637.3482126},
+abstract = {Transformer-based language models significantly advanced the state-of-the-art in many linguistic tasks. As this revolution continues, the ability to explain model predictions has become a major area of interest for the NLP community. In this work, we present Gradient Self-Attention Maps (Grad-SAM) - a novel gradient-based method that analyzes self-attention units and identifies the input elements that explain the model's prediction the best. Extensive evaluations on various benchmarks show that Grad-SAM obtains significant improvements over state-of-the-art alternatives.},
+booktitle = {Proceedings of the 30th ACM International Conference on Information \& Knowledge Management},
+pages = {2882–2887},
+numpages = {6},
+keywords = {bert, deep learning, explainable \& interpretable ai, nlp, self-attention, transformers, transparent machine learning},
+location = {Virtual Event, Queensland, Australia},
+series = {CIKM '21}
+}
+
+@article{selvaraju2020grad,
+  title={Grad-CAM: visual explanations from deep networks via gradient-based localization},
+  author={Selvaraju, Ramprasaath R and Cogswell, Michael and Das, Abhishek and Vedantam, Ramakrishna and Parikh, Devi and Batra, Dhruv},
+  journal={International journal of computer vision},
+  volume={128},
+  number={2},
+  pages={336--359},
+  year={2020},
+  publisher={Springer}
+}
+
+@inproceedings{zhou2016learning,
+  title={Learning deep features for discriminative localization},
+  author={Zhou, Bolei and Khosla, Aditya and Lapedriza, Agata and Oliva, Aude and Torralba, Antonio},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={2921--2929},
+  year={2016}
+}
+
+@article{bach2015pixel,
+  title     = {On Pixel-Wise Explanations for Non-Linear Classifier Decisions by Layer-Wise Relevance Propagation},
+  author    = {Bach, Sebastian and Binder, Alexander and Montavon, Gr{\'e}goire and Klauschen, Frederick and M{\"u}ller, Klaus-Robert and Samek, Wojciech},
+  journal   = {PLoS ONE},
+  volume    = {10},
+  number    = {7},
+  pages     = {e0130140},
+  year      = {2015},
+  month     = {July},
+  doi       = {10.1371/journal.pone.0130140},
+  pmid      = {26161953},
+  pmcid     = {PMC4498753}
+}
+
+@inproceedings{fu2025video,
+  title={Video-mme: The first-ever comprehensive evaluation benchmark of multi-modal llms in video analysis},
+  author={Fu, Chaoyou and Dai, Yuhan and Luo, Yongdong and Li, Lei and Ren, Shuhuai and Zhang, Renrui and Wang, Zihan and Zhou, Chenyu and Shen, Yunhang and Zhang, Mengdan and others},
+  booktitle={Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
+  pages={24108--24118},
+  year={2025}
+}
+
+@article{gao2025multimodal,
+  title={The multimodal information based speech processing (misp) 2025 challenge: Audio-visual diarization and recognition},
+  author={Gao, Ming and Wu, Shilong and Chen, Hang and Du, Jun and Lee, Chin-Hui and Watanabe, Shinji and Chen, Jingdong and Marco, Siniscalchi Sabato and Scharenborg, Odette},
+  journal={arXiv preprint arXiv:2505.13971},
+  year={2025}
+}
+
+@inproceedings{
+sakshi2025mmau,
+title={{MMAU}: A Massive Multi-Task Audio Understanding and Reasoning Benchmark},
+author={S Sakshi and Utkarsh Tyagi and Sonal Kumar and Ashish Seth and Ramaneswaran Selvakumar and Oriol Nieto and Ramani Duraiswami and Sreyan Ghosh and Dinesh Manocha},
+booktitle={The Thirteenth International Conference on Learning Representations},
+year={2025},
+url={https://openreview.net/forum?id=TeVAZXr3yv}
+}
+
+@inproceedings{10.1145/3583780.3614870,
+author = {Tiwari, Abhisek and Saha, Anisha and Saha, Sriparna and Bhattacharyya, Pushpak and Dhar, Minakshi},
+title = {Experience and Evidence are the eyes of an excellent summarizer! Towards Knowledge Infused Multi-modal Clinical Conversation Summarization},
+year = {2023},
+isbn = {9798400701245},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3583780.3614870},
+doi = {10.1145/3583780.3614870},
+abstract = {With the advancement of telemedicine, both researchers and medical practitioners are working hand-in-hand to develop various techniques to automate various medical operations, such as diagnosis report generation. In this paper, we first present a multi-modal clinical conversation summary generation task that takes a clinician-patient interaction (both textual and visual information) and generates a succinct synopsis of the conversation. We propose a knowledge-infused, multi-modal, multi-tasking medical domain identification and clinical conversation summary generation (MM-CliConSummation) framework. It leverages an adapter to infuse knowledge and visual features and unify the fused feature vector using a gated mechanism. Furthermore, we developed a multi-modal, multi-intent clinical conversation summarization corpus annotated with intent, symptom, and summary. The extensive set of experiments, both quantitatively and qualitatively, led to the following findings: (a) critical significance of visuals, (b) more precise and medical entity preserving summary with additional knowledge infusion, and (c) a correlation between medical department identification and clinical synopsis generation. Furthermore, the dataset and source code are available at https://github.com/NLP-RL/MM-CliConSummation},
+booktitle = {Proceedings of the 32nd ACM International Conference on Information and Knowledge Management},
+pages = {2452–2461},
+numpages = {10},
+keywords = {text generation, online counselling, multimodal medical dialogue summarization, multimodal infusion},
+location = {Birmingham, United Kingdom},
+series = {CIKM '23}
+}
+
+@inproceedings{feng2023mmdialog,
+  title={Mmdialog: A large-scale multi-turn dialogue dataset towards multi-modal open-domain conversation},
+  author={Feng, Jiazhan and Sun, Qingfeng and Xu, Can and Zhao, Pu and Yang, Yaming and Tao, Chongyang and Zhao, Dongyan and Lin, Qingwei},
+  booktitle={Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={7348--7363},
+  year={2023}
+}
+
+@article{Jiang2024MANTISIM,
+  title={MANTIS: Interleaved Multi-Image Instruction Tuning},
+  author={Dongfu Jiang and Xuan He and Huaye Zeng and Cong Wei and Max W.F. Ku and Qian Liu and Wenhu Chen},
+  journal={Transactions on Machine Learning Research},
+  year={2024},
+  volume={2024},
+  url={https://openreview.net/forum?id=skLtdUVaJa}
+}
+
+@inproceedings{
+ye2026omnivinci,
+title={OmniVinci: Enhancing Architecture and Data for Omni-Modal Understanding {LLM}},
+author={Hanrong Ye and Chao-Han Huck Yang and Arushi Goel and Wei Huang and Zhen Wan and Jinchuan Tian and An-Chieh Cheng and Ligeng Zhu and Yuanhang Su and Yuming Lou and Yong-Xiang Lin and Dong Yang and Sreyan Ghosh and Zhijian Liu and Yukang Chen and Ehsan Jahangiri and Ambrish Dantrey and Daguang Xu and Ehsan Hosseini-Asl and Seyed Danial Mohseni Taheri and Vidya Nariyambut Murali and Sifei Liu and Yao Lu and Oluwatobi Olabiyi and Yu-Chiang Frank Wang and Rafael Valle and Bryan Catanzaro and Andrew Tao and Song Han and Jan Kautz and Hongxu Yin and Pavlo Molchanov},
+booktitle={The Fourteenth International Conference on Learning Representations},
+year={2026},
+url={https://openreview.net/forum?id=DZeic3NpHy}
+}
+
+@inproceedings{song-etal-2024-better,
+    title = "Better Explain Transformers by Illuminating Important Information",
+    author = "Song, Linxin  and
+      Cui, Yan  and
+      Luo, Ao  and
+      Lecue, Freddy  and
+      Li, Irene",
+    editor = "Graham, Yvette  and
+      Purver, Matthew",
+    booktitle = "Findings of the Association for Computational Linguistics: EACL 2024",
+    month = mar,
+    year = "2024",
+    address = "St. Julian{'}s, Malta",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.findings-eacl.138/",
+    doi = "10.18653/v1/2024.findings-eacl.138",
+    pages = "2048--2062",
+    abstract = "Transformer-based models excel in various natural language processing (NLP) tasks, attracting countless efforts to explain their inner workings. Prior methods explain Transformers by focusing on the raw gradient and attention as token attribution scores, where non-relevant information is often considered during explanation computation, resulting in confusing results. In this work, we propose highlighting the important information and eliminating irrelevant information by a refined information flow on top of the layer-wise relevance propagation (LRP) method. Specifically, we consider identifying syntactic and positional heads as important attention heads and focus on the relevance obtained from these important heads. Experimental results demonstrate that irrelevant information does distort output attribution scores and then should be masked during explanation computation. Compared to eight baselines on both classification and question-answering datasets, our method consistently outperforms with over 3{\%} to 33{\%} improvement on explanation metrics, providing superior explanation performance. Our anonymous code repository is available at: https://anonymous.4open.science/r/MLRP-E676/"
+}
+
+@inproceedings{attcat,
+author = {Qiang, Yao and Pan, Deng and Li, Chengyin and Li, Xin and Jang, Rhongho and Zhu, Dongxiao},
+title = {AttCAT: explaining transformers via attentive class activation tokens},
+year = {2022},
+isbn = {9781713871088},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+booktitle = {Proceedings of the 36th International Conference on Neural Information Processing Systems},
+articleno = {365},
+numpages = {13},
+location = {New Orleans, LA, USA},
+series = {NIPS '22}
+}
+
+@article{abouelenin2025phi,
+  title={Phi-4-mini technical report: Compact yet powerful multimodal language models via mixture-of-loras},
+  author={Abouelenin, Abdelrahman and Ashfaq, Atabak and Atkinson, Adam and Awadalla, Hany and Bach, Nguyen and Bao, Jianmin and Benhaim, Alon and Cai, Martin and Chaudhary, Vishrav and Chen, Congcong and others},
+  journal={arXiv preprint arXiv:2503.01743},
+  year={2025}
+}
+
+@inproceedings{abnar-zuidema-2020-quantifying,
+    title = "Quantifying Attention Flow in Transformers",
+    author = "Abnar, Samira  and
+      Zuidema, Willem",
+    editor = "Jurafsky, Dan  and
+      Chai, Joyce  and
+      Schluter, Natalie  and
+      Tetreault, Joel",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2020.acl-main.385/",
+    doi = "10.18653/v1/2020.acl-main.385",
+    pages = "4190--4197"
+}
+
+@article{xu2025qwen2,
+  title={Qwen2. 5-omni technical report},
+  author={Xu, Jin and Guo, Zhifang and He, Jinzheng and Hu, Hangrui and He, Ting and Bai, Shuai and Chen, Keqin and Wang, Jialin and Fan, Yang and Dang, Kai and others},
+  journal={arXiv preprint arXiv:2503.20215},
+  year={2025}
+}
+
+@article{Xu2025Qwen3OmniTR,
+  title={Qwen3-Omni Technical Report},
+  author={Jin Xu and Zhifang Guo and Hangrui Hu and Yunfei Chu and Xiong Wang and Jinzheng He and Yuxuan Wang and Xianzhong Shi and Ting He and Xinfa Zhu and Yuanjun Lv and Yongqi Wang and Dake Guo and He Wang and Linhan Ma and Pei Zhang and Xinyu Zhang and Hongkun Hao and Zishan Guo and Baosong Yang and Bin Zhang and Ziyang Ma and Xipin Wei and Shuai Bai and Ke Chen and Xue Lian Liu and Peng Wang and Ming Yang and Dayiheng Liu and Xingzhang Ren and Bo Zheng and Rui Men and Fan Zhou and Bowen Yu and Jianxin Yang and Le Yu and Jing-Jun Zhou and Junyang Lin},
+  journal={ArXiv},
+  year={2025},
+  volume={abs/2509.17765},
+  url={https://api.semanticscholar.org/CorpusID:281420796}
+}
+
+@article{tong2025interactiveomni,
+  title={Interactiveomni: A unified omni-modal model for audio-visual multi-turn dialogue},
+  author={Tong, Wenwen and Guo, Hewei and Ran, Dongchuan and Chen, Jiangnan and Lu, Jiefan and Wang, Kaibin and Li, Keqiang and Zhu, Xiaoxu and Li, Jiakui and Li, Kehan and others},
+  journal={arXiv preprint arXiv:2510.13747},
+  year={2025}
+}
+
+
+
+
+% Long form of conference & journal abbreviations -- especially for camera ready
+@String(PAMI  = {IEEE Trans. Pattern Anal. Mach. Intell.})
+@String(IJCV  = {Int. J. Comput. Vis.})
+@String(CVPR  = {IEEE Conf. Comput. Vis. Pattern Recog.})
+@String(ICCV  = {Int. Conf. Comput. Vis.})
+@String(ECCV  = {Eur. Conf. Comput. Vis.})
+@String(NeurIPS = {Adv. Neural Inform. Process. Syst.})
+@String(ICML  = {Int. Conf. Mach. Learn.})
+@String(ICLR  = {Int. Conf. Learn. Represent.})
+@String(ACCV  = {Asian Conf. Comput. Vis.})
+@String(BMVC  = {Brit. Mach. Vis. Conf.})
+@String(CVPRW = {IEEE Conf. Comput. Vis. Pattern Recog. Worksh.})
+@String(AAAI  = {AAAI})
+@String(IJCAI = {IJCAI})
+@String(ICIP  = {IEEE Int. Conf. Image Process.})
+@String(ICPR  = {Int. Conf. Pattern Recog.})
+@String(ICASSP=	{ICASSP})
+@String(ICME  = {Int. Conf. Multimedia and Expo})
+@String(JMLR  = {J. Mach. Learn. Res.})
+@String(TMLR  = {Trans. Mach. Learn Res.})
+@String(TOG   = {ACM Trans. Graph.})
+@String(TIP   = {IEEE Trans. Image Process.})
+@String(TVCG  = {IEEE Trans. Vis. Comput. Graph.})
+@String(TCSVT = {IEEE Trans. Circuit Syst. Video Technol.})
+@String(TMM   = {IEEE Trans. Multimedia})
+@String(ACMMM = {ACM Int. Conf. Multimedia})
+@String(PR    = {Pattern Recognition})
+
+@String(MNI	  = {Nature Mach. Intell.})
+@String(SPL	  = {IEEE Sign. Process. Letters})
+@String(VR    = {Vis. Res.})
+@String(JOV	  = {J. Vis.})
+@String(TVC   = {The Vis. Comput.})
+@String(JCST  = {J. Comput. Sci. Tech.})
+@String(CGF   = {Comput. Graph. Forum})
+@String(CVM   = {Computational Visual Media})
+
+
+% Short form of conference & journal abbreviations -- especially for submission version
+% if desired, remove these macros in favor of the above ones
+@String(PAMI  = {IEEE TPAMI})
+@String(IJCV  = {IJCV})
+@String(CVPR  = {CVPR})
+@String(ICCV  = {ICCV})
+@String(ECCV  = {ECCV})
+@String(NeurIPS = {NeurIPS})
+@String(ICML  = {ICML})
+@String(ICLR  = {ICLR})
+@String(ACCV  = {ACCV})
+@String(BMVC  =	{BMVC})
+@String(CVPRW = {CVPRW})
+@String(AAAI  = {AAAI})
+@String(IJCAI = {IJCAI})
+@String(ICIP  = {ICIP})
+@String(ICPR  = {ICPR})
+@String(ICASSP=	{ICASSP})
+@String(ICME  =	{ICME})
+@String(JMLR  = {JMLR})
+@String(TMLR  = {TMLR})
+@String(TOG   = {ACM TOG})
+@String(TIP   = {IEEE TIP})
+@String(TVCG  = {IEEE TVCG})
+@String(TCSVT = {IEEE TCSVT})
+@String(TMM   =	{IEEE TMM})
+@String(ACMMM = {ACM MM})
+@String(PR    = {PR})
+
+

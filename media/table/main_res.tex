@@ -1,0 +1,56 @@
+\begin{table*}[ht]
+\centering
+\small
+\caption{
+Attribution F1 across omni-modal models and tasks.
+OT$_\text{AttMean}$, OT$_\text{RawAtt}$, and OT$_\text{AttGrads}$ denote OmniTrace instantiated with mean-pooled attention, raw attention, and gradient-based scoring signals.
+The Oracle Leave-One-Out (LOO) baseline and strong recent baselines working on text input tokens \citep{cohen-wang2024contextcite, qi-etal-2024-model} are adapted and evaluated on visual-text tasks, where they apply.
+\textbf{Cost} is the attribution overhead beyond a single generation pass: $F$/$B$=forward/backward pass, $M$=\#sources; attention-based OT variants reuse the generation forward pass ($1{\times}F$).
+\textbf{Bold}=best \emph{deployable} (non-oracle) method per column. \underline{Underline}=second best \emph{deployable} (non-oracle) method per column.
+LOO is an oracle upper bound and is not bolded.
+$\dagger$=not reported due to memory cost (gradient attribution on long audio/video).
+$\times$=not applicable to continuous timestamp attribution; perturbation- and gradient-based methods presume discrete ablatable units.
+Implementation and baseline details are in Appendix~\ref{appendix:implementation}.
+}
+\label{tab:main}
+\skiptablebegin
+\begin{tabular}{lccccccc}
+\toprule
+ & & \multicolumn{3}{c}{\textbf{Visual Tasks}} & \multicolumn{2}{c}{\textbf{Audio Tasks}} & \textbf{Video Tasks}\\
+\cmidrule(lr){3-5} \cmidrule(lr){6-7} \cmidrule(lr){8-8}
+\textbf{Method} & \textbf{Cost} & \multicolumn{2}{c}{Summ.} & QA & Summ. & QA & QA\\
+& & Text F1 & Image F1 & Image F1 & Time F1 &  Time F1 &  Time F1 \\
+\midrule
+
+\multicolumn{8}{>{\columncolor{gray!15}}l}{\textit{Post-hoc heuristics}}\\
+Self-Attribution     & $+$gen & 9.25  & 40.60 & 61.03 & 4.43 & 29.01 & 13.67\\
+Embed$_\text{processor}$ & $+$emb & 17.30 & 14.55 & 36.88 & $\times$ & $\times$ & $\times$ \\
+Embed$_\text{CLIP}$  & $+$emb & 17.20 & 3.54  & 6.32 & $\times$ & $\times$ & $\times$ \\
+Random               & --- & 10.98 & 8.38  & 24.70 & $\times$ & $\times$ & $\times$\\
+
+\multicolumn{8}{>{\columncolor{gray!15}}l}{\textit{Oracle and strong recent baselines (discrete method extended to visual)}}\\
+LOO \footnotesize(oracle) & $M{\times}F$ & 73.21 & 87.32 & 68.42 & $\times$ & $\times$ & $\times$ \\
+ContextCite & $32{\times}F$ & 43.59 & \textbf{81.51} & 60.87 & $\times$ & $\times$ & $\times$ \\
+MIRAGE & $1{\times}B$ & 40.91 & 4.17 & 5.11 & $\times$ & $\times$ & $\times$ \\
+
+\multicolumn{8}{>{\columncolor{gray!15}}l}{\textit{MiniCPM-o 4.5-9B OT attribution}}\\
+OT$_\text{AttMean}$  & $1{\times}F$ & 66.18 & 75.43 & 62.75 & 73.52 & 46.94 & 22.85\\
+OT$_\text{RawAtt}$   & $1{\times}F$ & 57.32 & 76.46 & 55.41 & 69.21 & 41.06 & 21.59\\
+
+\multicolumn{8}{>{\columncolor{gray!15}}l}{\textit{Qwen2.5-Omni-7B OT attribution}}\\
+OT$_\text{AttMean}$  & $1{\times}F$ & \textbf{75.66} & \underline{76.59} & 56.60 & \textbf{83.12} & \textbf{49.90} & \textbf{40.16}\\
+OT$_\text{RawAtt}$   & $1{\times}F$ & \underline{72.51} & 51.82 & \textbf{65.44} & \underline{76.69} & \underline{47.64} & \underline{36.53}\\
+OT$_\text{AttGrads}$ & $1{\times}F{+}B$ & 67.70 & 42.24 & \underline{65.02} & $\dagger$ & 47.56 & $\dagger$ \\
+
+% \midrule
+
+% \multicolumn{8}{>{\columncolor{gray!15}}l}{\textit{Post-hoc heuristics}}\\
+% Self-Attribution     & $+$gen & 9.06  & 66.53 & 39.39 & 0.08 & 34.66 & 18.26\\
+% Embed$_\text{processor}$ & $+$emb & 18.02 & 7.14 & 5.98 & $\times$ & $\times$ & $\times$ \\
+% Embed$_\text{CLIP}$  & $+$emb & 17.98 & 5.55  & 5.32  & $\times$ & $\times$ & $\times$\\
+% Random               & --- & 12.05 & 10.03 & 22.96 & $\times$ & $\times$ & $\times$\\
+
+\bottomrule
+\end{tabular}
+% \skiptableend
+\end{table*}

@@ -1,0 +1,10 @@
+\begin{abstract}
+Omni-modal large language models answer questions over documents, audio, and video, but they do not show which part of the input an answer relies on.
+Attribution methods for generated text either rerun the model many times with parts of the input removed or learn an attribution model, and they are defined and tested on text. Asking the model to cite its own evidence is cheap, but the citations are often missing and need not reflect what the model used.
+We present OmniTrace, a training-free method that attributes every generated sentence to source units (text passages, images, and seconds of audio or video) in the same forward pass that generates it.
+OmniTrace sums late-layer attention over the input positions of each unit and labels the units that stand out from the other units of the same modality. One rule and one threshold serve all modalities and models.
+We test it with a causal protocol designed for continuous inputs: we hide the attributed units behind content-free placeholders, replay the model's own response, and compare the loss in log-probability with the loss from hiding the same number of random units.
+On Qwen2.5-Omni and MiniCPM-o~4.5, over video, audio, and image--text question answering, the units OmniTrace selects matter more than random units in every setting, for whole responses and for single sentences.
+OmniTrace has about twice the effect of embedding similarity and reaches 77--98\% of the effect of leave-one-out and ContextCite, which need 16 to 41 extra forward passes per question.
+The model's own citations are absent from 18--69\% of responses, and on audio and image--text inputs the cited units matter 1.7 to 3.1 times less than the units OmniTrace selects on the same responses.
+\end{abstract}

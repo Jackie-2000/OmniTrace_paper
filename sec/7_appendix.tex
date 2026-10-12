@@ -1,0 +1,164 @@
+\appendix
+
+\section{Implementation Details}
+\label{appendix:impl}
+
+\paragraph{Models and decoding.}
+We use the public checkpoints of Qwen2.5-Omni-7B (28 decoder layers) and MiniCPM-o~4.5 (36 decoder layers) in half precision (bfloat16) on two B200 GPUs, with greedy decoding, no repetition penalty, and at most 512 new tokens.
+The late band of \Cref{sec:scoring} is the last third of the layers, 18--27 and 24--35.
+
+\paragraph{Inputs and units.}
+\emph{Video.} Qwen2.5-Omni samples two frames per second within a budget of about 20k video tokens; its encoder groups two frames into one temporal step of about 1.02\,s, which is our unit. MiniCPM-o~4.5 samples one frame per second with 64 tokens per frame, and each frame is a unit. Unit times are taken from the encoder's own time grid. Videos are between 10 and 90\,s long and are given without the audio track.
+\emph{Audio.} Clips are cut into one-second units along the audio encoder's token sequence.
+\emph{Image--text.} Each of the 15 quotes is a unit. Quotes are given in the order of MMDocRAG, text passages first and images after them, followed by the question. Images use each model's standard image processing.
+Positions outside the units (system prompt, template tokens, question, options, instruction, and whitespace) are never candidates.
+
+\paragraph{Prompts.}
+For multiple-choice questions the instruction is: ``\emph{Answer the question based on the \{video, audio\} provided. Explain your reasoning step by step. End your response with a final line of the form "Answer: X", where X is the option letter.}''
+MMAU puts the correct answer first in almost half of its questions, so we shuffle the options with a fixed seed.
+For the self-citation baseline the instruction adds: ``\emph{After each sentence that uses information from the \{video, audio\}, cite the time span it comes from in seconds, e.g.\ [12.0-15.5s].}'' For documents it asks for quote ids in MMDocRAG's citation format.
+
+\paragraph{Sentences.}
+Responses are split into sentences with spaCy and at line breaks. Sentences are aligned to the generated token ids, so each generated token belongs to one sentence.
+
+\paragraph{Reading attention.}
+We run the model with its standard scaled-dot-product attention and recompute, in the late layers only, the attention row of the last position at each step. Against the attention maps returned by the framework, the largest absolute difference is $2\times10^{-7}$, and the generated tokens are identical.
+
+\paragraph{Development study.}
+The observations in \Cref{sec:design} come from 1{,}000 NExT-GQA questions on 637 videos. The 300 test questions are drawn from other videos.
+Agreement with human spans was measured on the answer sentences of the 655 correctly answered questions.
+We then compared the candidate settings with the causal test on 200 of these questions and fixed the setting of \Cref{eq:mass} before running any test question, any audio or image--text question, and the second model.
+
+\section{Details of the Causal Test}
+\label{appendix:causal}
+
+\paragraph{Placeholders.}
+A hidden video unit is replaced by black frames, an audio unit by silence at the clip's noise floor, an image by a black image of the same size, and a text passage by blank tokens of the same count. We verified on video that only the tokens of the hidden unit change.
+
+\paragraph{Budgets and controls.}
+For a budget $b$ on audio and video we hide the top-ranked units up to a share $b$ of the duration; for documents we hide the top $k$ quotes. Random controls hide the same number of units, with three draws per question. Keep tests hide all candidate units except the selected ones, with the same controls.
+For the sentence-level test we take the top units by the sentence's own scores.
+Intervals are 95\% percentile intervals from 1{,}000 bootstrap resamples of the questions (of the sentences for sentence-level metrics).
+
+\paragraph{Two evaluation runs.}
+The baselines were evaluated in a second run that tests OmniTrace again next to them. The drop for OmniTrace's top units is identical in the two runs; the random draws differ. This is why the lift of OmniTrace differs slightly between \Cref{tab:baselines} and \Cref{tab:models} (for example 0.077 and 0.069 on audio). Each paired comparison uses rows from one run.
+
+\paragraph{Coverage.}
+A few questions ran out of GPU memory in the replay and are left out: on MiniCPM-o~4.5, 13 of 246 video and 9 of 196 audio questions; on Qwen2.5-Omni, 2 video questions in the label test and 16 in the self-citation test.
+
+\subsection{Masking Choice}
+\label{appendix:masking}
+
+\begin{table*}[t]
+\centering
+\small
+\input{media/table/gen_masking}
+\caption{Lift of OmniTrace under two ways of hiding a unit, on the same questions: a content-free placeholder at the input (\emph{empty}, used throughout the paper) and replacing the unit's embeddings by their mean (\emph{mean}).}
+\label{tab:masking}
+\end{table*}
+
+\Cref{tab:masking} repeats the response-level test with the mean-embedding replacement.
+On video and audio the lifts under the two fills are close for both models, most paired differences include zero, and the others are small.
+We do not use the mean replacement for image--text input. A text passage whose tokens are all replaced by the same mean embedding is far from anything the model has seen: hiding one random passage this way costs 1.70 nats per token regardless of the passage, against 0.03 with blank tokens. Such a test measures the damage of the replacement, not the role of the passage.
+
+\subsection{Replay Agreement}
+\label{appendix:replay}
+
+With greedy decoding, the token with the highest probability in the replay should be the generated token.
+For MiniCPM-o~4.5 this holds at 97--98\% of the positions. For Qwen2.5-Omni-7B it holds at 88\% (video), 86\% (audio), and 81\% (image--text).
+The gap comes from the generation path in half precision: on a sample of audio questions, a response generated in single precision is replayed with full agreement, and replaying a half-precision response gives the same values in half and in single precision, so the replay itself is accurate.
+All drops in the paper compare two replays of the same tokens, with and without hidden units, so they are internally consistent.
+
+\section{Baselines}
+\label{appendix:baselines}
+
+All baselines write one score per unit for the response and for each sentence, and are then evaluated by the same code as OmniTrace.
+
+\paragraph{Embedding similarity.}
+A unit is scored by the cosine similarity between the sentence and the unit. Video frames and images are embedded with SigLIP (\texttt{siglip-so400m-patch14-384}), one-second audio slices with CLAP (\texttt{clap-htsat-unfused}), and text passages with a text encoder (\texttt{bge-base-en-v1.5}). A video unit is the mean over its frames. Image and text similarities are on different scales, so for documents they are standardized within each modality. The response-level score is the mean over sentences.
+
+\paragraph{Self-citation.}
+The model is run again with the citation prompt of \Cref{appendix:impl}. A cited time span selects the units it overlaps, and a cited quote id selects that quote. Because the responses of this run differ from the main run, we compare the cited units with OmniTrace's top units of the same count on the responses of the citation run. Responses without a valid citation have no cited set and are not scored.
+
+\paragraph{Leave-one-out.}
+Each unit is hidden alone, and its score is the drop in the mean log-probability of the response or the sentence. The cost is one forward pass per unit (41, 17, and 16 on average for video, audio, and image--text).
+
+\paragraph{ContextCite.}
+We draw 32 random ablations in which each unit is kept with probability 0.5, and fit a Lasso model (regularization 0.01) that predicts the log-probability of the response or sentence from the kept units; its weights are the scores.
+
+Both perturbation baselines use the placeholders and the teacher-forced target of the causal test itself.
+
+\section{Additional Results}
+\label{appendix:additional}
+
+\subsection{All Budgets}
+\label{appendix:budgets}
+
+\begin{table*}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{\input{media/table/gen_budget}}
+\caption{Response-level results of OmniTrace at every budget. Drops are in nats per token. Lift $>0$: share of the questions with a positive lift. Brackets: 95\% bootstrap intervals.}
+\label{tab:budget}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{\input{media/table/gen_budget_base}}
+\caption{Lift of every method at every budget on Qwen2.5-Omni-7B, and the paired difference between OmniTrace and each baseline with its 95\% bootstrap interval.}
+\label{tab:budget_base}
+\end{table*}
+
+\Cref{tab:budget} gives the drops, lifts, and keep gains of OmniTrace at every budget, and \Cref{tab:budget_base} the comparison with the baselines.
+The share of leave-one-out's lift that OmniTrace reaches grows with the budget in every modality.
+On video at the 10\% budget, the keep gain against embedding similarity is dominated by one question, in which keeping the baseline's units costs 11 nats per token.
+
+\subsection{Faithfulness versus Cost}
+\label{appendix:cost}
+
+\begin{figure*}[t]
+\centering
+\input{media/table/gen_cost}
+\caption{Lift at the middle budget against the number of extra forward passes per question (Qwen2.5-Omni-7B). Bars: 95\% bootstrap intervals. Self-citation is shown for the responses that cite.}
+\label{fig:cost}
+\end{figure*}
+
+\Cref{fig:cost} plots the lift of each method against its cost. Among the methods that need no extra pass of the model, OmniTrace has the highest lift in every modality.
+
+\subsection{Predicted Labels}
+\label{appendix:labels}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{\input{media/table/gen_labels}}
+\caption{Causal test of the labels of \Cref{eq:label} at $\tau=1.5$. Units labelled: mean number per response and share of the candidate units. No label: responses whose response-level label is empty. Lift and keep gain compare the labelled units with random units of the same count.}
+\label{tab:labels}
+\end{table*}
+
+\Cref{tab:labels} tests the labelled sets.
+All lifts, sentence lifts, and sentence specificities are above zero.
+The keep gain on video is positive but not reliable for MiniCPM-o~4.5, and for Qwen2.5-Omni its mean is raised by one question.
+
+\subsection{Label Threshold}
+\label{appendix:threshold}
+
+For image--text input, $\tau=1.5$ gives the highest mean F1 against the gold quotes on 200 development questions that are disjoint from the test questions.
+Audio and video have no usable labels for this, so we compared thresholds by the causal effect of the labelled sets on a random fifth of the questions (54 video, 53 audio), which is excluded from all results.
+No threshold was reliably better than 1.5 there; lower values scored slightly higher, so this check supports 1.5 as a safe choice and does not show that it is optimal.
+MiniCPM-o~4.5 uses the same value without any check.
+
+\section{Answer Accuracy of Long Answers}
+\label{appendix:judge}
+
+MMDocRAG answers are free text, so we grade them with an LLM judge (\texttt{claude-opus-5-5}).
+The judge sees the question, the short and long reference answers, and the model's response, and returns \emph{correct} (all facts the reference needs), \emph{partial} (some facts right, at least one missing or wrong), or \emph{incorrect}. It does not see the quotes or images.
+For Qwen2.5-Omni-7B, 374 of the 400 responses received a verdict: 23.8\% correct, 43.0\% partial, 33.2\% incorrect.
+For MiniCPM-o~4.5 (400 verdicts): 50.5\% correct and 35.3\% partial.
+The accuracy is used only to describe the models and to select correctly answered questions in \Cref{sec:agreement}.
+
+\section{Data and Code}
+We will release the code of OmniTrace, the causal tests, and the baselines, together with the question lists and the model responses used in this paper. The datasets keep the licenses of their creators.

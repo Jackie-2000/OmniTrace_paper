@@ -1,0 +1,31 @@
+\section{Model details}
+
+\subsection{Base model}
+\label{appendix:base_model}
+Here are the generation methods for the open-sourced models.
+
+For \textbf{Qwen2.5-Omni}, we implemented 7B versions following the official repository: \url{https://github.com/QwenLM/Qwen2.5-Omni}.
+
+For \textbf{MiniCPM-o-4.5}, we implemented 9B versions following the official repository: \url{https://github.com/OpenBMB/MiniCPM-o}. 
+
+\subsection{ASR model}
+\label{appendix:asr_model}
+For ASR models, we implement the Paraformer as the default for audio summarization. And we include two other state-of-the-art variants in our ablation study.
+
+For Paraformer, we implemented the model from huggingface \url{https://huggingface.co/funasr/paraformer-zh} following the official guide: \url{https://github.com/modelscope/FunASR}. 
+
+For Whisper, we implement the the model from huggingface \url{https://huggingface.co/openai/whisper-large-v3} following the official guide: \url{https://github.com/openai/whisper}.
+
+For Scribe v2, we implement following the offical repo: 
+
+\url{https://elevenlabs.io/blog/introducing-scribe-v2}.
+
+\section{Data Release}
+
+We will publicly release a comprehensive code base that includes the OmniTrace implementation with different scoring functions. 
+
+We would also release the test set. The licensing terms for the artifacts will follow those set by the respective dataset creators, as referenced in this work, while the curated artifacts will be provided under the MIT License. 
+Additionally, our release will include standardized evaluation protocols, and evaluation scripts to facilitate rigorous assessment. The entire project will be open-sourced, ensuring free access for research and academic purposes.
+
+
+

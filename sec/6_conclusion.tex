@@ -1,0 +1,6 @@
+\section{Conclusion}
+We presented OmniTrace, a training-free method that attributes each generated sentence of an omni-modal LLM to text passages, images, and time intervals of audio and video, using only the attention of the generation pass.
+A causal test with content-free placeholders and size-matched controls shows that the selected units are ones the model depends on, in three modalities and two model families, with one fixed setting.
+OmniTrace recovers most of the faithfulness of perturbation methods at none of their extra forward passes, and it is more complete and more faithful than the model's own citations.
+The same tests show where reading attention is not enough: fine localization in video, quotes of very different sizes, and models whose attention does not single out the most important source.
+We hope the protocol makes these gaps measurable for future single-pass methods.

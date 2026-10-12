@@ -1,0 +1,28 @@
+\begin{table}[t]
+\centering
+\tablesize
+\caption{
+\textbf{Causal faithfulness} via span-level top-$k$ log-probability drop on Qwen2.5-Omni visual tasks.
+For a generated span, we ablate its top-$k$ attributed sources by mean-replacing their input embeddings and measure the decrease $\Delta_k$ in the model's log-probability of the original span; \emph{higher is more faithful}.
+This metric is judge-independent, complementing the F1 axis in \Cref{tab:main}.
+\textbf{Bold}=best deployable (non-oracle) method; LOO is an oracle upper bound.
+}
+\label{tab:faithfulness}
+\skiptablebegin
+\begin{tabular}{lccccc}
+\toprule
+& & \multicolumn{2}{c}{Text $\Delta$} & \multicolumn{2}{c}{Image $\Delta$}\\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+\textbf{Method} & \textbf{Cost} & $k{=}1$ & $k{=}3$ & $k{=}1$ & $k{=}3$\\
+\midrule
+LOO \footnotesize(oracle)   & $M{\times}F$  & 0.971 & 1.206 & 0.155 & 0.131\\
+ContextCite & $32{\times}F$ & 0.712 & 0.823 & 0.159 & \underline{0.163}\\
+MIRAGE      & $1{\times}B$  & \textbf{1.494} & \textbf{1.625} & 0.095 & 0.095\\
+Self-Attribution & $+$gen & 0.279 & 0.776 & \underline{0.118} & 0.137\\
+Random           & ---    & 0.245 & 0.350 & 0.031 & 0.028\\
+\midrule
+OT$_\text{AttMean}$ (ours) & $1{\times}F$ & \underline{0.716} & \underline{0.884} & \textbf{0.164} & \textbf{0.172}\\
+\bottomrule
+\end{tabular}
+\skiptableend
+\end{table}

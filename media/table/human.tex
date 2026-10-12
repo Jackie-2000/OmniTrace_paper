@@ -1,0 +1,24 @@
+% Kendall tau / pairwise concordance table — Human vs LLM-judge label rankings
+ 
+\begin{table}[h!]
+\label{tab:human}
+\centering
+\vspace{-5pt}
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{4pt}
+\scriptsize
+\begin{tabular}{l|cc}
+\hline
+Slice & Kendall $\tau$ & Pairwise concordance \\
+\hline
+Sum $\times$ Text  & 0.857          & 26/28 (92.9\%) \\
+Sum $\times$ Image & \textbf{0.929} & 27/28 (96.4\%) \\
+VQA $\times$ Image & 0.857          & 26/28 (92.9\%) \\
+\hline
+\textbf{Mean} & \textbf{0.881} & \textbf{94.0\%} \\
+\hline
+\end{tabular}
+\vspace{-8pt}
+\caption{\scriptsize Ranking consistency between human and LLM-judge labels (Qwen2.5-Omni). Rankings are highly stable across label sources.}
+\vspace{-5pt}
+\end{table}
