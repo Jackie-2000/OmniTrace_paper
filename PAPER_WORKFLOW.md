@@ -61,7 +61,11 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - 2026-10-12 (a): v2 rewrite of all sections from the v1 draft; generated tables; 8 pages.
 - 2026-10-12 (b), pushed: author feedback applied: idea-led abstract and introduction; RQ-organized experiments; evaluation protocol moved to the start of the experiments; "why mass" merged into Section 3.2; the two-model variants table moved to the appendix and the MiniCPM row merged into the main table; four generated figures in the main text (`fig_curves`, `fig_cost`, `fig_stated`, `fig_example`) and one in the appendix (`fig_transfer`); teaser replaced by a placeholder with a design brief.
 
+- 2026-10-12 (c), pushed: main-table rows renamed OmniTrace$_{Qwen2.5-Omni}$ / OmniTrace$_{MiniCPM-o}$; legend and caption of `fig_curves` reworded ("hide OmniTrace's top units" / "hide random units", per model).
+
 ## Open items
+
+- Main table once MiniCPM baselines exist (author to decide): two blocks, one per model, each baseline next to OmniTrace on the same model (recommended, keeps the paired marks), or one block of averages with the per-model blocks in the appendix.
 
 - Title: the author's title ("A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs") is in place; the abstract and introduction say "single-pass" and "training-free" more than "unified framework" or "generation-time". Align the wording if the author wants the title's terms to lead.
 

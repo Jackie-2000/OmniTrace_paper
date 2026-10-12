@@ -38,14 +38,14 @@ We report 95\% bootstrap intervals and compare methods by paired differences (\C
 \small
 \setlength{\tabcolsep}{4.2pt}
 \input{media/table/gen_baselines}
-\caption{\textbf{Causal faithfulness and cost.} Baselines are run on Qwen2.5-Omni-7B.
+\caption{\textbf{Causal faithfulness and cost.} The subscript of OmniTrace names the model it runs on. Baselines are run on Qwen2.5-Omni-7B and are compared with OmniTrace$_{\text{Qwen2.5-Omni}}$.
 Fwd: extra forward passes per question beyond the one generation.
 Lift: extra drop in the response's log-probability (nats per token) when the method's top units are hidden, over hiding the same number of random units (20\% of the duration; 2 quotes).
 S-lift and S-spec: sentence lift and sentence specificity.
-\mdn / \mup: reliably lower / higher than OmniTrace on the same questions (paired 95\% bootstrap interval).
+\mdn / \mup: reliably lower / higher than OmniTrace$_{\text{Qwen2.5-Omni}}$ on the same questions (paired 95\% bootstrap interval).
 $^\dagger$Self-citation is a separate generation, scored only where the model cites (62, 72, and 328 responses); it hides the cited units, and the row below it is OmniTrace on the same responses with the same number of units.
 $^\ddagger$One extra generation.
-$^\S$The same setting on a second model, nothing retuned ($n$ = 233, 187, 400).}
+$^\S$The same setting on MiniCPM-o~4.5, nothing retuned ($n$ = 233, 187, 400); its numbers are not comparable with the baseline rows, which come from the other model.}
 \label{tab:baselines}
 \skiptableend
 \end{table*}
@@ -71,7 +71,7 @@ Details are in \Cref{appendix:baselines}.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{media/figure/fig_curves.pdf}
-\caption{\textbf{Hiding what OmniTrace selects hurts the response more than hiding random units of the same count}, in every modality, at every budget, and on both models. Drop in the log-probability of the model's own response; bands are 95\% bootstrap intervals. MiniCPM-o~4.5 uses the setting chosen on Qwen2.5-Omni without change.}
+\caption{\textbf{Hiding what OmniTrace selects hurts the response more than hiding random units of the same count}, in every modality, at every budget, and on both models. Each line is the drop in the log-probability of a model's own response when a share of its input is hidden: orange when the hidden units are the ones OmniTrace ranks highest for that model, blue when they are drawn at random. Solid lines are Qwen2.5-Omni-7B and dashed lines MiniCPM-o~4.5, each explaining its own responses with the same OmniTrace setting. Bands are 95\% bootstrap intervals.}
 \label{fig:curves}
 \end{figure*}
 
