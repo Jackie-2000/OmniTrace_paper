@@ -259,6 +259,7 @@ MMDocRAG answers are free text, so we grade them with an LLM judge (\texttt{clau
 The judge sees the question, the short and long reference answers, and the model's response, and returns \emph{correct} (all facts the reference needs), \emph{partial} (some facts right, at least one missing or wrong), or \emph{incorrect}. It does not see the quotes or images.
 For Qwen2.5-Omni-7B, 374 of the 400 responses received a verdict: 23.8\% correct, 43.0\% partial, 33.2\% incorrect.
 For MiniCPM-o~4.5 (400 verdicts): 50.5\% correct and 35.3\% partial.
+For Qwen3-Omni-30B (400 verdicts): 54.0\% correct and 32.8\% partial.
 The accuracy is used only to describe the models and to select correctly answered questions in \Cref{sec:agreement}.
 
 \section{Data and Code}
