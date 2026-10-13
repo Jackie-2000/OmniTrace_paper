@@ -87,8 +87,15 @@ Effects are large for documents, moderate for audio, and small for video, where 
 \label{sec:baselines}
 
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{media/figure/fig_cost.pdf}
+\caption{\textbf{Faithfulness against cost} on Qwen2.5-Omni-7B. Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs per question. Both OmniTrace variants sit in the shaded column: they read their scores from the generation pass. OmniTrace-trained needs ablation data from the same model beforehand.}
+\label{fig:cost}
+\end{figure}
+
 \paragraph{Against methods of the same cost.}
-OmniTrace has about twice the lift of embedding similarity in every modality (\Cref{tab:baselines}; \Cref{fig:teaser}, bottom right), and the gap widens at sentence level.
+OmniTrace has about twice the lift of embedding similarity in every modality (\Cref{tab:baselines}, \Cref{fig:cost}), and the gap widens at sentence level.
 Units that look related to a sentence are not the units the model read: on audio its sentence specificity is close to zero.
 
 \paragraph{Against perturbation.}
@@ -116,15 +123,7 @@ Four fifths of its weight lie outside the late layers: the generation pass of th
 \label{fig:stated}
 \end{figure}
 
-% placed here so that it lands at the top of the page of Section 5 (it is discussed there)
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{media/figure/fig_example.pdf}
-\caption{\textbf{A response and its attribution} (Qwen2.5-Omni-7B, NExT-GQA; selected example). The model answers correctly why the boys walk backwards (``to come in the camera''). Rows are generated sentences and cells are seconds of the video; darker cells hold more attention mass (scaled per row), and orange boxes are the units labelled by \Cref{eq:label}. The bar on top is the human-marked evidence: 18 of the 21 labelled cells fall inside it, although no label was used.}
-\label{fig:example}
-\end{figure*}
-
-We repeat the generation with a prompt that asks for a citation after each sentence and test the cited units (\Cref{fig:stated}).
+The cheapest evidence is the one the model states itself. We repeat the generation with a prompt that asks for a citation after each sentence and test the cited units (\Cref{fig:stated}).
 
 \emph{Citations are often missing.} Qwen2.5-Omni cites a valid source in 82\% of its document responses, but in only 38\% of audio and 31\% of video responses.
 

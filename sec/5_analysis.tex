@@ -28,7 +28,7 @@ ContextCite & 0.566 & \textbf{0.342} & 0.743 & 0.642\\
 \skiptableend
 \end{table}
 
-We also compare each ranking with the human-marked evidence (\Cref{tab:agreement}; \Cref{fig:example} shows one response).
+We also compare each ranking with the human-marked evidence (\Cref{tab:agreement}; \Cref{fig:example} in the appendix shows one response).
 
 On documents, OmniTrace agrees with the gold quotes better than every baseline, including the perturbation methods. On correctly answered questions its top quote is gold in 90\% of the cases.
 On video it has the best AUROC, but its single top second is evidence no more often than chance: attention finds the right region of the clip without pinning down the exact second.
@@ -45,4 +45,4 @@ OmniTrace-trained does not show the bias ($\rho=0.08$): a choice of heads, not a
 
 Across modalities the reading is accurate: images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out, ContextCite, and OmniTrace-trained place 47--48\% of the measured effect on images.
 
-Two further checks are in \Cref{appendix:granularity,appendix:flagging}.
+The appendix adds two checks: merging one-second units into longer ones (\Cref{appendix:granularity}), and attention mass as a sign of how much a sentence depends on the sources (\Cref{appendix:flagging}).
