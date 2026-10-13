@@ -19,13 +19,15 @@ Read this file first in every session that touches the paper. Update "Progress" 
 7. **Writing order when revising:** experiments and analysis first, then introduction, conclusion, limitations, and the abstract last. Related work is independent.
 8. **Wording:** plain words, short sentences, no heavy vocabulary. Format: ACL two-column, 8 pages of main text; limitations, references and appendix do not count.
 9. If a result is missing for the story (mostly analyses), tell the author; do not write around it.
+10. **Credit.** Nothing we implemented is presented as another work's contribution. The scorer with trained head weights is **OmniTrace-trained** (ours; AT2 is cited only for the training objective, in Section 3.2 and related work), never a baseline row named AT2. External baselines that the original work does not define for a modality (leave-one-out, ContextCite on audio, video, images) are marked in tables and text as running on OmniTrace's units and placeholders.
+11. **Favourable presentation.** Lead with the results that hold; state weak cells briefly (one sentence in the RQ, details in the appendix and limitations).
 
 ## Research questions and where they are answered
 
 | RQ | Question | Main-text evidence |
 |---|---|---|
 | RQ1 | Do the units read from one generation pass matter causally, in every modality? | Fig. `fig_curves` (both models), sentence columns of Table `tab:baselines` |
-| RQ2 | How much of the faithfulness of perturbation methods does one pass recover, and at what cost? Does training on perturbation data (AT2) add much? | Table `tab:baselines`, Fig. `fig_cost` |
+| RQ2 | How much of the faithfulness of perturbation methods does one pass recover, and at what cost? What do trained head weights (OmniTrace-trained) add? | Table `tab:baselines`, Fig. `fig_cost` |
 | RQ3 | Does the model cite what it uses? | Fig. `fig_stated`, self-citation rows of Table `tab:baselines` |
 | RQ4 | Does one fixed setting transfer to another model? | MiniCPM row of Table `tab:baselines`, Fig. `fig_curves`; variants in the appendix |
 | Analysis | What does attention capture and miss? | Fig. `fig_example`, Table `tab:agreement`; size bias, granularity, flagging in the appendix |
@@ -65,6 +67,7 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - 2026-10-12 (d), pushed: main table marks the best (bold) and second best (underline) per column among the comparable rows; switch `UNDERLINE` in `analysis/paper_models.py` (`"second"` or `"free"` = best method without an extra pass). The author set the table font to `\scriptsize` on Overleaf; keep it.
 - 2026-10-12 (e), pushed: AT2 added (Qwen2.5-Omni-7B): row in the main table with a training-cost footnote ($^\P$), point in `fig_cost`, paragraph "Against a trained reader of attention" in RQ2, rows in `tab:agreement` and `tab:size`, appendix paragraph, limitations sentence. Numbers: OmniTrace = 111% / 95% / 94% of AT2's lift (video / audio / image--text). The abstract was not changed.
 - 2026-10-12 (f), pushed: three models. Qwen3-Omni-30B row in the main table (audio, image--text; video run partial and left out automatically) and dotted lines in `fig_curves`; MiniCPM-o baselines as an appendix table (`appendix:minicpm`) with a paragraph each in RQ2 and RQ3; RQ4 is now "One Setting, Three Models"; abstract, introduction, conclusion and limitations say where the claims hold. Author's instruction: present the results in the most favourable way for OmniTrace (lead with what holds; weak cells stated briefly). Main text fills page 8 exactly: every added sentence needs a cut. `fig_example` is defined in `sec/4_exp.tex` (after `fig_stated`) for float placement.
+- 2026-10-12 (g), pushed: AT2 rows renamed and reframed as OmniTrace-trained (method paragraph in Section 3.2, `appendix:trained`, rows under OmniTrace in both baseline tables, including MiniCPM-o in the main table); leave-one-out and ContextCite marked as extended to audio / video / images by our framework. The main table caption was shortened to keep the main text on page 8.
 
 ## Open items
 
@@ -74,7 +77,8 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - Title: the author's title ("A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs") is in place; the abstract and introduction say "single-pass" and "training-free" more than "unified framework" or "generation-time". Align the wording if the author wants the title's terms to lead.
 
 - Running remotely (author, 2026-10-12): baselines on MiniCPM-o 4.5 and Qwen3-Omni-30B-A3B. A model appears in tables and figures by itself once its causal rows are synced (one more row in the main table, one more line style in `fig_curves`); `gen_baselines_<model>.tex` is written for each model with baseline runs.
-- Abstract: could mention the trained baseline in a few words ("close to an attention method trained on perturbation data"); left to the author.
+- Abstract does not mention OmniTrace-trained; one clause could ("a variant with trained head weights matches perturbation methods on a second model"); left to the author.
+- The labels of OmniTrace-trained are not tested causally (needs a GPU run of the label rows with the trained scores).
 - Figure 1 to be drawn by the author (brief above).
 - Check the 2026 arXiv entries in `related.bib` before submission.
 - Results that would strengthen the story if available (ask the author): document answer accuracy of Qwen3-Omni (judge); audio evidence spans for MMAU (human agreement on audio); a video run with the audio track on (audio vs visual reliance).

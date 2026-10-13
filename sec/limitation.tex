@@ -4,14 +4,14 @@
 \paragraph{Where the method is weak.}
 Effects on video are small, and at sentence level OmniTrace reaches about 60\% of the lift of the perturbation baselines and a third of their specificity; its top-ranked second is human-marked evidence no more often than chance.
 Summed attention favors large units (\Cref{sec:size}), and neither the sum nor the per-token mean is best on every model.
-The fixed setting does not suit every model equally. On MiniCPM-o~4.5 with image--text input, OmniTrace reaches a quarter of the lift of the perturbation baselines and less than half of embedding similarity, and the human-marked quotes matter three times more than the quotes it ranks first; on video it is behind the baselines at small budgets (\Cref{appendix:minicpm}). AT2 closes these gaps with trained head weights, so the evidence is in the attention of that model but not in the equally weighted late layers.
+The fixed setting does not suit every model equally. On MiniCPM-o~4.5 with image--text input, OmniTrace reaches a quarter of the lift of the perturbation baselines and less than half of embedding similarity, and the human-marked quotes matter three times more than the quotes it ranks first; on video it is behind the baselines at small budgets (\Cref{appendix:minicpm}). OmniTrace-trained closes these gaps, but needs ablation data for that model; the evidence is in its attention, not in the equally weighted late layers.
 The label threshold was checked on small development splits; on audio and video the causal criterion did not single out one value.
 
 \paragraph{Scope.}
 OmniTrace needs access to attention weights and does not apply to API-only models.
 The examples and tests in this paper use reasoning-style responses of 3 to 11 sentences. Its resolution is the source unit: it finds which image and which second, not a region within an image or a word within a passage.
 Video questions were run on frames without the audio track, so we do not study how a model divides its reliance between the sound and the picture of the same clip.
-The baselines were run on two of the three models. On Qwen3-Omni-30B the video run is not finished, citations were collected but not yet tested, and document answers were not graded. On MiniCPM-o~4.5 the document citation run covers 252 of the 400 questions. AT2 was cross-fitted on the test questions with the masking of our test, not trained on a separate set as in its paper, which favors it.
+The baselines were run on two of the three models. On Qwen3-Omni-30B the video run is not finished, citations were collected but not yet tested, and document answers were not graded. On MiniCPM-o~4.5 the document citation run covers 252 of the 400 questions. OmniTrace-trained is cross-fitted on the test questions with the masking of the test (no question is scored by weights that saw it), which favors it over weights trained on separate data; its labels were not tested causally.
 All data are in English.
 
 \paragraph{Evaluation.}

@@ -34,8 +34,7 @@ OmniTrace scores a unit by this \emph{attention mass}, summed over the tokens of
 s_k(S_j)=\sum_{t\in C_k}\;\sum_{i\in S_j} a_t(i).
 \label{eq:mass}
 \end{equation}
-The score can be read as the expected number of the sentence's tokens that read from $S_j$.
-It is additive in two ways. Over tokens, the response-level score is the sum of the sentence scores, so one pass gives attributions at both levels. Over positions, the score of two merged units is the sum of their scores, so the scores do not depend on how a stream is cut.
+The score is additive in two ways. Over tokens, the response-level score is the sum of the sentence scores, so one pass gives attributions at both levels. Over positions, the score of two merged units is the sum of their scores, so the scores do not depend on how a stream is cut.
 Nothing else enters: no token weights, no normalization over sources, and no fitted parameter.
 
 \paragraph{Mass, not peaks.}
@@ -54,6 +53,10 @@ We therefore fix the band as the last third of the depth, which is defined for a
 Scores are read during generation. At each step we keep only the attention row of the token being generated in the late layers, $O(|\mathcal{L}_{\text{late}}|\,N)$ memory per step.
 OmniTrace adds no forward pass, no backward pass, and no training to the generation it explains.
 
+\paragraph{A trained variant.}
+The default weights the late heads equally. When ablation data for a model can be afforded, \textbf{OmniTrace-trained} replaces the average by a weighted sum over all heads, $a_t(i)=\sum_{\ell,h}w_{\ell h}A^{(\ell,h)}_t(i)$, and fits $w$ so that the scores predict the effect of hiding units (\Cref{appendix:trained}); the objective follows AT2~\cite{cohenwang2025at2}, which learns head weights for text contexts.
+Units, the reading pass, and labels stay the same, and no pass is added at test time.
+
 \subsection{From Scores to Evidence Labels}
 \label{sec:labels}
 
@@ -70,4 +73,3 @@ Second, the number of labelled units adapts to the sentence: flat scores give an
 Third, the rule is relative, so it does not depend on the absolute scale of attention, which changes with input length and model.
 Adjacent labelled time units are merged into intervals $[b,e]$; text and image units are listed by id.
 We use $\tau=1.5$ for every modality and every model (\Cref{appendix:threshold}).
-The sum in \Cref{eq:mass} favors large units when units differ much in size; we measure this in \Cref{sec:size}.

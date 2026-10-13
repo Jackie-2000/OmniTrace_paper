@@ -21,6 +21,15 @@ For the self-citation baseline the instruction adds: ``\emph{After each sentence
 \paragraph{Sentences.}
 Responses are split into sentences with spaCy and at line breaks. Sentences are aligned to the generated token ids, so each generated token belongs to one sentence.
 
+\paragraph{OmniTrace-trained.}
+\label{appendix:trained}
+The trained variant of \Cref{sec:scoring} keeps every part of OmniTrace and changes only the head weights. The feature of a head is the attention mass it places on a unit, summed over the generated tokens of the sentence or the response, for every head of the decoder ($28\times28$ in Qwen2.5-Omni-7B), recorded in one replay of the response. With equal weights on the last third of the layers and zero elsewhere the score is the default of \Cref{eq:mass}, and training starts from these weights.
+The training signal is 32 random ablations per question, in which each unit is hidden with probability 0.5 by the placeholders of \Cref{sec:protocol}. The loss is one minus the Pearson correlation between the predicted and the measured log-probability over the ablations, for responses and their sentences, minimized with Adam and early stopping on 15\% of the training questions. This objective follows AT2~\cite{cohenwang2025at2}, which is defined for text sources and has no released weights for omni-modal models; the features, the units, the ablations, and all weights here are ours.
+We cross-fit in five folds, so each question is scored with weights trained on the other four.
+Training costs 32 ablation passes for every training question, once per model; nothing is added at test time.
+On held-out questions of Qwen2.5-Omni the trained score predicts the ablation outcomes about as well as the default on video (correlation 0.33 against 0.34) and better on audio (0.61 against 0.58) and image--text input (0.85 against 0.78). About a third of the absolute weight stays on the late layers, and about half of the weights are negative.
+For labels we clip negative scores at zero and apply \Cref{eq:label} unchanged. These labels agree with human evidence better than the default's (F1 of 0.30 against 0.20 on video and 0.50 against 0.48 on documents for Qwen2.5-Omni; 0.30 against 0.14 and 0.56 against 0.26 for MiniCPM-o~4.5); we did not test them causally.
+
 \paragraph{Reading attention.}
 We run the model with its standard scaled-dot-product attention and recompute, in the late layers only, the attention row of the last position at each step. Against the attention maps returned by the framework, the largest absolute difference is $2\times10^{-7}$, and the generated tokens are identical.
 
@@ -88,14 +97,8 @@ We draw 32 random ablations in which each unit is kept with probability 0.5, and
 
 Both perturbation baselines use the placeholders and the teacher-forced target of the causal test itself.
 
-\paragraph{AT2.}
-AT2~\cite{cohenwang2025at2} scores a source by a weighted sum of attention over all heads, with one learned weight per head. We adapt it to our units: the feature of a head is the attention mass it places on a unit, summed over the generated tokens of the sentence or the response, for all $28\times28$ heads of Qwen2.5-Omni-7B. With equal weights on the last third of the layers and zero elsewhere, this score is OmniTrace, and we start training from these weights.
-The training signal is the 32 ContextCite ablations of each question. The loss is one minus the Pearson correlation between the predicted and the measured log-probability over the ablations, for responses and their sentences, minimized with Adam and early stopping on 15\% of the training questions.
-We cross-fit in five folds, so each question is scored with weights trained on the other four folds.
-At test time AT2 needs no extra pass; training needs 32 ablation passes for every training question, once per model.
-Two choices differ from the original and both favor AT2 here: it is trained on the distribution it is tested on, and with the placeholders and the target of the test itself.
-On held-out questions the trained score predicts the ablation outcomes about as well as OmniTrace on video (correlation 0.33 against 0.34), and better on audio (0.61 against 0.58) and image--text input (0.85 against 0.78).
-After training, about a third of the absolute weight lies on the late layers and about half of the weights are negative.
+\paragraph{Modalities.}
+Leave-one-out is a generic procedure and ContextCite is defined for text contexts, where a source is removed by deleting its tokens. Neither has a published form for audio, video, or mixed image--text input. In this paper both run on the source units of OmniTrace and remove a unit with the content-free placeholders of \Cref{sec:protocol}; their numbers on audio, video, and images exist only through this extension.
 
 \section{Additional Results}
 \label{appendix:additional}
@@ -108,20 +111,20 @@ After training, about a third of the absolute weight lies on the late layers and
 \small
 \setlength{\tabcolsep}{4.2pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_baselines_minicpmo}}
-\caption{The comparison of \Cref{tab:baselines} repeated on MiniCPM-o~4.5: every baseline is run on this model and compared with OmniTrace on this model. Columns and marks as in \Cref{tab:baselines}. Self-citation is scored on the 210, 92, and 227 responses that cite; the document citation run covers 252 of the 400 questions.}
+\caption{The comparison of \Cref{tab:baselines} repeated on MiniCPM-o~4.5: every baseline and both OmniTrace variants are run on this model. Columns and marks as in \Cref{tab:baselines}. Self-citation is scored on the 210, 92, and 227 responses that cite; the document citation run covers 252 of the 400 questions.}
 \label{tab:baselines_minicpm}
 \end{table*}
 
 \Cref{tab:baselines_minicpm} repeats the baseline comparison on the second model, with the setting of OmniTrace unchanged.
 
-\emph{Audio.} OmniTrace has 1.4 to 2 times the lift of embedding similarity at every budget, and reaches 52\%, 72\%, 75\%, and 95\% of leave-one-out's lift at the four budgets and 62--92\% of AT2's.
+\emph{Audio.} OmniTrace has 1.4 to 2 times the lift of embedding similarity at every budget, and reaches 52\%, 72\%, 75\%, and 95\% of leave-one-out's lift at the four budgets and 62--92\% of OmniTrace-trained's.
 Where the model cites, OmniTrace's units of the same count matter 1.5 times as much as the cited spans at response level and twice as much at sentence level.
 
-\emph{Video.} The result depends on the budget. As a share of leave-one-out's lift OmniTrace reaches 27\%, 65\%, 147\%, and 194\% at the four budgets, and from 30\% on it is level with ContextCite. Its keep gain is reliably above that of embedding similarity from 20\% on. AT2 is ahead at every budget.
+\emph{Video.} The result depends on the budget. As a share of leave-one-out's lift OmniTrace reaches 27\%, 65\%, 147\%, and 194\% at the four budgets, and from 30\% on it is level with ContextCite. Its keep gain is reliably above that of embedding similarity from 20\% on. OmniTrace-trained is ahead of every method at every budget.
 
 \emph{Image--text.} OmniTrace reaches 23\% of the lift of leave-one-out and ContextCite at two quotes (39\% at three) and 42\% of embedding similarity. This is the setting in which the fixed reading transfers worst.
 
-\emph{What training finds.} AT2 reads the same attention with trained head weights and stays within 11\% of leave-one-out on audio and documents and above it on video. On held-out questions its score predicts the ablation outcomes far better than the fixed setting (correlation 0.45, 0.58, and 0.94 against 0.23, 0.24, and 0.52 for video, audio, and documents), and only 18--21\% of its absolute weight lies on the late layers, against 35\% on Qwen2.5-Omni.
+\emph{What training finds.} OmniTrace-trained reads the same attention with fitted head weights. It stays within 11\% of leave-one-out on audio and documents and is the best method on video, at no test-time cost. On held-out questions its score predicts the ablation outcomes far better than the fixed setting (correlation 0.45, 0.58, and 0.94 against 0.23, 0.24, and 0.52 for video, audio, and documents), and only 18--21\% of its absolute weight lies on the late layers, against 35\% on Qwen2.5-Omni.
 The evidence is therefore present in the attention of this model, in other layers than the ones the fixed setting sums. A rule that selects layers or heads without perturbation data would remove this gap; we leave it open.
 
 \emph{Citations.} MiniCPM-o~4.5 cites in 85\%, 51\%, and 90\% of its video, audio, and document responses. Its cited video seconds and quotes have a larger lift than OmniTrace's units of the same count, and its cited audio spans a smaller one. With the citation prompt its accuracy changes from 77.0\% to 75.7\% on video and from 76.3\% to 70.7\% on audio.
@@ -142,7 +145,7 @@ The evidence is therefore present in the attention of this model, in other layer
 \small
 \setlength{\tabcolsep}{4pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_budget_base}}
-\caption{Lift of every method at every budget on Qwen2.5-Omni-7B, and the paired difference between OmniTrace and each baseline with its 95\% bootstrap interval. AT2 is trained (\Cref{appendix:baselines}); the other methods are not.}
+\caption{Lift of every method at every budget on Qwen2.5-Omni-7B, and the paired difference between OmniTrace and each baseline with its 95\% bootstrap interval. OT-trained: OmniTrace-trained (\Cref{appendix:trained}).}
 \label{tab:budget_base}
 \end{table*}
 
@@ -224,7 +227,7 @@ OmniTrace (sum) & $+$0.51 & 1.94 & 0.59\\
 Per-token mean & $-$0.60 & 0.44 & 0.11\\
 Leave-one-out & $+$0.09 & 1.62 & 0.48\\
 ContextCite & $+$0.14 & 1.65 & 0.52\\
-AT2 (trained) & $+$0.08 & 1.71 & 0.52\\
+OmniTrace-trained & $+$0.08 & 1.71 & 0.52\\
 Human evidence & $+$0.25 & 1.85 & 0.67\\
 \bottomrule
 \end{tabular}
