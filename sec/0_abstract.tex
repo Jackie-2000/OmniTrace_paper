@@ -7,5 +7,5 @@ The method needs no training, no extra forward pass, and no per-modality tuning.
 Because attention is only a hypothesis about what a model used, we pair the method with a causal test for continuous inputs: units are hidden behind content-free placeholders, the model's own response is replayed, and the effect is compared with hiding random units of the same count.
 Across video, audio, and image--text question answering on three omni-modal models, the units OmniTrace selects are causally important for responses and for individual sentences.
 On the model the method was developed on, one pass recovers 77--96\% of the effect of leave-one-out attribution, which needs up to 41 extra passes.
-A model's own citations are a weaker guide: they can be missing from most audio and video responses, and cited audio spans matter less than the spans OmniTrace finds on both models where we test them.
+A model's own citations are a weaker guide: they can be missing from most audio and video responses, and cited audio spans matter less than the spans OmniTrace finds on all three models.
 \end{abstract}

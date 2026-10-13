@@ -31,7 +31,7 @@ The same operation lets leave-one-out and ContextCite run on audio and video, wh
 Experiments on three omni-modal models of up to 30 billion parameters and on three modalities support four findings.
 The units OmniTrace selects are causally important for whole responses and for single sentences, in every setting we test.
 On the model it was developed on, one pass recovers most of the faithfulness of perturbation methods, between 77\% and 96\% of leave-one-out's effect, without any of its 16 to 41 extra passes, and a variant with trained head weights closes most of the remaining gap.
-What a model cites is not reliably what it uses: one model leaves most audio and video responses without a citation, and on both models where we test citations, the cited parts of audio clips matter less than the parts OmniTrace finds.
+What a model cites is not reliably what it uses: one model leaves most audio and video responses without a citation, and on all three models the cited parts of audio clips matter less than the parts OmniTrace finds.
 And one fixed setting passes the causal tests on two further models unchanged, where a more elaborate tracing rule does not.
 
 Our contributions are:

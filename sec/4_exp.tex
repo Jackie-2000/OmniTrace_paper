@@ -48,7 +48,7 @@ $^\ast$Defined for text in the original work; on audio, video, and images they r
 $^\dagger$A separate generation, scored only where the model cites (62, 72, and 328 responses); its arrows compare the cited units with OmniTrace's units of the same count on those responses (\Cref{fig:stated}).
 $^\ddagger$One extra generation.
 $^\P$Trained variant (\Cref{sec:scoring}): head weights fitted on 32 ablation passes per training question; no pass added at test time.
-$^\S$Nothing retuned ($n$ = 246, 196, 400; Qwen3-Omni: 196, 400, video run not finished); baselines on MiniCPM-o~4.5 are in \Cref{appendix:minicpm}.}
+$^\S$Nothing retuned ($n$ = 246, 196, 400); baselines on MiniCPM-o~4.5 are in \Cref{appendix:minicpm}.}
 \label{tab:baselines}
 \skiptableend
 \end{table*}
@@ -84,7 +84,7 @@ The reverse test agrees: keeping only the selected units preserves more of the r
 The result also holds for single sentences (\Cref{tab:baselines}, S-lift and S-spec).
 Hiding the units attributed to a sentence lowers that sentence's probability more than random units do, and more than it lowers the other sentences of the same response.
 The attribution is therefore specific to the sentence, not a map of what is salient.
-The labels of \Cref{eq:label}, which keep 10--22\% of the units, pass the deletion and sentence-level tests in all eight settings (\Cref{appendix:labels}).
+The labels of \Cref{eq:label}, which keep 10--22\% of the units, pass the deletion and sentence-level tests in all nine settings (\Cref{appendix:labels}).
 
 Effects are large for documents, moderate for audio, and small for video, where neighboring seconds carry much of the same content.
 
@@ -144,15 +144,15 @@ The citations also agree less with human evidence than OmniTrace's labels do (F1
 
 \emph{Citations follow the prompt.} Of the 120 audio responses that contain a time span, 32 repeat the example span of the instruction.
 Asking for citations also changes the answer: video accuracy falls from 72.3\% to 55.3\%.
-MiniCPM-o~4.5 cites more often, and its cited audio spans again matter less than OmniTrace's units (lift 0.064 against 0.098), while its cited video seconds and quotes matter more (\Cref{appendix:minicpm}): how far a citation can be trusted changes with the model and the modality.
+MiniCPM-o~4.5 and Qwen3-Omni cite more often, and their cited audio spans again matter less than OmniTrace's units (lift 0.064 against 0.098; 0.127 against 0.152), while MiniCPM-o's cited video seconds and quotes matter more (\Cref{appendix:minicpm}): how far a citation can be trusted changes with the model and the modality.
 Attribution read from the generation pass leaves the response unchanged and covers every sentence.
 
 \subsection{RQ4: One Setting, Three Models}
 \label{sec:variants}
 
-The setting was fixed on Qwen2.5-Omni video data and applied without any change to MiniCPM-o~4.5, a model from another family with a different depth and a different tokenization of video, audio, and images, and to Qwen3-Omni-30B, a model four times as large.
+The setting was fixed on Qwen2.5-Omni video data and applied without any change to MiniCPM-o~4.5, a model from another family with a different depth and tokenization, and to Qwen3-Omni-30B, a model four times as large.
 All tests of RQ1 hold on both (\Cref{fig:curves}, lower blocks of \Cref{tab:baselines}).
-On Qwen3-Omni the effects on documents are as large as on Qwen2.5-Omni, and the quotes OmniTrace selects matter more than the human-marked ones (lift 0.316 against 0.267).
+On Qwen3-Omni the lift on video is twice that on Qwen2.5-Omni (0.033 against 0.016), and the quotes OmniTrace selects matter more than the human-marked ones (0.316 against 0.267).
 
 Simplicity is what makes the transfer possible.
 A hard-tracing variant with per-token argmax and vote filtering is level with OmniTrace on audio and documents for the model it was developed on, but on MiniCPM-o~4.5 it loses 86\% of its lift on audio and falls behind on documents (\Cref{appendix:variants}).

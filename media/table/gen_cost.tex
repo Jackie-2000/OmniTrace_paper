@@ -4,30 +4,30 @@
 \nextgroupplot[title={Video}, ylabel={lift (nats/token)}, legend to name=costlegend]
 \addplot+[only marks, mark=square*, mark size=1.8pt, color=otblue, mark options={fill=otblue}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0158) +- (0,0.0066)};
 \addlegendentry{OmniTrace}
-\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0076) +- (0,0.0041)};
+\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0076) +- (0,0.0044)};
 \addlegendentry{Embedding sim.}
-\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.0132) +- (0,0.0059)};
+\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.0132) +- (0,0.0065)};
 \addlegendentry{Self-citation}
-\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(5.38,0.0165) +- (0,0.0050)};
+\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(5.38,0.0165) +- (0,0.0049)};
 \addlegendentry{Leave-one-out}
-\addplot+[only marks, mark=diamond*, mark size=1.8pt, color=otgreen, mark options={fill=otgreen}, error bars/.cd, y dir=both, y explicit] coordinates {(5.09,0.0160) +- (0,0.0039)};
+\addplot+[only marks, mark=diamond*, mark size=1.8pt, color=otgreen, mark options={fill=otgreen}, error bars/.cd, y dir=both, y explicit] coordinates {(5.09,0.0160) +- (0,0.0042)};
 \addlegendentry{ContextCite}
-\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0142) +- (0,0.0044)};
-\addlegendentry{AT2}
+\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0142) +- (0,0.0045)};
+\addlegendentry{OmniTrace-trained}
 \nextgroupplot[title={Audio}, xlabel={extra forward passes per question}]
-\addplot+[only marks, mark=square*, mark size=1.8pt, color=otblue, mark options={fill=otblue}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0772) +- (0,0.0163)};
-\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0335) +- (0,0.0138)};
-\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.0402) +- (0,0.0360)};
-\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(4.16,0.0997) +- (0,0.0214)};
+\addplot+[only marks, mark=square*, mark size=1.8pt, color=otblue, mark options={fill=otblue}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0772) +- (0,0.0175)};
+\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0335) +- (0,0.0151)};
+\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.0402) +- (0,0.0319)};
+\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(4.16,0.0997) +- (0,0.0205)};
 \addplot+[only marks, mark=diamond*, mark size=1.8pt, color=otgreen, mark options={fill=otgreen}, error bars/.cd, y dir=both, y explicit] coordinates {(4.86,0.0991) +- (0,0.0207)};
-\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0813) +- (0,0.0181)};
+\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.0813) +- (0,0.0184)};
 \nextgroupplot[title={Image--text}]
-\addplot+[only marks, mark=square*, mark size=1.8pt, color=otblue, mark options={fill=otblue}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.3506) +- (0,0.0425)};
-\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.2156) +- (0,0.0370)};
-\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.1840) +- (0,0.0254)};
-\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(4.09,0.3684) +- (0,0.0373)};
-\addplot+[only marks, mark=diamond*, mark size=1.8pt, color=otgreen, mark options={fill=otgreen}, error bars/.cd, y dir=both, y explicit] coordinates {(5.09,0.3892) +- (0,0.0376)};
-\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.3737) +- (0,0.0400)};
+\addplot+[only marks, mark=square*, mark size=1.8pt, color=otblue, mark options={fill=otblue}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.3506) +- (0,0.0388)};
+\addplot+[only marks, mark=*, mark size=1.8pt, color=otpurple, mark options={fill=otpurple}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.2156) +- (0,0.0350)};
+\addplot+[only marks, mark=o, mark size=1.8pt, color=otgray, mark options={fill=otgray}, error bars/.cd, y dir=both, y explicit] coordinates {(1.00,0.1840) +- (0,0.0262)};
+\addplot+[only marks, mark=triangle*, mark size=1.8pt, color=otorange, mark options={fill=otorange}, error bars/.cd, y dir=both, y explicit] coordinates {(4.09,0.3684) +- (0,0.0336)};
+\addplot+[only marks, mark=diamond*, mark size=1.8pt, color=otgreen, mark options={fill=otgreen}, error bars/.cd, y dir=both, y explicit] coordinates {(5.09,0.3892) +- (0,0.0369)};
+\addplot+[only marks, mark=pentagon*, mark size=1.8pt, color=otred, mark options={fill=otred}, error bars/.cd, y dir=both, y explicit] coordinates {(0.00,0.3737) +- (0,0.0378)};
 \end{groupplot}
 \end{tikzpicture}\\[-2pt]
 \pgfplotslegendfromname{costlegend}

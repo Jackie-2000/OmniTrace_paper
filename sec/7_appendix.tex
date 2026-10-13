@@ -185,7 +185,7 @@ MiniCPM-o~4.5 uses the same value without any check.
 \small
 \setlength{\tabcolsep}{4.2pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_models}}
-\caption{OmniTrace on three models (the Qwen3-Omni video run is not finished), variants that change one design choice, and human-marked evidence.
+\caption{OmniTrace on three models, variants that change one design choice, and human-marked evidence.
 Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quotes); S-lift and S-spec: sentence lift and specificity, in nats per token.
 \mdn / \mup: reliably lower / higher than OmniTrace on the same questions or sentences.
 \emph{Argmax tracing + curation} traces each token to its highest-attention position and filters the votes; \emph{last layer only} and \emph{per-token mean} change one choice in \Cref{eq:mass}.
@@ -203,12 +203,12 @@ Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quo
 \Cref{tab:models} compares OmniTrace with variants that change one design choice, and \Cref{fig:transfer} shows the comparison with hard tracing.
 On Qwen2.5-Omni, argmax tracing with curation is level with OmniTrace on audio and image--text input and behind on video.
 On MiniCPM-o~4.5 it loses most of its effect on audio, is behind on image--text input, and on video its top units are worse to keep than random ones.
-On Qwen3-Omni-30B it is level with OmniTrace in lift, slightly ahead in keep gain, and behind at sentence level on audio.
-Using the last layer alone is reliably worse on audio for all three models, and on Qwen3-Omni it loses more than half of the lift on audio and image--text input.
+On Qwen3-Omni-30B it is level with OmniTrace in lift on audio and image--text input, slightly ahead in keep gain, and behind at sentence level on audio; on video it keeps 60\% of the lift, as on Qwen2.5-Omni.
+Using the last layer alone is reliably worse on audio for all three models, and on Qwen3-Omni it loses more than half of the lift in every modality.
 
 The last rows hide the units that annotators marked.
 On Qwen2.5-Omni, the units OmniTrace selects have a larger lift than the human-marked ones.
-On Qwen3-Omni-30B the same holds for image--text input (0.316 against 0.267).
+On Qwen3-Omni-30B the same holds for image--text input (0.316 against 0.267), and on video the two are close (0.033 against 0.027).
 On MiniCPM-o~4.5 the order is reversed, most clearly on image--text input: there OmniTrace finds units that matter, but not the ones that matter most.
 
 \subsection{Unit Size}
