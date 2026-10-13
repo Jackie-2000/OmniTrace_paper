@@ -37,24 +37,19 @@ s_k(S_j)=\sum_{t\in C_k}\;\sum_{i\in S_j} a_t(i).
 The score is additive in two ways. Over tokens, the response-level score is the sum of the sentence scores, so one pass gives attributions at both levels. Over positions, the score of two merged units is the sum of their scores, so the scores do not depend on how a stream is cut.
 Nothing else enters: no token weights, no normalization over sources, and no fitted parameter.
 
-\paragraph{Mass, not peaks.}
 \label{sec:design}
 A common way to read attention is to trace each generated token to its single highest-weight position and to count these traces as votes.
 For text sources the peak and the mass tell the same story, because a source is a few tokens.
-For continuous sources they do not. One second of video is spread over about 300 positions, each of which receives little weight; the second as a whole can hold much of the mass while no position in it wins the argmax, which goes to a sharply attended text token.
-We measured this on 1{,}000 development questions of NExT-GQA that share no video with our test set.
+For continuous sources they do not. One second of video is spread over hundreds of positions, each of which receives little weight; the second as a whole can hold much of the mass while no position in it wins the argmax, which goes to a sharply attended text token.
+We measured this on 1{,}000 questions from the dev set of NExT-GQA~\cite{xiao2024nextgqa} that share no video with our test set.
 Ranking video seconds by argmax votes agrees with human-marked evidence at chance level in every layer (AUROC 0.50--0.52), where mass reaches 0.60; and when the argmax ranges over the whole prompt, the question text wins about 98\% of the tokens.
-
-\paragraph{Late layers.}
-On the same data, the first twelve layers of Qwen2.5-Omni carry no source signal (AUROC 0.50--0.53) and averaging all layers dilutes the late ones (0.57 against 0.60).
-We therefore fix the band as the last third of the depth, which is defined for any model (layers 18--27 of 28 in Qwen2.5-Omni-7B, 24--35 of 36 in MiniCPM-o~4.5), and do not tune it further.
 
 \paragraph{Cost.}
 Scores are read during generation. At each step we keep only the attention row of the token being generated in the late layers, $O(|\mathcal{L}_{\text{late}}|\,N)$ memory per step.
 OmniTrace adds no forward pass, no backward pass, and no training to the generation it explains.
 
 \paragraph{A trained variant.}
-The default weights the late heads equally. When ablation data for a model can be afforded, \textbf{OmniTrace-trained} replaces the average by a weighted sum over all heads, $a_t(i)=\sum_{\ell,h}w_{\ell h}A^{(\ell,h)}_t(i)$, and fits $w$ so that the scores predict the effect of hiding units (\Cref{appendix:trained}); the objective follows AT2~\cite{cohenwang2025at2}, which learns head weights for text contexts.
+The default weights the late heads equally. When ablation data for a model can be afforded, \textbf{OmniTrace-trained} replaces the average by a weighted sum over all heads, $a_t(i)=\sum_{\ell,h}w_{\ell h}A^{(\ell,h)}_t(i)$, and fits $w$ so that the scores predict the effect of hiding units (\Cref{appendix:trained}); the objective learns head weights for text contexts.
 Units, the reading pass, and labels stay the same, and no pass is added at test time.
 
 \subsection{From Scores to Evidence Labels}

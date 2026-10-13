@@ -10,17 +10,17 @@
 \textbf{Method} & training & pass & Image & video\\
 \midrule
 Self-citation (prompted) & \checkmark & -- & \checkmark & \checkmark\\
-ContextCite & \checkmark & -- & -- & --\\
-MIRAGE & \checkmark & -- & -- & --\\
-AT2 & -- & \checkmark & -- & --\\
-MultAttnAttrib & \checkmark & \checkmark & \checkmark & --\\
-vStream & -- & \checkmark & \checkmark & --\\
-VTrace & \checkmark & -- & \checkmark & --\\
+ContextCite~\cite{cohen-wang2024contextcite} & \checkmark & -- & -- & --\\
+MIRAGE~\cite{qi-etal-2024-model} & \checkmark & -- & -- & --\\
+AT2~\cite{cohenwang2025at2} & -- & \checkmark & -- & --\\
+MultAttnAttrib~\cite{tran2026multattnattrib} & \checkmark & \checkmark & \checkmark & --\\
+vStream~\cite{kang2026vstream} & -- & \checkmark & \checkmark & --\\
+VTrace~\cite{yuan2026vtrace} & \checkmark & -- & \checkmark & --\\
 \midrule
 \textbf{OmniTrace} & \checkmark & \checkmark & \checkmark & \checkmark\\
 \bottomrule
 \end{tabular}
-\caption{Attribution methods for generated text, as published. Image and audio, video: source types the method is defined and evaluated on, beyond text. Self-citation states evidence instead of measuring it.}
+\caption{Attribution methods for generated text. Image and audio, video: source types the method is defined and evaluated on beyond text.}
 \label{tab:position}
 \skiptableend
 \end{table}
@@ -32,7 +32,6 @@ MIRAGE~\cite{qi-etal-2024-model} uses gradient saliency to link answer tokens to
 Closer to our signal, AT2~\cite{cohenwang2025at2} learns one weight per attention head from perturbation data, and AttnTrace~\cite{wang2026attntrace} and \citet{ding2025attention} read attention directly for text contexts.
 All of these define sources as discrete text units and are evaluated on text (\Cref{tab:position}); none has been applied to audio or video.
 OmniTrace uses the same kind of signal as the attention-based methods, needs no training, and is defined over units of any modality, including time intervals.
-The term \emph{generation-time} is also used for prompted citation~\cite{saxena2025generation, gao2023alce}; we use it for attribution that is read from the model's internals while it decodes.
 
 \paragraph{Attribution for vision--language models.}
 vStream~\cite{kang2026vstream} streams attribution to image regions during reasoning but learns a map from attention to perturbation effects. VTrace~\cite{yuan2026vtrace} and ERCR~\cite{liang2025ercr} are post-hoc methods for image patches, and MultAttnAttrib~\cite{tran2026multattnattrib} applies selected attention heads to long documents.

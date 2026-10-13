@@ -1,38 +1,34 @@
 \section{Introduction}
 \label{sec:intro}
 
-Omni-modal large language models read text, images, audio, and video in one prompt and answer in free text~\cite{gpt-5.2, gemini3, Xu2025Qwen3OmniTR, yu2025minicpm, xu2025qwen2, ye2026omnivinci}.
+Omni-modal large language models read text, images, audio, and video in one prompt and answer in free text~\cite{gpt6astra2026, gemini38flash2026, Xu2025Qwen3OmniTR, cui2026minicpm, xu2025qwen2, ye2026omnivinci}.
 The more a model can take in, the harder its answers are to check. A claim about a forty-second clip or a pool of fifteen document quotes can only be verified by going through the input again, unless the model can show where the claim came from.
 
 There are two ways to obtain this evidence, and they answer different questions.
 One can \emph{ask} the model: prompt it to cite a time span or a passage with each sentence. This is cheap, but a citation is itself generated text. It tells us what the model says it used, and stated citations for audio and video are often missing or hallucinated~\cite{wan2026murgat}.
 Or one can \emph{measure}: remove parts of the input and see how the output changes~\cite{cohen-wang2024contextcite}. This tells us what the model used, at the price of tens of extra forward passes per query, each of them over the full clip.
 Learned shortcuts~\cite{cohenwang2025at2, kang2026vstream} lower the price at inference but need perturbation data for every new model, and both lines of work were developed for text contexts or single images.
-For audio and video there is at present no way to know what a model relied on without paying for perturbation, and no agreed way to test a cheaper answer.
+To our knowledge, for audio and video there is currently no way to know what a model relied on without paying for perturbation.
 
 Our starting point is that the model already leaves a record of where it looked.
 Every generated token is computed by attending over the input, so the generation pass contains, for free, a distribution over the input for every token.
 The open question is whether this record can be read faithfully once the sources are not sentences but images and seconds of sound and video.
-We find that it can, with one change of view.
 The usual way to trace with attention follows \emph{peaks}: it links each generated token to its most attended input position.
 That works when a source is a handful of text tokens. It fails for continuous sources, where one second of video is spread over hundreds of positions that each receive little weight: the second as a whole may dominate while no single position does.
 Evidence in continuous modalities is diffuse, and it has to be read as \emph{mass}.
 
-This view leads to \textbf{OmniTrace}, a training-free attribution method that runs inside the generation pass (\Cref{fig:teaser}).
-The input is split into source units by structure it already has: one-second units for audio and video and one unit per passage or image.
+This view leads to \textbf{OmniTrace}, a training-free attribution method that runs inside the generation pass. 
+As shown in \Cref{fig:teaser}, the input is split into source units by structure it already has: one-second units for audio and video and one unit per passage or image.
 A unit's score for a sentence is the late-layer attention mass that the sentence's tokens place on it, and a unit is labelled as evidence when its score stands out among the units of its own modality.
 The score is additive over tokens and over positions, so the same pass yields attributions for sentences and whole responses, as source ids for text and images and as time intervals for audio and video.
-The default has no argmax, no token weighting, no learned component, and no per-modality tuning.
 
-A reading of attention is a hypothesis, and attention is known to be an unreliable explanation when taken on trust. We therefore make the test part of the contribution.
-We replay the model's own response while source units are hidden behind content-free placeholders of the same length (black frames, silence, blank tokens), and compare the loss in probability with the loss from hiding the same number of random units.
-The same operation lets leave-one-out and ContextCite run on audio and video, which gives, to our knowledge, the first direct comparison of single-pass and perturbation-based attribution on continuous inputs.
+We replay the model's own response while source units are hidden behind content-free placeholders of the same length (black frames, silence, blank tokens), and compare the loss in probability with the loss from hiding the same number of random units or attribution produced by other baseline methods.
+The same operation lets leave-one-out (Oracle) and ContextCite~\cite{cohen-wang2024contextcite} run on audio and video, which gives, to our knowledge, the first direct comparison of single-pass and perturbation-based attribution on continuous inputs.
 
-Experiments on three omni-modal models of 7 to 30 billion parameters and on three modalities support four findings.
-The units OmniTrace selects are causally important for whole responses and for single sentences in all nine combinations of model and modality.
-On the model the setting was chosen on, one pass recovers 77--96\% of leave-one-out's effect without any of its 16 to 41 extra passes (\Cref{fig:teaser}, bottom right).
-What a model cites is not reliably what it uses: one model leaves most audio and video responses without a citation, and on all three models the cited parts of audio clips matter less than the parts OmniTrace finds.
-And the same setting transfers unchanged to two further models, where a more elaborate tracing rule does not; where it falls short, training the head weights recovers 96\% of the perturbation effect, still in one pass.
+Experiments on Qwen3-Omni-30B~\cite{Xu2025Qwen3OmniTR}, MiniCPM-o 4.5~\cite{cui2026minicpm} and Qwen2.5-Omni-7B~\cite{xu2025qwen2} on three modalities show that (1). the units OmniTrace selects are causally important for whole responses and for single sentences in all nine combinations of model and modality.
+(2). On the model the setting was chosen on, one pass recovers 77-96\% of leave-one-out's effect without any of its 16 to 41 extra passes (\Cref{fig:teaser}, bottom right).
+(3). What a model cites itself is not reliably what it uses: on all three models the cited parts of audio clips matter less than the parts OmniTrace finds.
+(4). Training the head weights recovers 96\% of the perturbation effect, still in one pass.
 
 Our contributions are:
 \begin{itemize}

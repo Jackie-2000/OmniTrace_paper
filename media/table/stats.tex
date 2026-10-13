@@ -8,7 +8,7 @@
 \midrule
 Dataset & NExT-GQA & MMAU & MMDocRAG \\
 Task & multiple choice & multiple choice & long answer \\
-Questions (test) & 300 (246) & 249 (196) & 400 (400) \\
+Questions  & 300 & 249  & 400  \\
 Source unit & 1 s of frames & 1 s of audio & passage / image \\
 Units per question & 46 & 22 & 15 \\
 Input length & 10--90 s & 1.5--35 s & 15 quotes \\
@@ -20,7 +20,7 @@ MiniCPM-o 4.5 & 77.0 & 76.3 & 50.5$^\ast$ \\
 Qwen3-Omni-30B & 78.7 & 73.1 & 54.0$^\ast$ \\
 \bottomrule
 \end{tabular}
-\caption{Data. Test questions exclude the split used to check the label threshold. $^\ast$Long answers graded as fully correct by an LLM judge against the reference answer (\Cref{appendix:judge}); counting partly correct answers gives 66.8, 85.8, and 86.8.}
+\caption{Data. $^\ast$Open-ended answers graded as fully correct by an LLM judge Opus 5~\cite{anthropic2026opus5} against the reference answer (\Cref{appendix:judge}).}
 \label{tab:stats}
 \skiptableend
 \end{table}
