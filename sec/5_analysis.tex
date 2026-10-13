@@ -1,6 +1,13 @@
 \section{What Attention Mass Captures, and What It Misses}
 \label{sec:analysis}
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{media/figure/fig_example.pdf}
+\caption{\textbf{A response and its attribution} (Qwen2.5-Omni-7B, NExT-GQA; selected example). Rows are generated sentences and cells are seconds of the video; darker cells hold more attention mass (scaled per row), and orange boxes are the labelled units. The bar on top is the human-marked evidence: 18 of the 21 labelled cells fall inside it, although no annotation was used.}
+\label{fig:example}
+\end{figure*}
+
 \subsection{Agreement with Human Evidence}
 \label{sec:agreement}
 
@@ -28,9 +35,10 @@ ContextCite & 0.566 & \textbf{0.342} & 0.743 & 0.642\\
 \skiptableend
 \end{table}
 
-We also compare each ranking with the human-marked evidence (\Cref{tab:agreement}; \Cref{fig:example} in the appendix shows one response).
+We also compare each ranking with the human-marked evidence (\Cref{tab:agreement}; \Cref{fig:example} shows one response).
 
 On documents, OmniTrace agrees with the gold quotes better than every baseline, including the perturbation methods. On correctly answered questions its top quote is gold in 90\% of the cases.
+The same holds on Qwen3-Omni-30B: on its correctly answered document questions the AUROC is 0.91 and the top quote is gold in 90\% of the cases, and OmniTrace's labels match the gold quotes with an F1 of 0.61, against 0.39 for the model's own citations.
 On video it has the best AUROC, but its single top second is evidence no more often than chance: attention finds the right region of the clip without pinning down the exact second.
 
 The table also shows why agreement cannot be the main test: the perturbation methods have the largest causal effect and the lowest AUROC. What a model depends on and what a person marks overlap only in part.

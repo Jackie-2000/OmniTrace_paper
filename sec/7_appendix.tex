@@ -111,7 +111,7 @@ Leave-one-out is a generic procedure and ContextCite is defined for text context
 \small
 \setlength{\tabcolsep}{4.2pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_baselines_minicpmo}}
-\caption{The comparison of \Cref{tab:baselines} repeated on MiniCPM-o~4.5: every baseline and both OmniTrace variants are run on this model. Columns and marks as in \Cref{tab:baselines}; arrows compare with OmniTrace on this model. Self-citation is scored on the 210, 92, and 227 responses that cite; the document citation run covers 252 of the 400 questions.}
+\caption{The comparison of \Cref{tab:baselines} repeated on MiniCPM-o~4.5: every baseline and both OmniTrace variants are run on this model. Columns as in \Cref{tab:baselines}. \mdn / \mup: reliably lower / higher than OmniTrace on this model on the same questions (paired 95\% bootstrap interval). $^\dagger$Self-citation is a separate generation ($^\ddagger$one extra pass), scored on the 210, 92, and 227 responses that cite; the document citation run covers 252 of the 400 questions.}
 \label{tab:baselines_minicpm}
 \end{table*}
 
@@ -131,13 +131,6 @@ The evidence is therefore present in the attention of this model, in other layer
 
 \subsection{All Budgets}
 \label{appendix:budgets}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{media/figure/fig_example.pdf}
-\caption{\textbf{A response and its attribution} (Qwen2.5-Omni-7B, NExT-GQA; selected example). The model answers correctly why the boys walk backwards (``to come in the camera''). Rows are generated sentences and cells are seconds of the video; darker cells hold more attention mass (scaled per row), and orange boxes are the units labelled by \Cref{eq:label}. The bar on top is the human-marked evidence: 18 of the 21 labelled cells fall inside it, although no label was used.}
-\label{fig:example}
-\end{figure*}
 
 \begin{table*}[t]
 \centering

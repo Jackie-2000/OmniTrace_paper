@@ -4,5 +4,5 @@ Asking the model to cite its evidence yields what it \emph{says} it used; measur
 We show that the generation pass already holds most of this information.
 OmniTrace attributes each generated sentence to source units (text chunks, images, and seconds of audio or video) by reading late-layer attention as mass over units with no extra forward pass and no per-modality tuning; head weights can be trained where ablation data are available.
 With fixed causal test setting, the units OmniTrace selects are causally important for responses and for individual sentences in video, audio, and image-text question answering on Qwen3-Omni-30B, MiniCPM-o 4.5 and Qwen2.5-Omni-7B. With one generation pass, OmniTrace recovers 77-96\% of the effect of leave-one-out attribution, which needs up to 41 extra passes.
-We also compared agreement of response-level rankings with human-marked evidence, OmniTrace variants has the highest overall AUROC among all baselines.
+OmniTrace also agrees best with human-marked evidence: its response-level rankings reach an AUROC of 0.83 on documents and 0.64 on video, against 0.76 and 0.60 for the strongest baseline.
 \end{abstract}

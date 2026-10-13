@@ -34,5 +34,5 @@ Our contributions are:
 \begin{itemize}
     \item \textbf{OmniTrace}, a single-pass, training-free method that attributes each generated sentence to text, image, audio, and video sources by reading attention as mass over source units, with an optional variant that trains the head weights.
     \item \textbf{A causal evaluation protocol for continuous inputs}, with content-free placeholders and size-matched controls, under which perturbation baselines apply to every modality.
-    \item \textbf{Evidence on stated versus used sources} and on the limits of attention: its bias toward large units, its coarse localization in video, and the gap between what models depend on and what people mark.
+    \item \textbf{Evidence on three models and three modalities}: one pass recovers 77--96\% of leave-one-out's effect, trained head weights recover 96\% of the perturbation effect where the default falls short, and OmniTrace matters more than the sources a model cites itself and agrees with human-marked evidence better than every baseline.
 \end{itemize}
