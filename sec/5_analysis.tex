@@ -1,13 +1,6 @@
 \section{What Attention Mass Captures, and What It Misses}
 \label{sec:analysis}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{media/figure/fig_example.pdf}
-\caption{\textbf{A response and its attribution} (Qwen2.5-Omni-7B, NExT-GQA; selected example). The question is why the boys walk backwards after talking to the lady, and the model answers correctly (``to come in the camera''). Each row is a generated sentence and each cell one second of the video; darker cells hold more attention mass (scaled per row), and orange boxes are the units labelled by \Cref{eq:label}. The bar on top is the interval annotators marked as evidence. 18 of the 21 labelled cells fall inside it, although no label was used.}
-\label{fig:example}
-\end{figure*}
-
 \subsection{Agreement with Human Evidence}
 \label{sec:agreement}
 
@@ -35,25 +28,21 @@ AT2 (trained) & 0.626 & 0.321 & 0.815 & 0.695\\
 \skiptableend
 \end{table}
 
-The causal tests ask what the model used. A user also cares whether the evidence shown is evidence a person would accept, so we compare each method's ranking with the human-marked evidence (\Cref{tab:agreement}); \Cref{fig:example} shows one response.
+A user also cares whether the evidence shown is evidence a person would accept, so we compare each ranking with the human-marked evidence (\Cref{tab:agreement}; \Cref{fig:example} shows one response).
 
 On documents, OmniTrace agrees with the gold quotes better than every untrained baseline, including the perturbation methods that are causally stronger, and is level with the trained AT2. On correctly answered questions its top quote is gold in 90\% of the cases.
-On video it has the best AUROC, but its single top second is evidence no more often than chance: attention finds the right region of the clip without pinning down the exact second, which matches its weaker sentence-level results there.
+On video it has the best AUROC, but its single top second is evidence no more often than chance: attention finds the right region of the clip without pinning down the exact second.
 
-The table also explains why agreement cannot be the main test.
-The perturbation methods have the largest causal effect and the lowest AUROC. What a model depends on and what a person marks overlap only in part, and a method can be right about one and wrong about the other.
+The table also shows why agreement cannot be the main test: the perturbation methods have the largest causal effect and the lowest AUROC. What a model depends on and what a person marks overlap only in part.
 
 \subsection{Unit Size and Modality Reliance}
 \label{sec:size}
 
-Mixed inputs make units unequal: an image quote takes hundreds of tokens and a passage a few dozen.
-Because mass is additive over positions, a larger unit can collect more of it.
+Mixed inputs make units unequal: an image quote takes hundreds of tokens and a passage a few dozen, and a larger unit can collect more mass.
 On documents the scores of OmniTrace correlate with quote size at $\rho=0.51$, while the measured effects of leave-one-out and ContextCite correlate at 0.09 and 0.14 (\Cref{appendix:size}).
-Dividing by the token count over-corrects ($\rho=-0.60$) and lowers the lift on Qwen2.5-Omni, so we keep the sum and report the bias.
-AT2's trained head weights do not show the bias ($\rho=0.08$), which suggests that a choice of heads, not a division by size, is the way to correct it.
+Dividing by the token count over-corrects ($\rho=-0.60$) and lowers the lift, so we keep the sum and report the bias.
+AT2's trained head weights do not show the bias ($\rho=0.08$): a choice of heads, not a division by size, may correct it.
 
-Across modalities the reading is accurate.
-Images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out, ContextCite, and AT2 place 47--48\% of the measured effect on images.
-In aggregate, OmniTrace reflects how much the model relies on images and on text.
+Across modalities the reading is accurate: images hold 74\% of the source tokens but receive 47\% of the attention mass, and leave-one-out, ContextCite, and AT2 place 47--48\% of the measured effect on images.
 
-Two further checks are in the appendix: the selected time is stable but not invariant when one-second units are merged into longer ones (\Cref{appendix:granularity}), and the attention mass a sentence places on the sources indicates how much the sentence depends on them (\Cref{appendix:flagging}).
+The appendix adds two checks: merging one-second units into longer ones (\Cref{appendix:granularity}), and attention mass as a sign of how much a sentence depends on the sources (\Cref{appendix:flagging}).

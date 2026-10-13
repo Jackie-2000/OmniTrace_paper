@@ -64,10 +64,12 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - 2026-10-12 (c), pushed: main-table rows renamed OmniTrace$_{Qwen2.5-Omni}$ / OmniTrace$_{MiniCPM-o}$; legend and caption of `fig_curves` reworded ("hide OmniTrace's top units" / "hide random units", per model).
 - 2026-10-12 (d), pushed: main table marks the best (bold) and second best (underline) per column among the comparable rows; switch `UNDERLINE` in `analysis/paper_models.py` (`"second"` or `"free"` = best method without an extra pass). The author set the table font to `\scriptsize` on Overleaf; keep it.
 - 2026-10-12 (e), pushed: AT2 added (Qwen2.5-Omni-7B): row in the main table with a training-cost footnote ($^\P$), point in `fig_cost`, paragraph "Against a trained reader of attention" in RQ2, rows in `tab:agreement` and `tab:size`, appendix paragraph, limitations sentence. Numbers: OmniTrace = 111% / 95% / 94% of AT2's lift (video / audio / image--text). The abstract was not changed.
+- 2026-10-12 (f), pushed: three models. Qwen3-Omni-30B row in the main table (audio, image--text; video run partial and left out automatically) and dotted lines in `fig_curves`; MiniCPM-o baselines as an appendix table (`appendix:minicpm`) with a paragraph each in RQ2 and RQ3; RQ4 is now "One Setting, Three Models"; abstract, introduction, conclusion and limitations say where the claims hold. Author's instruction: present the results in the most favourable way for OmniTrace (lead with what holds; weak cells stated briefly). Main text fills page 8 exactly: every added sentence needs a cut. `fig_example` is defined in `sec/4_exp.tex` (after `fig_stated`) for float placement.
 
 ## Open items
 
-- Main table once MiniCPM baselines exist (author to decide): two blocks, one per model, each baseline next to OmniTrace on the same model (recommended, keeps the paired marks), or one block of averages with the per-model blocks in the appendix.
+- MiniCPM-o baselines are in the appendix (`tab:baselines_minicpm`), not in the main table (decided 2026-10-12): OmniTrace is weak there on image--text input (23% of leave-one-out). If a cause is found (layer band or image token layout on that model), revisit.
+- After the remaining runs: MiniCPM-o document citation run (252 of 400 so far; update the caption of `tab:baselines_minicpm` and the limitations); Qwen3-Omni video (row and curve appear by themselves; then update the table caption, `fig_curves` caption, `stats.tex`, limitations) and its citation test (one sentence for RQ3).
 
 - Title: the author's title ("A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs") is in place; the abstract and introduction say "single-pass" and "training-free" more than "unified framework" or "generation-time". Align the wording if the author wants the title's terms to lead.
 
@@ -75,4 +77,4 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - Abstract: could mention the trained baseline in a few words ("close to an attention method trained on perturbation data"); left to the author.
 - Figure 1 to be drawn by the author (brief above).
 - Check the 2026 arXiv entries in `related.bib` before submission.
-- Results that would strengthen the story if available (ask the author): baselines on MiniCPM-o 4.5; audio evidence spans for MMAU (human agreement on audio); a video run with the audio track on (audio vs visual reliance).
+- Results that would strengthen the story if available (ask the author): document answer accuracy of Qwen3-Omni (judge); audio evidence spans for MMAU (human agreement on audio); a video run with the audio track on (audio vs visual reliance).

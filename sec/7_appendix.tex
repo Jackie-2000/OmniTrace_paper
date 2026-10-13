@@ -4,8 +4,8 @@
 \label{appendix:impl}
 
 \paragraph{Models and decoding.}
-We use the public checkpoints of Qwen2.5-Omni-7B (28 decoder layers) and MiniCPM-o~4.5 (36 decoder layers) in half precision (bfloat16) on two B200 GPUs, with greedy decoding, no repetition penalty, and at most 512 new tokens.
-The late band of \Cref{sec:scoring} is the last third of the layers, 18--27 and 24--35.
+We use the public checkpoints of Qwen2.5-Omni-7B (28 decoder layers), MiniCPM-o~4.5 (36 decoder layers), and Qwen3-Omni-30B-A3B-Instruct (48 decoder layers) in half precision (bfloat16) on two B200 GPUs, with greedy decoding, no repetition penalty, and at most 512 new tokens.
+The late band of \Cref{sec:scoring} is the last third of the layers: 18--27, 24--35, and 32--47.
 
 \paragraph{Inputs and units.}
 \emph{Video.} Qwen2.5-Omni samples two frames per second within a budget of about 20k video tokens; its encoder groups two frames into one temporal step of about 1.02\,s, which is our unit. MiniCPM-o~4.5 samples one frame per second with 64 tokens per frame, and each frame is a unit. Unit times are taken from the encoder's own time grid. Videos are between 10 and 90\,s long and are given without the audio track.
@@ -100,6 +100,32 @@ After training, about a third of the absolute weight lies on the late layers and
 \section{Additional Results}
 \label{appendix:additional}
 
+\subsection{Baselines on MiniCPM-o 4.5}
+\label{appendix:minicpm}
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.2pt}
+\resizebox{\textwidth}{!}{\input{media/table/gen_baselines_minicpmo}}
+\caption{The comparison of \Cref{tab:baselines} repeated on MiniCPM-o~4.5: every baseline is run on this model and compared with OmniTrace on this model. Columns and marks as in \Cref{tab:baselines}. Self-citation is scored on the 210, 92, and 227 responses that cite; the document citation run covers 252 of the 400 questions.}
+\label{tab:baselines_minicpm}
+\end{table*}
+
+\Cref{tab:baselines_minicpm} repeats the baseline comparison on the second model, with the setting of OmniTrace unchanged.
+
+\emph{Audio.} OmniTrace has 1.4 to 2 times the lift of embedding similarity at every budget, and reaches 52\%, 72\%, 75\%, and 95\% of leave-one-out's lift at the four budgets and 62--92\% of AT2's.
+Where the model cites, OmniTrace's units of the same count matter 1.5 times as much as the cited spans at response level and twice as much at sentence level.
+
+\emph{Video.} The result depends on the budget. As a share of leave-one-out's lift OmniTrace reaches 27\%, 65\%, 147\%, and 194\% at the four budgets, and from 30\% on it is level with ContextCite. Its keep gain is reliably above that of embedding similarity from 20\% on. AT2 is ahead at every budget.
+
+\emph{Image--text.} OmniTrace reaches 23\% of the lift of leave-one-out and ContextCite at two quotes (39\% at three) and 42\% of embedding similarity. This is the setting in which the fixed reading transfers worst.
+
+\emph{What training finds.} AT2 reads the same attention with trained head weights and stays within 11\% of leave-one-out on audio and documents and above it on video. On held-out questions its score predicts the ablation outcomes far better than the fixed setting (correlation 0.45, 0.58, and 0.94 against 0.23, 0.24, and 0.52 for video, audio, and documents), and only 18--21\% of its absolute weight lies on the late layers, against 35\% on Qwen2.5-Omni.
+The evidence is therefore present in the attention of this model, in other layers than the ones the fixed setting sums. A rule that selects layers or heads without perturbation data would remove this gap; we leave it open.
+
+\emph{Citations.} MiniCPM-o~4.5 cites in 85\%, 51\%, and 90\% of its video, audio, and document responses. Its cited video seconds and quotes have a larger lift than OmniTrace's units of the same count, and its cited audio spans a smaller one. With the citation prompt its accuracy changes from 77.0\% to 75.7\% on video and from 76.3\% to 70.7\% on audio.
+
 \subsection{All Budgets}
 \label{appendix:budgets}
 
@@ -156,7 +182,7 @@ MiniCPM-o~4.5 uses the same value without any check.
 \small
 \setlength{\tabcolsep}{4.2pt}
 \resizebox{\textwidth}{!}{\input{media/table/gen_models}}
-\caption{OmniTrace on two models, variants that change one design choice, and human-marked evidence.
+\caption{OmniTrace on three models (the Qwen3-Omni video run is not finished), variants that change one design choice, and human-marked evidence.
 Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quotes); S-lift and S-spec: sentence lift and specificity, in nats per token.
 \mdn / \mup: reliably lower / higher than OmniTrace on the same questions or sentences.
 \emph{Argmax tracing + curation} traces each token to its highest-attention position and filters the votes; \emph{last layer only} and \emph{per-token mean} change one choice in \Cref{eq:mass}.
@@ -167,17 +193,19 @@ Lift and Keep: lift and keep gain at response level (20\% of the duration; 2 quo
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{media/figure/fig_transfer.pdf}
-\caption{Lift of argmax tracing with curation as a share of OmniTrace's lift. In each panel the left group of bars is Qwen2.5-Omni-7B, on which the variant was developed, and the right group is MiniCPM-o~4.5.}
+\caption{Lift of argmax tracing with curation as a share of OmniTrace's lift. In each panel the groups of bars are, from left to right, Qwen2.5-Omni-7B, on which the variant was developed, MiniCPM-o~4.5, and Qwen3-Omni-30B.}
 \label{fig:transfer}
 \end{figure}
 
 \Cref{tab:models} compares OmniTrace with variants that change one design choice, and \Cref{fig:transfer} shows the comparison with hard tracing.
 On Qwen2.5-Omni, argmax tracing with curation is level with OmniTrace on audio and image--text input and behind on video.
 On MiniCPM-o~4.5 it loses most of its effect on audio, is behind on image--text input, and on video its top units are worse to keep than random ones.
-Using the last layer alone is reliably worse on audio for both models.
+On Qwen3-Omni-30B it is level with OmniTrace in lift, slightly ahead in keep gain, and behind at sentence level on audio.
+Using the last layer alone is reliably worse on audio for all three models, and on Qwen3-Omni it loses more than half of the lift on audio and image--text input.
 
 The last rows hide the units that annotators marked.
 On Qwen2.5-Omni, the units OmniTrace selects have a larger lift than the human-marked ones.
+On Qwen3-Omni-30B the same holds for image--text input (0.316 against 0.267).
 On MiniCPM-o~4.5 the order is reversed, most clearly on image--text input: there OmniTrace finds units that matter, but not the ones that matter most.
 
 \subsection{Unit Size}

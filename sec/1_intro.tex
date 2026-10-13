@@ -28,11 +28,11 @@ A reading of attention is a hypothesis, and attention is known to be an unreliab
 We replay the model's own response while source units are hidden behind content-free placeholders of the same length (black frames, silence, blank tokens), and compare the loss in probability with the loss from hiding the same number of random units.
 The same operation lets leave-one-out and ContextCite run on audio and video, which gives, to our knowledge, the first direct comparison of single-pass and perturbation-based attribution on continuous inputs.
 
-Experiments on two omni-modal models and three modalities support four findings.
+Experiments on three omni-modal models of up to 30 billion parameters and on three modalities support four findings.
 The units OmniTrace selects are causally important for whole responses and for single sentences, in every setting we test.
-One pass recovers most of the faithfulness of perturbation methods, between 77\% and 96\% of leave-one-out's effect, without any of its 16 to 41 extra passes, and comes close to an attention method that is trained on perturbation data.
-What the model cites is not what it uses: citations are missing from most audio and video responses, and where they exist, the cited parts of audio clips and documents matter less than the parts OmniTrace finds.
-And one fixed setting transfers to a second model family unchanged, where a more elaborate tracing rule does not.
+On the model it was developed on, one pass recovers most of the faithfulness of perturbation methods, between 77\% and 96\% of leave-one-out's effect, without any of its 16 to 41 extra passes, and comes close to an attention method that is trained on perturbation data.
+What a model cites is not reliably what it uses: one model leaves most audio and video responses without a citation, and on both models where we test citations, the cited parts of audio clips matter less than the parts OmniTrace finds.
+And one fixed setting passes the causal tests on two further models unchanged, where a more elaborate tracing rule does not.
 
 Our contributions are:
 \begin{itemize}

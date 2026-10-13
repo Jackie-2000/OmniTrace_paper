@@ -69,5 +69,5 @@ First, units compete only within their modality, so text passages cannot crowd o
 Second, the number of labelled units adapts to the sentence: flat scores give an empty label, so a sentence that draws on nothing in particular abstains.
 Third, the rule is relative, so it does not depend on the absolute scale of attention, which changes with input length and model.
 Adjacent labelled time units are merged into intervals $[b,e]$; text and image units are listed by id.
-We use $\tau=1.5$ for every modality and both models (\Cref{appendix:threshold}).
+We use $\tau=1.5$ for every modality and every model (\Cref{appendix:threshold}).
 The sum in \Cref{eq:mass} favors large units when units differ much in size; we measure this in \Cref{sec:size}.
