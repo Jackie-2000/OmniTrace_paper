@@ -79,9 +79,11 @@ First line of institution2 address\\
 \setlength{\abovecaptionskip}{0.3cm}
     \centering
     % \vspace{-5pt}
-    \includegraphics[width=2\columnwidth]{media/figure/Teaser.pdf}
+    \includegraphics[width=0.86\textwidth]{media/figure/Teaser.pdf}
     \caption{\textbf{OmniTrace reads what a model used from the pass that generates the answer.}
-    Text, images, audio, and video share one input sequence, cut into source units (a passage, an image, a second of audio or video). While a sentence is generated, OmniTrace sums the late-layer attention mass that falls on each unit and labels the units that stand out among those of the same modality: source ids for text and images, time intervals for audio and video. The attribution is then tested by intervention: hiding the labelled units behind content-free placeholders lowers the probability of the response far more than hiding random units, and more than hiding the sources the model itself cites.
+    \emph{Left:} video, audio, and documents enter one input sequence as source units (seconds, passages, images). While the decoder writes a sentence, OmniTrace sums the attention mass on each unit (bars) and labels the units that stand out within their modality (orange).
+    \emph{Top right:} every sentence comes with its sources, as time intervals or source ids; here most labelled seconds fall inside the span that annotators marked, although no annotation was used.
+    \emph{Bottom right:} tested by hiding units and replaying the response, OmniTrace reaches 77--96\% of the effect of leave-one-out with no extra forward pass, where perturbation needs 16 to 41 per question (Qwen2.5-Omni-7B).
     }
     \vspace{-10pt}
     \label{fig:teaser}

@@ -1,8 +1,7 @@
 \section{Experiments}
 \label{sec:exp}
 
-An attribution read from attention is only a hypothesis about what the model used.
-We test it by intervention and organize the experiments around four questions.
+We test the attribution by intervention and organize the experiments around four questions.
 \textbf{RQ1}: do the units OmniTrace selects matter to the model, in every modality?
 \textbf{RQ2}: how much of the faithfulness of perturbation methods does one pass recover, and at what cost?
 \textbf{RQ3}: does the model cite what it uses?
@@ -58,14 +57,12 @@ We use Qwen2.5-Omni-7B~\cite{xu2025qwen2}, MiniCPM-o~4.5~\cite{yu2025minicpm}, a
 NExT-GQA~\cite{xiao2024nextgqa} provides video questions with human-marked evidence intervals; the model sees the frames only.
 From MMAU~\cite{sakshi2025mmau} we take the audio questions whose answer depends on a part of the clip.
 MMDocRAG~\cite{dong2025mmdocrag} gives each question 15 quotes from a long document, about ten text passages and five images, of which about 19\% are gold evidence.
-The models reason step by step.
 
 \paragraph{Baselines.}
 All baselines rank the same units and pass through the same test.
 Two cost about as little as OmniTrace: \emph{embedding similarity} between a sentence and each unit (SigLIP, CLAP, and a text encoder), and \emph{self-citation}, a second generation that asks the model to cite time spans or quote ids.
 Two are perturbation methods: \emph{leave-one-out} hides each unit in turn, and \emph{ContextCite}~\cite{cohen-wang2024contextcite} fits a sparse linear model on 32 random ablations.
-Both are fitted with the hiding operation and the target of the test itself, so we treat them as a practical upper bound.
-Details are in \Cref{appendix:baselines}.
+Both are fitted with the hiding operation and the target of the test itself, so we treat them as a practical upper bound (\Cref{appendix:baselines}).
 
 \subsection{RQ1: The Selected Units Matter}
 \label{sec:rq1}
@@ -73,49 +70,41 @@ Details are in \Cref{appendix:baselines}.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{media/figure/fig_curves.pdf}
-\caption{\textbf{Hiding what OmniTrace selects hurts the response more than hiding random units of the same count}, in every modality, at every budget, and on every model. Each line is the drop in the log-probability of a model's own response when a share of its input is hidden: orange when the hidden units are the ones OmniTrace ranks highest for that model, blue when they are drawn at random. Solid lines are Qwen2.5-Omni-7B, dashed lines MiniCPM-o~4.5, and dotted lines Qwen3-Omni-30B (its video run is not finished), each explaining its own responses with the same OmniTrace setting. Bands are 95\% bootstrap intervals.}
+\caption{\textbf{Hiding what OmniTrace selects hurts the response more than hiding random units of the same count}, in every modality, at every budget, and on every model. Each line is the drop in the log-probability of a model's own response when a share of its input is hidden: orange when the hidden units are the ones OmniTrace ranks highest for that model, blue when they are drawn at random. Solid lines are Qwen2.5-Omni-7B, dashed lines MiniCPM-o~4.5, and dotted lines Qwen3-Omni-30B, each explaining its own responses with the same OmniTrace setting. Bands are 95\% bootstrap intervals.}
 \label{fig:curves}
 \end{figure*}
 
 \Cref{fig:curves} shows the central result.
-Across three modalities and three models, the curve for OmniTrace's units lies above the curve for random units at every budget, and no interval of the difference includes zero (\Cref{appendix:budgets}).
-The reverse test agrees: keeping only the selected units preserves more of the response than keeping random ones, reliably so except at some video budgets.
+On all three models and in all three modalities, the curve for OmniTrace's units lies above the curve for random units at every budget, and no interval of the difference includes zero (\Cref{appendix:budgets}).
+The reverse test, which keeps only the selected units, agrees, reliably so except at some video budgets.
 
 The result also holds for single sentences (\Cref{tab:baselines}, S-lift and S-spec).
-Hiding the units attributed to a sentence lowers that sentence's probability more than random units do, and more than it lowers the other sentences of the same response.
-The attribution is therefore specific to the sentence, not a map of what is salient.
+Hiding the units attributed to a sentence lowers that sentence's probability more than random units do, and more than it lowers the other sentences of the response: the attribution is specific to the sentence, not a map of what is salient.
 The labels of \Cref{eq:label}, which keep 10--22\% of the units, pass the deletion and sentence-level tests in all nine settings (\Cref{appendix:labels}).
-
 Effects are large for documents, moderate for audio, and small for video, where neighboring seconds carry much of the same content.
 
 \subsection{RQ2: Most of the Faithfulness, None of the Cost}
 \label{sec:baselines}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{media/figure/fig_cost.pdf}
-\caption{\textbf{Faithfulness against cost} on Qwen2.5-Omni-7B. Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs per question. Both OmniTrace variants sit in the shaded column: they read their scores from the generation pass. OmniTrace-trained needs ablation data from the same model beforehand.}
-\label{fig:cost}
-\end{figure}
 
 \paragraph{Against methods of the same cost.}
-OmniTrace has about twice the lift of embedding similarity in every modality (\Cref{tab:baselines}, \Cref{fig:cost}), and the gap widens at sentence level.
-Units that look related to a sentence are not the units the model read: on audio the sentence specificity of embedding similarity is close to zero.
+OmniTrace has about twice the lift of embedding similarity in every modality (\Cref{tab:baselines}; \Cref{fig:teaser}, bottom right), and the gap widens at sentence level.
+Units that look related to a sentence are not the units the model read: on audio its sentence specificity is close to zero.
 
 \paragraph{Against perturbation.}
 Leave-one-out and ContextCite spend 16 to 41 extra forward passes per question to measure directly what our test measures.
 From a single pass, OmniTrace reaches 96\% of leave-one-out's lift on video, 77\% on audio, and 95\% on image--text input, and the share grows with the budget (\Cref{appendix:budgets}).
-At sentence level it keeps 83\% and 93\% of leave-one-out's lift on audio and image--text; video is the weak case, at about 60\%.
+At sentence level it keeps 83\% and 93\% of leave-one-out's lift on audio and image--text input; video is the weak case, at about 60\%.
 Perturbation remains the more faithful choice when its cost is acceptable; OmniTrace offers most of that faithfulness when it is not.
 
 \paragraph{With trained head weights.}
-OmniTrace-trained shows what fitting the head weights adds to the default.
-On Qwen2.5-Omni it adds little: the default is level with it on video at every budget and reaches 95\% and 94\% of its lift on audio and image--text input, without any ablation data.
+On Qwen2.5-Omni, fitting the head weights (OmniTrace-trained) adds little: the default is level with it on video at every budget and reaches 95\% and 94\% of its lift on audio and image--text input, without any ablation data.
 
 \paragraph{On a second model.}
 We repeat every baseline on MiniCPM-o~4.5 (\Cref{appendix:minicpm}).
-On audio the picture holds (72--95\% of leave-one-out's lift from a 20\% budget on, 1.4--2 times that of embedding similarity), and on video OmniTrace overtakes leave-one-out from 30\% on.
-On image--text input the default reaches only a quarter of the perturbation methods' lift, and OmniTrace-trained recovers 96\% of it with no pass added at test time. Four fifths of its weight lie outside the late layers: this model's generation pass holds the evidence too, but for documents not where the default reads it.
+On audio the picture holds (72--95\% of leave-one-out's lift from a 20\% budget on), and on video OmniTrace overtakes leave-one-out from 30\% on.
+On image--text input the default reaches a quarter of the perturbation methods' lift, and OmniTrace-trained recovers 96\% of it with no pass added at test time; on video it has the largest lift of all methods (0.067).
+Four fifths of its weight lie outside the late layers: the generation pass of this model holds the evidence too, but for documents not where the default reads it.
 
 \subsection{RQ3: Stated Evidence Is Not Used Evidence}
 \label{sec:stated}
@@ -135,15 +124,16 @@ On image--text input the default reaches only a quarter of the perturbation meth
 \label{fig:example}
 \end{figure*}
 
-The cheapest evidence is the one the model states itself. We repeat the generation with a prompt that asks for a citation after each sentence and test the cited units (\Cref{fig:stated}).
+We repeat the generation with a prompt that asks for a citation after each sentence and test the cited units (\Cref{fig:stated}).
 
-\emph{Citations are often missing.} The model cites a valid source in 82\% of its document responses, but in only 38\% of audio and 31\% of video responses.
+\emph{Citations are often missing.} Qwen2.5-Omni cites a valid source in 82\% of its document responses, but in only 38\% of audio and 31\% of video responses.
 
-\emph{Cited units matter less.} Where the model does cite, hiding OmniTrace's units of the same count costs 3.1 times as much as hiding the cited units on audio and 1.7 times as much on documents; on video the two are level.
+\emph{Cited units matter less.} Where it does cite, hiding OmniTrace's units of the same count costs 3.1 times as much as hiding the cited units on audio and 1.7 times as much on documents; on video the two are level.
 The citations also agree less with human evidence than OmniTrace's labels do (F1 of 0.22 against 0.48 on documents and 0.10 against 0.20 on video).
 
 \emph{Citations follow the prompt.} Of the 120 audio responses that contain a time span, 32 repeat the example span of the instruction.
 Asking for citations also changes the answer: video accuracy falls from 72.3\% to 55.3\%.
+
 MiniCPM-o~4.5 and Qwen3-Omni cite more often, and their cited audio spans again matter less than OmniTrace's units (lift 0.064 against 0.098; 0.127 against 0.152), while MiniCPM-o's cited video seconds and quotes matter more (\Cref{appendix:minicpm}): how far a citation can be trusted changes with the model and the modality.
 Attribution read from the generation pass leaves the response unchanged and covers every sentence.
 

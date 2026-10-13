@@ -132,6 +132,13 @@ The evidence is therefore present in the attention of this model, in other layer
 \subsection{All Budgets}
 \label{appendix:budgets}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{media/figure/fig_cost.pdf}
+\caption{\textbf{Faithfulness against cost} on Qwen2.5-Omni-7B (the panel of \Cref{fig:teaser}). Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs per question. Both OmniTrace variants sit in the shaded column: they read their scores from the generation pass. OmniTrace-trained needs ablation data from the same model beforehand.}
+\label{fig:cost}
+\end{figure}
+
 \begin{table*}[t]
 \centering
 \small
