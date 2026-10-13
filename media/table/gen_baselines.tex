@@ -5,16 +5,21 @@
 \cmidrule(lr){2-5}\cmidrule(lr){6-9}\cmidrule(lr){10-13}
 \textbf{Method} & Fwd & Lift & S-lift & S-spec & Fwd & Lift & S-lift & S-spec & Fwd & Lift & S-lift & S-spec \\
 \midrule
-Embedding similarity & \textbf{0} & 0.008\mdn & 0.009\mdn & 0.005\mdn & \textbf{0} & 0.034\mdn & 0.031\mdn & 0.005\mdn & \textbf{0} & 0.216\mdn & 0.216\mdn & 0.156\mdn \\
-Self-citation$^\dagger$ & 1$^\ddagger$ & 0.013 & 0.012 & 0.009 & 1$^\ddagger$ & 0.040\mdn & 0.036\mdn & 0.024 & 1$^\ddagger$ & 0.184\mdn & 0.349\mdn & 0.317\mdn \\
-\;OmniTrace$_{\text{Qwen2.5-Omni}}$, same units$^\dagger$ & 0 & 0.011 & 0.014 & 0.013 & 0 & 0.123 & 0.102 & 0.064 & 0 & 0.305 & 0.513 & 0.447 \\
-Leave-one-out$^\ast$ & 41 & \textbf{0.016} & \underline{0.024}\mup & \underline{0.022}\mup & 17 & \textbf{0.100}\mup & \underline{0.133}\mup & \underline{0.105}\mup & 16 & 0.368 & \textbf{0.404}\mup & \textbf{0.286}\mup \\
-ContextCite$^\ast$ & 33 & \textbf{0.016} & \textbf{0.027}\mup & \textbf{0.023}\mup & 28 & \underline{0.099}\mup & \textbf{0.139}\mup & \textbf{0.119}\mup & 33 & \textbf{0.389}\mup & \underline{0.397}\mup & \underline{0.285}\mup \\
+\multicolumn{13}{>{\columncolor{gray!15}}l}{\textit{Baselines on Qwen2.5-Omni-7B}}\\
+Embedding similarity & 0 & 0.008\mdn & 0.009\mdn & 0.005\mdn & 0 & 0.034\mdn & 0.031\mdn & 0.005\mdn & 0 & 0.216\mdn & 0.216\mdn & 0.156\mdn \\
+Self-citation$^\dagger$ & 1$^\ddagger$ & 0.013 & 0.012 & 0.009 & 1$^\ddagger$ & 0.040\mdn & 0.036\mdn & 0.024 & 1$^\ddagger$ & 0.184\mdn & 0.349\mdn & \underline{0.317}\mdn \\
+Leave-one-out$^\ast$ & 41 & 0.016 & 0.024\mup & 0.022\mup & 17 & 0.100\mup & \underline{0.133}\mup & \underline{0.105}\mup & 16 & 0.368 & 0.404\mup & 0.286\mup \\
+ContextCite$^\ast$ & 33 & 0.016 & \underline{0.027}\mup & \underline{0.023}\mup & 28 & 0.099\mup & \textbf{0.139}\mup & \textbf{0.119}\mup & 33 & \underline{0.389}\mup & 0.397\mup & 0.285\mup \\
 \midrule
-\textbf{OmniTrace}$_{\text{Qwen2.5-Omni}}$ (ours) & \textbf{0} & \textbf{0.016} & 0.015 & 0.007 & \textbf{0} & 0.077 & 0.110 & 0.084 & \textbf{0} & 0.351 & 0.376 & 0.245 \\
-\textbf{OmniTrace-trained}$_{\text{Qwen2.5-Omni}}$ (ours)$^\P$ & \textbf{0} & 0.014 & 0.016 & 0.010\mup & \textbf{0} & 0.081 & 0.116\mup & 0.086 & \textbf{0} & \underline{0.374}\mup & 0.385\mup & 0.250\mup \\
-\textbf{OmniTrace}$_{\text{MiniCPM-o}}$ (ours)$^\S$ & 0 & 0.024 & 0.027 & 0.012 & 0 & 0.136 & 0.102 & 0.047 & 0 & 0.105 & 0.159 & 0.098 \\
-\textbf{OmniTrace-trained}$_{\text{MiniCPM-o}}$ (ours)$^{\P\S}$ & 0 & 0.067 & 0.065 & 0.024 & 0 & 0.169 & 0.120 & 0.054 & 0 & 0.432 & 0.706 & 0.507 \\
-\textbf{OmniTrace}$_{\text{Qwen3-Omni}}$ (ours)$^\S$ & -- & -- & -- & -- & 0 & 0.112 & 0.095 & 0.065 & 0 & 0.316 & 0.448 & 0.309 \\
+\multicolumn{13}{>{\columncolor{gray!15}}l}{\textit{OmniTrace on Qwen2.5-Omni-7B}}\\
+\textbf{OmniTrace} (ours) & 0 & 0.016 & 0.015 & 0.007 & 0 & 0.077 & 0.110 & 0.084 & 0 & 0.351 & 0.376 & 0.245 \\
+\textbf{OmniTrace-trained} (ours)$^\P$ & 0 & 0.014 & 0.016 & 0.010\mup & 0 & 0.081 & 0.116\mup & 0.086 & 0 & 0.374\mup & 0.385\mup & 0.250\mup \\
+\midrule
+\multicolumn{13}{>{\columncolor{gray!15}}l}{\textit{OmniTrace on MiniCPM-o 4.5$^\S$}}\\
+\textbf{OmniTrace} (ours) & 0 & \underline{0.024} & \underline{0.027} & 0.012 & 0 & \underline{0.136} & 0.102 & 0.047 & 0 & 0.105 & 0.159 & 0.098 \\
+\textbf{OmniTrace-trained} (ours)$^\P$ & 0 & \textbf{0.067} & \textbf{0.065} & \textbf{0.024} & 0 & \textbf{0.169} & 0.120 & 0.054 & 0 & \textbf{0.432} & \textbf{0.706} & \textbf{0.507} \\
+\midrule
+\multicolumn{13}{>{\columncolor{gray!15}}l}{\textit{OmniTrace on Qwen3-Omni-30B-A3B$^\S$}}\\
+\textbf{OmniTrace} (ours) & -- & -- & -- & -- & 0 & 0.112 & 0.095 & 0.065 & 0 & 0.316 & \underline{0.448} & 0.309 \\
 \bottomrule
 \end{tabular}

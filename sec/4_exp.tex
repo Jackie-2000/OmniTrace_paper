@@ -38,17 +38,17 @@ We report 95\% bootstrap intervals and compare methods by paired differences (\C
 \scriptsize
 \setlength{\tabcolsep}{4.2pt}
 \input{media/table/gen_baselines}
-\caption{\textbf{Causal faithfulness and cost.} The subscript of OmniTrace names the model it runs on; baselines are run on Qwen2.5-Omni-7B.
+\caption{\textbf{Causal faithfulness and cost.} Baselines are run on Qwen2.5-Omni-7B; each OmniTrace block is run on the model it names.
 Fwd: extra forward passes per question beyond the one generation.
 Lift: extra drop in the response's log-probability (nats per token) when the method's top units are hidden, over hiding the same number of random units (20\% of the duration; 2 quotes).
 S-lift, S-spec: sentence lift and specificity.
-\mdn / \mup: reliably lower / higher than OmniTrace$_{\text{Qwen2.5-Omni}}$ on the same questions (paired 95\% bootstrap interval).
-\textbf{Bold} / \underline{underline}: best / second best per column among the baselines and the two OmniTrace rows of Qwen2.5-Omni.
+\mdn / \mup: reliably lower / higher than OmniTrace on Qwen2.5-Omni-7B on the same questions (paired 95\% bootstrap interval).
+\textbf{Bold} / \underline{underline}: largest / second largest value of a column.
 $^\ast$Defined for text in the original work; on audio, video, and images they run on OmniTrace's units and placeholders (\Cref{sec:protocol}).
-$^\dagger$A separate generation, scored only where the model cites (62, 72, and 328 responses); the row below is OmniTrace on the same responses with the same number of units.
+$^\dagger$A separate generation, scored only where the model cites (62, 72, and 328 responses); its arrows compare the cited units with OmniTrace's units of the same count on those responses (\Cref{fig:stated}).
 $^\ddagger$One extra generation.
 $^\P$Trained variant (\Cref{sec:scoring}): head weights fitted on 32 ablation passes per training question; no pass added at test time.
-$^\S$Same setting on another model, nothing retuned ($n$ = 246, 196, 400; Qwen3-Omni-30B: 196, 400, video run not finished); not comparable with the baseline rows. Baselines on MiniCPM-o~4.5: \Cref{appendix:minicpm}.}
+$^\S$Nothing retuned ($n$ = 246, 196, 400; Qwen3-Omni: 196, 400, video run not finished); baselines on MiniCPM-o~4.5 are in \Cref{appendix:minicpm}.}
 \label{tab:baselines}
 \skiptableend
 \end{table*}
@@ -151,7 +151,7 @@ Attribution read from the generation pass leaves the response unchanged and cove
 \label{sec:variants}
 
 The setting was fixed on Qwen2.5-Omni video data and applied without any change to MiniCPM-o~4.5, a model from another family with a different depth and a different tokenization of video, audio, and images, and to Qwen3-Omni-30B, a model four times as large.
-All tests of RQ1 hold on both (\Cref{fig:curves}, last rows of \Cref{tab:baselines}).
+All tests of RQ1 hold on both (\Cref{fig:curves}, lower blocks of \Cref{tab:baselines}).
 On Qwen3-Omni the effects on documents are as large as on Qwen2.5-Omni, and the quotes OmniTrace selects matter more than the human-marked ones (lift 0.316 against 0.267).
 
 Simplicity is what makes the transfer possible.
