@@ -1,0 +1,126 @@
+% arXiv version. Shares every section, table and figure with main.tex (ACL/ARR version);
+% only the preamble, title block and bibliography style differ.
+% Build: pdflatex main_arxiv && bibtex main_arxiv && pdflatex main_arxiv && pdflatex main_arxiv
+% Upload package: bash make_arxiv.sh
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[11pt,letterpaper]{style}
+
+\usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{groupplots}
+\usepackage{cleveref}
+\definecolor{otblue}{HTML}{2456A6}
+\definecolor{otpurple}{HTML}{8A5AA8}
+\definecolor{otorange}{HTML}{C2571A}
+\definecolor{otgreen}{HTML}{3D8F6B}
+\definecolor{otred}{HTML}{B3261E}
+\definecolor{otgray}{HTML}{63666B}
+% marks in the result tables: the row is reliably lower / higher than OmniTrace (paired 95% bootstrap interval)
+\newcommand{\mdn}{{\tiny$\downarrow$}}
+\newcommand{\mup}{{\tiny$\uparrow$}}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}
+% layout macros used by the shared sections (main.tex sets the ACL values)
+\newcommand{\tablesize}{\small}
+\newcommand{\skiptablebegin}{\vspace{0pt}}
+\newcommand{\skiptableend}{\vspace{0pt}}
+\newcommand{\skipimgbegin}{\vspace{0pt}}
+\newcommand{\skipimgend}{\vspace{0pt}}
+\newcommand{\colfigwidth}{0.6\textwidth}  % single-column figures (one ACL column)
+% one-column page: let the full-width figures sit at the top of a text page
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+
+% title block
+\newcommand{\afficon}[1]{\textsuperscript{\fontsize{9pt}{9pt}\selectfont #1}}
+\newcommand{\equal}{\textsuperscript{*}}     % Equal contribution
+\newcommand{\advisor}{\textsuperscript{\dag}}% Equal advising
+\renewcommand\Authfont{\centering\normalfont\bfseries\fontsize{11}{15}\selectfont}
+\renewcommand\Affilfont{\centering\normalfont\fontsize{10}{15}\selectfont}
+\newcommand{\afflogo}[2]{%
+  \raisebox{#2}{\includegraphics[height=1.5em]{#1}}%
+}
+
+\title{\centering OmniTrace: \\ A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs}
+\runningtitle{OmniTrace: A Unified Framework for Generation-Time Source Attribution in Omni-Modal LLMs}
+
+\author{%
+    {\Authfont
+    \textbf{Qianqi Yan}\textsuperscript{1} \quad
+    \textbf{Yichen Guo}\textsuperscript{1} \quad
+    \textbf{Ching-Chen Kuo}\textsuperscript{2} \quad
+    \textbf{Shan Jiang}\textsuperscript{2} \quad
+    \textbf{Hang Yin}\textsuperscript{2}
+
+    \textbf{Yang Zhao}\textsuperscript{2} \quad
+    \textbf{Xin Eric Wang}\textsuperscript{1}
+    }\\
+    {\Affilfont
+    \textsuperscript{1} \afflogo{logo/ucsb.png}{-0.7ex} University of California, Santa Barbara \quad
+    \textsuperscript{2} \afflogo{logo/ebay.png}{-0.7ex} eBay \quad
+    }
+}
+
+\begin{document}
+
+% style.cls stores the abstract and prints it inside \maketitle, so it is read first
+\input{sec/0_abstract}
+\makeatletter
+\g@addto@macro\theabstract{%
+  \par\vskip1em\noindent{\keywordsfont Keywords: Multimodal Large Language Models, Source Attribution, Generation-Time Explanation, Model Interpretability}%
+  \par\vspace{3mm}\noindent\textbf{Project Page:} \url{https://github.com/eric-ai-lab/OmniTrace}%
+}
+\makeatother
+
+\maketitle
+
+\begin{figure*}[!ht]
+\setlength{\abovecaptionskip}{0.3cm}
+    \centering
+    \includegraphics[width=\textwidth]{media/figure/Teaser.pdf}
+    \caption{\textbf{OmniTrace reads what a model used from the pass that generates the answer.}
+    \emph{Left:} video, audio, and documents enter one input sequence as source units (seconds, passages, images). While the decoder writes a sentence, OmniTrace sums the attention mass on each unit (bars) and labels the units that stand out within their modality (orange).
+    \emph{Top right:} every sentence comes with its sources, as time intervals or source ids; here most labelled seconds fall inside the span that annotators marked, although no annotation was used.
+    \emph{Bottom right:} tested by hiding units and replaying the response, OmniTrace reaches 77--96\% of the effect of leave-one-out with no extra forward pass, where perturbation needs 16 to 41 per question (Qwen2.5-Omni-7B).
+    }
+    \label{fig:teaser}
+\end{figure*}
+
+\input{sec/1_intro}
+\input{sec/2_related_works}
+\input{sec/3_OmniTrace}
+\input{sec/4_exp}
+\input{sec/5_analysis}
+\input{sec/6_conclusion}
+\input{sec/limitation}
+
+\bibliographystyle{unsrtnat}
+\bibliography{main,related}
+
+\newpage
+\input{sec/7_appendix}
+\end{document}

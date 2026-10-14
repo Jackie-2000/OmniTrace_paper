@@ -85,7 +85,7 @@ Effects are large for documents, moderate for audio, and small for video, where 
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{media/figure/fig_cost.pdf}
+\includegraphics[width=\colfigwidth]{media/figure/fig_cost.pdf}
 \caption{\textbf{Faithfulness against cost}. Lift of each method as a share of leave-one-out's lift, against the extra forward passes it needs per question. Both OmniTrace variants sit in the shaded column: they read their scores from the generation pass. OmniTrace-trained needs ablation data from the same model beforehand.}
 \label{fig:cost}
 \end{figure}
@@ -117,7 +117,7 @@ On Qwen3-Omni-30B, where every perturbation pass costs the most, the same single
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{media/figure/fig_stated.pdf}
+\includegraphics[width=\colfigwidth]{media/figure/fig_stated.pdf}
 \caption{\textbf{The model's own citations}. Left: share of responses that cite at least one valid source when asked to; OmniTrace attributes every response. Right: lift of the cited units and of OmniTrace's units of the same count on the same responses.}
 \label{fig:stated}
 \end{figure}

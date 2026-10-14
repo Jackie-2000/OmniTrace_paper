@@ -45,6 +45,12 @@ Read this file first in every session that touches the paper. Update "Progress" 
 
 Build: `pdflatex main && bibtex main && pdflatex main && pdflatex main`. Check: no undefined references, limitations start on page 8 or at the top of page 9.
 
+Two front files share every `sec/`, `media/` and `.bib` file:
+- `main.tex`: ACL/ARR format (`acl.sty`, `[review]` = anonymous; switch to `[final]` or `[preprint]` for camera-ready / non-anonymous).
+- `main_arxiv.tex`: arXiv format of v1 (`style.cls`, one column, author block with logos from `logo/`, numeric citations, keywords and project page after the abstract). Teaser and its caption are duplicated in both files; edit both.
+- Layout macros the sections use must be defined in both preambles: `\tablesize`, `\skiptablebegin/end`, `\skipimgbegin/end`, `\colfigwidth` (width of a one-column figure: `\columnwidth` in ACL, `0.6\textwidth` on arXiv). Use `\colfigwidth`, not `\columnwidth`, for one-column figures.
+- arXiv release: `bash make_arxiv.sh` builds `main_arxiv.pdf` and writes `arxiv_release/` and `arxiv_release.tar.gz` (only the files the build reads, the `.bbl`, and `00README.json` naming `main_arxiv.tex` as top level; it checks that the folder builds on its own). Comments in the `.tex` files are public on arXiv.
+
 After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (tables), `bash analysis/run_paper_figures.sh` (figures), recompile, then update the sentences that quote numbers (search the `.tex` files for the old value).
 
 ## Figures the author draws (placeholders in the text)
@@ -73,6 +79,7 @@ After a sync of `runs/` (AT2, a larger Qwen, …): `bash analysis/run_all.sh` (t
 - 2026-10-13 (j), pushed: author's teaser is in (`media/figure/Teaser.pdf`, width 0.86\textwidth to fit the page limit); new teaser caption (left / top right / bottom right). The cost figure moved to the appendix (`appendix:budgets`) because the teaser's bottom-right panel shows it; RQ2 points to the teaser. Abstract, intro findings, Sections 4 and 6 and the limitations rewritten as the final version (results treated as complete: no "not finished" wording; the trained variant is named in abstract, intro, contributions and conclusion; Qwen3-Omni without perturbation baselines is stated as scope). Main text ends at the bottom of page 8 with no slack.
 - 2026-10-13 (k), pushed: at the author's request the cost figure is back in the main text (RQ2); the example heatmap (`fig_example`) moved to the appendix instead (the teaser shows the same clip). Teaser width 0.92\textwidth. Supersedes the figure placement in (j).
 - 2026-10-13 (l), pushed: built on the author's manual pass (commit `manual`; do not rewrite the author's sentences in Sections 0-4). Abstract ends with the human-agreement numbers; third contribution lists results instead of limits; main table has no arrows, no n, no footnote marks other than * and the trained-variant mark (the generator `tex_baselines` produces this layout for the base model; the MiniCPM-o appendix table keeps arrows, defined in its own caption); RQ2 paragraphs "With trained head weights" (MiniCPM-o trained results) and "On other models" (MiniCPM-o and Qwen3-Omni); `fig_example` back in Section 5 and one Qwen3 agreement sentence added, so the main text fills page 8 exactly.
+- 2026-10-14 (m), pushed: arXiv format added as `main_arxiv.tex` (+ `style.cls`, `logo/`, `make_arxiv.sh`); `\colfigwidth` replaces `\columnwidth` for the three one-column figures. ACL output unchanged.
 
 ## Open items
 

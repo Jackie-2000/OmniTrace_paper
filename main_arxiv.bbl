@@ -1,0 +1,249 @@
+\begin{thebibliography}{30}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[OpenAI(2026)]{gpt6astra2026}
+OpenAI.
+\newblock Gpt-6 astra: A new generation of intelligence for work and reasoning.
+\newblock 2026.
+\newblock URL \url{https://openai.com/index/gpt-6-astra/}.
+
+\bibitem[{Google DeepMind}(2026)]{gemini38flash2026}
+{Google DeepMind}.
+\newblock Gemini 3.8 flash model card.
+\newblock \url{https://deepmind.google/models/model-cards/gemini-3-8-flash/},
+  September 2026.
+\newblock Model ID: \texttt{gemini-3.8-flash}. Accessed: 2026-10-13.
+
+\bibitem[Xu et~al.(2025{\natexlab{a}})Xu, Guo, Hu, Chu, Wang, He, Wang, Shi,
+  He, Zhu, Lv, Wang, Guo, Wang, Ma, Zhang, Zhang, Hao, Guo, Yang, Zhang, Ma,
+  Wei, Bai, Chen, Liu, Wang, Yang, Liu, Ren, Zheng, Men, Zhou, Yu, Yang, Yu,
+  Zhou, and Lin]{Xu2025Qwen3OmniTR}
+Jin Xu, Zhifang Guo, Hangrui Hu, Yunfei Chu, Xiong Wang, Jinzheng He, Yuxuan
+  Wang, Xianzhong Shi, Ting He, Xinfa Zhu, Yuanjun Lv, Yongqi Wang, Dake Guo,
+  He~Wang, Linhan Ma, Pei Zhang, Xinyu Zhang, Hongkun Hao, Zishan Guo, Baosong
+  Yang, Bin Zhang, Ziyang Ma, Xipin Wei, Shuai Bai, Ke~Chen, Xue~Lian Liu, Peng
+  Wang, Ming Yang, Dayiheng Liu, Xingzhang Ren, Bo~Zheng, Rui Men, Fan Zhou,
+  Bowen Yu, Jianxin Yang, Le~Yu, Jing-Jun Zhou, and Junyang Lin.
+\newblock Qwen3-omni technical report.
+\newblock \emph{ArXiv}, abs/2509.17765, 2025{\natexlab{a}}.
+\newblock URL \url{https://api.semanticscholar.org/CorpusID:281420796}.
+
+\bibitem[Cui et~al.(2026)Cui, Xu, Wang, Yu, Sun, Xu, Wang, He, Ma, Cai,
+  et~al.]{cui2026minicpm}
+Junbo Cui, Bokai Xu, Chongyi Wang, Tianyu Yu, Weiyue Sun, Yingjing Xu, Tianran
+  Wang, Zhihui He, Wenshuo Ma, Tianchi Cai, et~al.
+\newblock Minicpm-o 4.5: Towards real-time full-duplex omni-modal interaction.
+\newblock \emph{arXiv preprint arXiv:2604.27393}, 2026.
+
+\bibitem[Xu et~al.(2025{\natexlab{b}})Xu, Guo, He, Hu, He, Bai, Chen, Wang,
+  Fan, Dang, et~al.]{xu2025qwen2}
+Jin Xu, Zhifang Guo, Jinzheng He, Hangrui Hu, Ting He, Shuai Bai, Keqin Chen,
+  Jialin Wang, Yang Fan, Kai Dang, et~al.
+\newblock Qwen2. 5-omni technical report.
+\newblock \emph{arXiv preprint arXiv:2503.20215}, 2025{\natexlab{b}}.
+
+\bibitem[Ye et~al.(2026)Ye, Yang, Goel, Huang, Wan, Tian, Cheng, Zhu, Su, Lou,
+  Lin, Yang, Ghosh, Liu, Chen, Jahangiri, Dantrey, Xu, Hosseini-Asl, Taheri,
+  Murali, Liu, Lu, Olabiyi, Wang, Valle, Catanzaro, Tao, Han, Kautz, Yin, and
+  Molchanov]{ye2026omnivinci}
+Hanrong Ye, Chao-Han~Huck Yang, Arushi Goel, Wei Huang, Zhen Wan, Jinchuan
+  Tian, An-Chieh Cheng, Ligeng Zhu, Yuanhang Su, Yuming Lou, Yong-Xiang Lin,
+  Dong Yang, Sreyan Ghosh, Zhijian Liu, Yukang Chen, Ehsan Jahangiri, Ambrish
+  Dantrey, Daguang Xu, Ehsan Hosseini-Asl, Seyed Danial~Mohseni Taheri,
+  Vidya~Nariyambut Murali, Sifei Liu, Yao Lu, Oluwatobi Olabiyi,
+  Yu-Chiang~Frank Wang, Rafael Valle, Bryan Catanzaro, Andrew Tao, Song Han,
+  Jan Kautz, Hongxu Yin, and Pavlo Molchanov.
+\newblock Omnivinci: Enhancing architecture and data for omni-modal
+  understanding {LLM}.
+\newblock In \emph{The Fourteenth International Conference on Learning
+  Representations}, 2026.
+\newblock URL \url{https://openreview.net/forum?id=DZeic3NpHy}.
+
+\bibitem[Wan et~al.(2026)Wan, Wang, Wang, Stengel-Eskin, Lee, and
+  Bansal]{wan2026murgat}
+David Wan, Han Wang, Ziyang Wang, Elias Stengel-Eskin, Hyunji Lee, and Mohit
+  Bansal.
+\newblock Multimodal fact-level attribution for verifiable reasoning.
+\newblock In \emph{Forty-third International Conference on Machine Learning},
+  2026.
+\newblock URL \url{https://openreview.net/forum?id=IEDC7yFpLe}.
+
+\bibitem[Cohen-Wang et~al.(2024)Cohen-Wang, Shah, Georgiev, and
+  Madry]{cohen-wang2024contextcite}
+Benjamin Cohen-Wang, Harshay Shah, Kristian Georgiev, and Aleksander Madry.
+\newblock Contextcite: Attributing model generation to context.
+\newblock In \emph{The Thirty-eighth Annual Conference on Neural Information
+  Processing Systems}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=7CMNSqsZJt}.
+
+\bibitem[Cohen-Wang et~al.(2025)Cohen-Wang, Chuang, and
+  Madry]{cohenwang2025at2}
+Benjamin Cohen-Wang, Yung-Sung Chuang, and Aleksander Madry.
+\newblock Learning to attribute with attention.
+\newblock \emph{arXiv preprint arXiv:2504.13752}, 2025.
+
+\bibitem[Kang et~al.(2026)Kang, Han, Kim, Kim, Kim, and Hwang]{kang2026vstream}
+Seil Kang, Woojung Han, Junhyeok Kim, Jinyeong Kim, Youngeun Kim, and Seong~Jae
+  Hwang.
+\newblock Real-time visual attribution streaming in thinking model.
+\newblock In \emph{Forty-third International Conference on Machine Learning},
+  2026.
+\newblock URL \url{https://openreview.net/forum?id=eVr10aZZIw}.
+
+\bibitem[Qi et~al.(2024)Qi, Sarti, Fern{\'a}ndez, and
+  Bisazza]{qi-etal-2024-model}
+Jirui Qi, Gabriele Sarti, Raquel Fern{\'a}ndez, and Arianna Bisazza.
+\newblock Model internals-based answer attribution for trustworthy
+  retrieval-augmented generation.
+\newblock In \emph{Proceedings of the 2024 Conference on Empirical Methods in
+  Natural Language Processing}, pages 6037--6053, 2024.
+
+\bibitem[Tran et~al.(2026)Tran, Dang, Tyagi, Veeravalli, Nguyen, Rossi,
+  Dernoncourt, Lipka, Goswami, and Basu]{tran2026multattnattrib}
+Dang Quang~Thien Tran, Quang~V Dang, Vinamra Tyagi, Sai Soorya~Rao Veeravalli,
+  Trang Nguyen, Ryan~A Rossi, Franck Dernoncourt, Nedim Lipka, Koustava
+  Goswami, and Samyadeep Basu.
+\newblock Multattnattrib: Training-free multimodal attribution in long document
+  question answering.
+\newblock \emph{arXiv preprint arXiv:2607.01420}, 2026.
+
+\bibitem[Yuan et~al.(2026)Yuan, Wang, Qiu, Wang, and Huang]{yuan2026vtrace}
+Bowen Yuan, Danny Wang, Ruihong Qiu, Zijian Wang, and Zi~Huang.
+\newblock Tracing the evidence: Faithful token attribution through
+  vision-language reasoning.
+\newblock \emph{arXiv preprint arXiv:2609.37656}, 2026.
+
+\bibitem[Li et~al.(2026)Li, Chen, Hu, Gao, Wang, and Yilmaz]{li2026arcjsd}
+Ruizhe Li, Chen Chen, Yuchen Hu, Yanjun Gao, Xi~Wang, and Emine Yilmaz.
+\newblock Attributing response to context: A jensen--shannon divergence driven
+  mechanistic study of context attribution in retrieval-augmented generation.
+\newblock In \emph{International Conference on Learning Representations},
+  volume 2026, pages 146805--146837, 2026.
+
+\bibitem[Liu et~al.(2025)Liu, Kandpal, and Raffel]{liu2025attribot}
+Fengyuan Liu, Nikhil Kandpal, and Colin Raffel.
+\newblock Attribot: A bag of tricks for efficiently approximating leave-one-out
+  context attribution.
+\newblock In \emph{International Conference on Learning Representations},
+  volume 2025, pages 16687--16710, 2025.
+
+\bibitem[Wang et~al.(2026)Wang, Geng, Chen, and Jia]{wang2026attntrace}
+Yanting Wang, Runpeng Geng, Ying Chen, and Jinyuan Jia.
+\newblock Attntrace: Contextual attribution of prompt injection and knowledge
+  corruption.
+\newblock In \emph{IEEE Symposium on Security and Privacy (S\&P)}, 2026.
+\newblock URL \url{https://arxiv.org/abs/2508.03793}.
+
+\bibitem[Ding et~al.(2025)Ding, Luo, Cao, and Luo]{ding2025attention}
+Qiang Ding, Lvzhou Luo, Yixuan Cao, and Ping Luo.
+\newblock Attention with dependency parsing augmentation for fine-grained
+  attribution.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2025}, pages 372--387, 2025.
+
+\bibitem[Liang et~al.(2025)Liang, Chen, Jiao, Liang, Liu, Zhang, Hu, and
+  Cao]{liang2025ercr}
+Jiawei Liang, Ruoyu Chen, Xianghao Jiao, Siyuan Liang, Shiming Liu, Qunli
+  Zhang, Zheng Hu, and Xiaochun Cao.
+\newblock Explaining multimodal llms via intra-modal token interactions.
+\newblock \emph{arXiv preprint arXiv:2509.22415}, 2025.
+
+\bibitem[Lu et~al.(2025)Lu, Song, Wang, Torresani, and Nagarajan]{lu2025vited}
+Yujie Lu, Yale Song, William Wang, Lorenzo Torresani, and Tushar Nagarajan.
+\newblock Vited: Video temporal evidence distillation.
+\newblock In \emph{2025 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 8501--8511. IEEE, 2025.
+
+\bibitem[Wang et~al.(2025)Wang, Xu, Cheng, Diao, Zhou, Cao, Wang, Ge, and
+  Huang]{wang2025groundedvideollm}
+Haibo Wang, Zhiyang Xu, Yu~Cheng, Shizhe Diao, Yufan Zhou, Yixin Cao, Qifan
+  Wang, Weifeng Ge, and Lifu Huang.
+\newblock Grounded-{V}ideo{LLM}: Sharpening fine-grained temporal grounding in
+  video large language models.
+\newblock In Christos Christodoulopoulos, Tanmoy Chakraborty, Carolyn Rose, and
+  Violet Peng, editors, \emph{Findings of the {A}ssociation for {C}omputational
+  {L}inguistics: {EMNLP} 2025}, pages 959--975, Suzhou, China, November 2025.
+  Association for Computational Linguistics.
+\newblock ISBN 979-8-89176-335-7.
+\newblock \doi{10.18653/v1/2025.findings-emnlp.50}.
+\newblock URL \url{https://aclanthology.org/2025.findings-emnlp.50/}.
+
+\bibitem[Zhu et~al.(2026)Zhu, Ma, Zeng, Li, Zhang, Li, Zhang, Jiang, Yang, Yan,
+  et~al.]{zhu2026timelens2}
+Yuhan Zhu, Changlian Ma, Xiangyu Zeng, Xinhao Li, Zhiqiu Zhang, Songze Li, Jun
+  Zhang, Tianxiang Jiang, Yuandong Yang, Ziang Yan, et~al.
+\newblock Timelens2: Generalist video temporal grounding with multimodal llms.
+\newblock \emph{arXiv preprint arXiv:2607.17423}, 2026.
+
+\bibitem[Xiao et~al.(2024)Xiao, Yao, Li, and Chua]{xiao2024nextgqa}
+Junbin Xiao, Angela Yao, Yicong Li, and Tat-Seng Chua.
+\newblock Can i trust your answer? visually grounded video question answering.
+\newblock In \emph{2024 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 13204--13214. IEEE, 2024.
+
+\bibitem[Cho et~al.(2026)Cho, Yoo, Jung, and Chung]{cho2026tracingaudio}
+Hyebin Cho, Suho Yoo, Jihoo Jung, and Joon~Son Chung.
+\newblock Tracing audio grounding and answer selection in audio llms.
+\newblock \emph{arXiv preprint arXiv:2609.04637}, 2026.
+
+\bibitem[Chen et~al.(2026)Chen, Huang, and Lee]{chen2026causalaudio}
+Wei-Chih Chen, Chien-yu Huang, and Hung-yi Lee.
+\newblock Causal tracing of audio-text fusion in large audio language models.
+\newblock \emph{arXiv preprint arXiv:2603.13768}, 2026.
+
+\bibitem[DeYoung et~al.(2020)DeYoung, Jain, Rajani, Lehman, Xiong, Socher, and
+  Wallace]{deyoung2020eraser}
+Jay DeYoung, Sarthak Jain, Nazneen~Fatema Rajani, Eric Lehman, Caiming Xiong,
+  Richard Socher, and Byron~C Wallace.
+\newblock Eraser: A benchmark to evaluate rationalized nlp models.
+\newblock In \emph{Proceedings of the 58th annual meeting of the association
+  for computational linguistics}, pages 4443--4458, 2020.
+
+\bibitem[Atanasova et~al.(2020)Atanasova, Simonsen, Lioma, and
+  Augenstein]{atanasova-etal-2020-diagnostic}
+Pepa Atanasova, Jakob~Grue Simonsen, Christina Lioma, and Isabelle Augenstein.
+\newblock A diagnostic study of explainability techniques for text
+  classification.
+\newblock In Bonnie Webber, Trevor Cohn, Yulan He, and Yang Liu, editors,
+  \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural
+  Language Processing (EMNLP)}, pages 3256--3274, Online, November 2020.
+  Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.emnlp-main.263}.
+\newblock URL \url{https://aclanthology.org/2020.emnlp-main.263/}.
+
+\bibitem[AlHamidi et~al.(2026)AlHamidi, Khanbayov, Serpedin, and
+  Kurban]{alhamidi2026carve}
+Rama AlHamidi, Rasul Khanbayov, Erchin Serpedin, and Hasan Kurban.
+\newblock Counterfactual sensitivity is not repairability: Auditing replay
+  probes for video evidence.
+\newblock \emph{arXiv preprint arXiv:2608.15685}, 2026.
+
+\bibitem[{Anthropic}(2026)]{anthropic2026opus5}
+{Anthropic}.
+\newblock Claude opus 5 system card.
+\newblock \url{https://www.anthropic.com/news/claude-opus-5}, July 2026.
+\newblock Model ID: \texttt{claude-opus-5}. Accessed: 2026-10-13.
+
+\bibitem[Sakshi et~al.(2025)Sakshi, Tyagi, Kumar, Seth, Selvakumar, Nieto,
+  Duraiswami, Ghosh, and Manocha]{sakshi2025mmau}
+S~Sakshi, Utkarsh Tyagi, Sonal Kumar, Ashish Seth, Ramaneswaran Selvakumar,
+  Oriol Nieto, Ramani Duraiswami, Sreyan Ghosh, and Dinesh Manocha.
+\newblock {MMAU}: A massive multi-task audio understanding and reasoning
+  benchmark.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations}, 2025.
+\newblock URL \url{https://openreview.net/forum?id=TeVAZXr3yv}.
+
+\bibitem[Dong et~al.(2026)Dong, YUJING, Huang, Wang, Tang, and
+  Liu]{dong2025mmdocrag}
+Kuicai Dong, CHANG YUJING, Shijie Huang, Yasheng Wang, Ruiming Tang, and Yong
+  Liu.
+\newblock Benchmarking retrieval-augmented multimomal generation for document
+  question answering.
+\newblock \emph{Advances in Neural Information Processing Systems}, 38, 2026.
+
+\end{thebibliography}
