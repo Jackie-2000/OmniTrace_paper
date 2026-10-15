@@ -4,6 +4,8 @@
 % Upload package: bash make_arxiv.sh
 \PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass[11pt,letterpaper]{style}
+% Overleaf shares one output.aux across main files; ignore lineno entries left by a main.tex (review) compile
+\makeatletter\providecommand\@LN[2]{}\makeatother
 
 \usepackage[numbers]{natbib}
 \usepackage{graphicx}
